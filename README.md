@@ -72,14 +72,14 @@ AI는 다음 순서로 진행합니다.
 
 | 단계 | 작업지시자 행동 | AI 행동 | 발동 SKILL |
 |---|---|---|---|
-| 0. 작업 정의 | 작업 의도 설명 | 평문 이슈 도입 vs 신규 이슈 등록 판단 | 신규: `task-register` · 평문 이슈: `issue-triage` |
-| 1. 작업 시작 | 이슈 번호 지정, 시작 승인 | 브랜치 생성, 오늘할일 추가, 수행계획서 템플릿 작성 | `task-start` + `todo` |
+| 0. 작업 정의 | 작업 의도 설명 | 이슈가 없으면 등록, 있으면 그대로 다음 단계 진입 | 신규 이슈: `task-register` |
+| 1. 작업 시작 | 이슈 번호 지정, 시작 승인 | 브랜치 생성, 오늘할일 추가, 수행계획서 템플릿 작성, 이슈 추적 댓글 등록 | `task-start` + `issue-checkpoint` + `todo` |
 | 2. 수행계획 승인 | 수행계획서 검토, 승인 | 구현계획서로 단계 분할 | (수동) |
 | 3. 단계 구현 | 도메인 피드백 제공 | 단계별 구현, 검증 | (수동, 단계마다 검증) |
-| 4. 단계 종료 | 단계 보고서 검토, 다음 단계 승인 | 단계 보고서 작성, 단계 묶음 커밋, 이슈 체크포인트 댓글 | `task-stage-report` + `issue-triage` + `todo` |
-| 5. 최종 보고 | 최종 보고서 검토, PR 생성 승인 | 최종 보고서 작성, draft PR 생성 | `task-final-report` + `issue-triage` + `todo` |
+| 4. 단계 종료 | 단계 보고서 검토, 다음 단계 승인 | 단계 보고서 작성, 단계 묶음 커밋, 이슈 체크포인트 댓글 | `task-stage-report` + `issue-checkpoint` + `todo` |
+| 5. 최종 보고 | 최종 보고서 검토, PR 생성 승인 | 최종 보고서 작성, draft PR 생성 | `task-final-report` + `issue-checkpoint` + `todo` |
 | 6. 리뷰 & merge | 리뷰, merge 결정 | PR 본문 보강, 검증 결과 반영 | (수동) |
-| 7. merge 후 정리 | 정리 승인 | 이슈 close, 브랜치 정리, 오늘할일 마감 | `pr-merge-cleanup` + `issue-triage` + `todo` |
+| 7. merge 후 정리 | 정리 승인 | 이슈 close, 브랜치 정리, 오늘할일 마감 | `pr-merge-cleanup` + `issue-checkpoint` + `todo` |
 | 별도. 외부 PR 검토 | 외부 PR 검토 요청 | 검토 문서 작성, 검증, 리뷰 응답 | `external-pr-review` |
 
 ## 저장소 구조
@@ -107,7 +107,7 @@ templates/    대상 저장소에 복사할 파일
 | SKILL | 사용하는 시점 | 주요 산출물 |
 |---|---|---|
 | `task-register` | 신규 작업이라 GitHub Issue를 먼저 만들어야 할 때 | 범위·라벨·마일스톤·담당자가 채워진 GitHub Issue |
-| `issue-triage` | 평문 이슈가 이미 있고 작업으로 도입하거나 진행 중 이슈 댓글을 갱신할 때 | 원문 보존, 추적 댓글(현재 상태) + 체크포인트 댓글(이벤트 로그) |
+| `issue-checkpoint` | 작업 진행 상태를 이슈 댓글로 추적할 때 | 추적 댓글(현재 상태) + 이벤트별 체크포인트 댓글 |
 | `task-start` | 승인된 이슈 작업을 시작할 때 | `local/task{N}` 브랜치, 오늘할일 행, 수행계획서 템플릿 |
 | `task-stage-report` | 한 Stage 구현이 끝나고 다음 단계로 넘어가기 직전 | 단계 보고서, 단계 묶음 커밋, 단계 검증 결과 |
 | `task-final-report` | 모든 Stage가 끝나고 PR을 게시하기 직전 | 최종 보고서, 오늘할일 완료 처리, draft PR |
