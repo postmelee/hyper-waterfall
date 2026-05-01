@@ -84,23 +84,63 @@ AI는 다음 순서로 진행합니다.
 
 ## 저장소 구조
 
+저장소 구조는 두 관점에서 봅니다. **(1) 적용 후 대상 저장소 구조** — 사용자가 자신의 프로젝트에 적용한 결과. **(2) 본 저장소(자기 적용 후) 구조** — 프레임워크 보관 + 자기 적용 dogfooding이 함께 있는 모습.
+
+### (1) 적용 후 대상 저장소 구조
+
+`templates/`를 복사하고 placeholder를 치환한 뒤 사용자 저장소에 만들어지는 모습입니다.
+
 ```text
-docs/         방법론 진입 문서 (agent-entrypoint.md)
-templates/    대상 저장소에 복사할 파일
-  ├── AGENTS.md, CLAUDE.md
-  ├── .github/pull_request_template.md
-  └── mydocs/
-      ├── manual/   매뉴얼 (문서 구조, 타스크 진행, Git, PR, 충돌 규칙)
-      ├── skills/   SKILL 진실 원천 (Codex/Claude Code 공용)
-      ├── orders/   오늘할일 (yyyymmdd.md)
-      ├── plans/    수행/구현 계획서
-      ├── working/  단계별 완료 보고서
-      ├── report/   최종 결과 보고서
-      ├── feedback/ 피드백·리뷰 의견
-      ├── tech/     기술 조사
-      ├── troubleshootings/  트러블슈팅
-      └── pr/       외부 PR 검토 기록
+your-repo/
+├── AGENTS.md                       운영 규칙 단일 진실 원천
+├── CLAUDE.md                       Claude Code용 (AGENTS.md 참조)
+├── .github/
+│   └── pull_request_template.md
+├── .agents/
+│   └── skills -> ../mydocs/skills  Codex 인식 경로 (심볼릭 링크)
+├── .claude/
+│   └── skills -> ../mydocs/skills  Claude Code 인식 경로 (심볼릭 링크)
+└── mydocs/
+    ├── manual/             매뉴얼 (문서 구조, 타스크 진행, Git, PR, 충돌 규칙)
+    ├── skills/             SKILL 진실 원천 (Codex/Claude Code 공용)
+    ├── orders/             오늘할일 (yyyymmdd.md)
+    ├── plans/              수행/구현 계획서
+    │   └── archives/
+    ├── working/            단계별 완료 보고서
+    ├── report/             최종 결과 보고서
+    ├── feedback/           피드백·리뷰 의견
+    ├── tech/               기술 조사
+    ├── troubleshootings/   트러블슈팅
+    └── pr/                 외부 PR 검토 기록
+        └── archives/
 ```
+
+### (2) 본 저장소(자기 적용 후) 구조
+
+이 저장소는 위 (1) 구조에 더해, 프레임워크 진실 원천인 `templates/`와 외부 진입 문서 `docs/`를 함께 보관합니다. 매뉴얼·SKILL은 한 번만 작성해 모든 곳에서 같은 본문을 보도록, 자기 적용 쪽 `mydocs/manual`과 `mydocs/skills`를 `templates/mydocs/`로 가는 심볼릭 링크로 둡니다.
+
+```text
+hyper-waterfall/
+├── README.md, LICENSE
+├── AGENTS.md, CLAUDE.md            (자기 적용 — placeholder 치환된 사본)
+├── .github/pull_request_template.md (자기 적용)
+├── .agents/skills  -> ../mydocs/skills        (사용자 적용 저장소와 동일 패턴)
+├── .claude/skills  -> ../mydocs/skills
+├── docs/
+│   └── agent-entrypoint.md         외부 저장소 적용 진입 문서
+├── templates/                      ─── 진실 원천 (대상 저장소에 복사할 파일)
+│   ├── AGENTS.md, CLAUDE.md        placeholder 보존본
+│   ├── .github/pull_request_template.md
+│   └── mydocs/
+│       ├── manual/                 매뉴얼 진실 원천
+│       └── skills/                 SKILL 진실 원천
+└── mydocs/                         ─── 자기 적용 산출물
+    ├── manual  -> ../templates/mydocs/manual    (심볼릭 링크)
+    ├── skills  -> ../templates/mydocs/skills    (심볼릭 링크)
+    └── orders/, plans/, working/, report/, feedback/, tech/, troubleshootings/, pr/
+```
+
+본 저장소에서 매뉴얼이나 SKILL을 수정할 때는 `templates/mydocs/manual/` 또는 `templates/mydocs/skills/`를 직접 수정합니다. `mydocs/manual`과 `mydocs/skills`는 심볼릭 링크라 같은 본문을 즉시 가리키므로 사본 동기화 작업이 필요하지 않습니다.
 
 ## 핵심 SKILL
 
