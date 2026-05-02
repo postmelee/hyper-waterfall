@@ -32,10 +32,12 @@ PR 본문은 `{PR_TEMPLATE_PATH}`를 기준으로 작성한다. 템플릿은 이
 
 ### 섹션 구성
 
-내부 task PR에는 다음 섹션을 둔다.
+내부 task PR에는 다음 최상위 섹션을 둔다.
 
 - `요약`
 - `변경 내역`
+  - `### 영향 영역` (선택)
+  - `### 작업 문서`
 - `핵심 리뷰 포인트`
 - `검증`
 - `스크린샷`
@@ -43,7 +45,9 @@ PR 본문은 `{PR_TEMPLATE_PATH}`를 기준으로 작성한다. 템플릿은 이
 - `후속 이슈 제안`
 - `남은 리스크`
 
-`핵심 리뷰 포인트`, `스크린샷`, `후속 이슈 제안`은 필요한 경우만 유지한다. 해당하지 않으면 삭제하거나 `없음` 한 줄로 정리한다.
+`변경 내역`은 본문에 Stage timeline만 두고, `영향 영역`과 `작업 문서`를 하위 목차로 분리한다. 이렇게 하면 Stage 흐름이 PR 상단에 한눈에 들어오고, 영역 표·문서 링크는 GitHub 사이드바 ToC에서 따로 노출된다.
+
+`핵심 리뷰 포인트`, `스크린샷`, `후속 이슈 제안`, `### 영향 영역`은 필요한 경우만 유지한다. 해당하지 않으면 통째로 삭제하거나 `없음` 한 줄로 정리한다.
 
 ### 섹션별 작성 기준
 
@@ -55,11 +59,20 @@ PR 본문은 `{PR_TEMPLATE_PATH}`를 기준으로 작성한다. 템플릿은 이
 
 `변경 내역`:
 
+- 본문에는 Stage timeline만 둔다. 영역 표와 작업 문서 링크는 하위 목차로 분리한다.
 - Stage 기반 작업은 Stage당 1줄로 적는다.
 - Stage 제목은 단계 보고서로 링크하고, 옆의 짧은 commit SHA는 commit URL로 링크한다.
 - 예: `**[Stage 1](stage-url)** ([0cdbae0](commit-url)): 한 줄 요약`
-- 주요 파일/영역 표는 최대 5행만 남긴다.
-- 수행 계획서, 구현 계획서, 최종 보고서는 `작업 문서` 항목으로 짧게 묶는다.
+
+`### 영향 영역` (`변경 내역`의 하위 섹션, 선택):
+
+- 영역이 여럿이고 리뷰어가 영역별 우선순위를 알아야 할 때만 유지한다.
+- 변경 영역이 1~2개라면 이 하위 섹션을 통째로 삭제한다.
+- 최대 5행 표 (`영역 / 변경 / 리뷰 포인트`).
+
+`### 작업 문서` (`변경 내역`의 하위 섹션):
+
+- 수행 계획서, 구현 계획서, 최종 보고서를 적는다. 단계별 완료 보고서는 위 Stage timeline의 단계 보고서 링크에서 이미 노출되므로 중복 적지 않는다.
 - 작업 문서 링크는 PR head commit SHA 기준 GitHub blob URL을 사용하고, raw URL 대신 `[파일명](URL)` 형식으로 표시한다.
 
 `핵심 리뷰 포인트`:
@@ -120,9 +133,13 @@ PR 본문은 `{PR_TEMPLATE_PATH}`를 기준으로 작성한다. 템플릿은 이
 - **[Stage 1](https://github.com/{REPO_SLUG}/blob/{sha}/mydocs/working/task_m050_22_stage1.md)** ([abc1234](https://github.com/{REPO_SLUG}/commit/{stage1_sha})): {Stage 1 요약}
 - **[Stage 2](https://github.com/{REPO_SLUG}/blob/{sha}/mydocs/working/task_m050_22_stage2.md)** ([def5678](https://github.com/{REPO_SLUG}/commit/{stage2_sha})): {Stage 2 요약}
 
+### 영향 영역
+
 | 영역 | 변경 | 리뷰 포인트 |
 |------|------|-------------|
 | {영역 1} | {변경 요약} | {리뷰 포인트} |
+
+### 작업 문서
 
 - 수행 계획서: [task_m050_22.md](https://github.com/{REPO_SLUG}/blob/{sha}/mydocs/plans/task_m050_22.md)
 - 구현 계획서: [task_m050_22_impl.md](https://github.com/{REPO_SLUG}/blob/{sha}/mydocs/plans/task_m050_22_impl.md)
