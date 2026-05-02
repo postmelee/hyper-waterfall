@@ -5,10 +5,10 @@
 - **이슈**: [#1 하이퍼-워터폴 자기 적용 (dogfooding)](https://github.com/postmelee/hyper-waterfall/issues/1)
 - **마일스톤**: M010
 - **브랜치**: `local/task1` → `publish/task1`
-- **단계 수**: 4 (Stage 4는 2026-05-02 scope 확장으로 추가)
-- **참여 SKILL**: `task-register` → `task-start` → `task-stage-report` ×4 → `task-final-report` (그리고 매 단계 `issue-checkpoint`)
+- **단계 수**: 5 (Stage 4·5는 2026-05-02 scope 확장으로 추가)
+- **참여 SKILL**: `task-register` → `task-start` → `task-stage-report` ×5 → `task-final-report` (그리고 매 단계 `issue-checkpoint`)
 
-본 저장소(`postmelee/hyper-waterfall`)에 자기 자신이 정의한 하이퍼-워터폴 방법론을 적용해 dogfooding 사례를 만들고, 이어서 [`postmelee/alhangeul-macos#115`](https://github.com/postmelee/alhangeul-macos/pull/115)의 PR 규칙 강화도 같은 task에 흡수했다. 이후 사용자가 이 저장소를 참고할 때 issue → branch → 계획서 → 단계 보고서 → 최종 보고서 → Open PR 흐름이 모두 살아있는 예시로 노출된다.
+본 저장소(`postmelee/hyper-waterfall`)에 자기 자신이 정의한 하이퍼-워터폴 방법론을 적용해 dogfooding 사례를 만들고, 이어서 [`postmelee/alhangeul-macos#115`](https://github.com/postmelee/alhangeul-macos/pull/115)의 PR 규칙 강화(Stage 4)와 본 저장소 자체 디자인 결정으로 PR 변경 내역 섹션 구조 개선(Stage 5)을 같은 task에 흡수했다. 이후 사용자가 이 저장소를 참고할 때 issue → branch → 계획서 → 단계 보고서 → 최종 보고서 → Open PR 흐름이 모두 살아있는 예시로 노출된다.
 
 ## 변경 파일 목록과 영향 범위
 
@@ -54,11 +54,21 @@ templates 갱신 5개:
 
 `AGENTS.md`는 본문에 draft 표현 잔존 없음 확인 (변경 없음).
 
+### 수정 (PR 변경 내역 구조 개선, Stage 5)
+
+PR `변경 내역` 섹션 본문을 Stage timeline만 두고, 표·작업 문서를 하위 목차로 분리해 가독성을 개선:
+
+- `templates/.github/pull_request_template.md`: `### 영향 영역`(옵션) + `### 작업 문서` 하위 섹션 도입. 영향 영역은 영역 1~2개일 땐 통째 삭제 가능
+- `.github/pull_request_template.md` (자기 적용본): 동일 구조
+- `templates/mydocs/manual/pr_process_guide.md`: "섹션 구성"에 하위 섹션 트리 추가, "섹션별 작성 기준"을 변경 내역/영향 영역/작업 문서로 분할, "작성 예시"도 새 구조 반영
+
+upstream 참조 없는 본 저장소 자체 디자인 결정으로, 대형 저장소(kubernetes/rust/llvm) 패턴(영역 정보는 라벨/commit prefix로 위임, 표는 본문에 거의 두지 않음)을 참고했다.
+
 ### 신규 (이번 task 자체 산출물)
 
 - 수행계획서: `mydocs/plans/task_m010_1.md` (scope 확장 시 갱신)
 - 구현계획서: `mydocs/plans/task_m010_1_impl.md` (Stage 4 추가)
-- 단계 보고서 4개: `mydocs/working/task_m010_1_stage{1,2,3,4}.md`
+- 단계 보고서 5개: `mydocs/working/task_m010_1_stage{1,2,3,4,5}.md`
 - 최종 보고서: `mydocs/report/task_m010_1_report.md` (이 문서)
 - 오늘할일: `mydocs/orders/20260501.md`, `mydocs/orders/20260502.md`
 
@@ -78,11 +88,12 @@ templates 갱신 5개:
 | 루트 심볼릭 링크 (`.agents`, `.claude`) | 0 | 2 |
 | `mydocs/` 자체 폴더 | 0 | 9 |
 | `mydocs/` 심볼릭 링크 | 0 | 2 (manual, skills) |
-| 첫 task 커밋 수 | — | 9 (수행계획 1 + 구현계획 1 + Stage 1·2·3 + 최종 보고 1 + scope 확장 1 + Stage 4 + 최종 보고 갱신 1) |
+| 첫 task 커밋 수 | — | 11 (수행계획 1 + 구현계획 1 + Stage 1·2·3 + 최종 보고 1 + scope 확장 1 + Stage 4 + 최종 보고 갱신 1 + scope 재확장 1 + Stage 5) |
 | README "저장소 구조" 섹션 | 단일 트리 | 두 관점 (적용 후 대상 / 자기 적용 후) |
-| PR 템플릿 섹션 | 6개 (요약/변경 내역/검증/문서/관련 이슈/남은 리스크) | 8개 (요약/변경 내역/핵심 리뷰 포인트/검증/스크린샷/관련 이슈/후속 이슈 제안/남은 리스크) |
+| PR 템플릿 섹션 | 6개 (요약/변경 내역/검증/문서/관련 이슈/남은 리스크) | 8개 최상위 + `변경 내역` 안 2개 하위 목차 (`### 영향 영역`·`### 작업 문서`) |
 | PR 기본 상태 | draft | Open |
 | 이슈 종결 표기 | `Closes #` (PR 본문) | `대상 타스크: #` (요약 첫 bullet) |
+| `변경 내역` 본문 | 자유 텍스트 + 영역 표 + 문서 링크 혼재 | Stage timeline만 (영역·문서는 하위 목차) |
 
 ## 검증 결과 (수용 기준별)
 
@@ -93,6 +104,7 @@ templates 갱신 5개:
 | `mydocs/orders/20260502.md`의 #1 행 `완료` 상태 + 시각 기록 | OK — 본 보고와 함께 갱신 |
 | 본 저장소 issue/branch/PR/`mydocs/` 산출물이 살아있는 예시로 정렬 | OK — 이슈 #1, 브랜치 `local/task1`, 단계 커밋 + 보고 커밋 정렬 |
 | PR #115의 PR 규칙 강화가 본 저장소 templates와 자기 적용본에 동기화 | OK — Stage 4 검증 grep 모두 통과 |
+| PR `변경 내역` 섹션이 Stage timeline + `### 영향 영역` + `### 작업 문서` 구조로 분리 | OK — Stage 5 검증 grep 모두 통과 |
 
 ### 단계별 검증 결과
 
@@ -100,6 +112,7 @@ templates 갱신 5개:
 - **Stage 2**: 4개 심볼릭 링크 정상 대상, `diff -q` skills/manual 본문 일치
 - **Stage 3**: `^## 저장소 구조` 1건, `(적용 후 대상 저장소|자기 적용)` 7건, `git diff --check` OK
 - **Stage 4**: templates 5개 파일에서 `draft PR|--draft` 잔존 없음, templates·자기 적용본 PR 템플릿에서 8개 섹션 모두 존재, 자기 적용본에 `{REPO_SLUG}` 잔존 없음, `README.md`/`AGENTS.md`에서 `draft PR` 잔존 없음
+- **Stage 5**: templates·자기 적용본 PR 템플릿에 `### 영향 영역`·`### 작업 문서` 각 1건씩, `pr_process_guide.md` 작성 예시에도 같은 두 하위 섹션 노출, `git diff --check` OK
 
 ## 잔여 위험과 후속 작업
 
@@ -109,6 +122,7 @@ templates 갱신 5개:
 - **매뉴얼 placeholder 보존**: `templates/mydocs/manual/*.md`는 `{REPO_SLUG}`, `{BASE_BRANCH}` 등 placeholder를 그대로 보존한다. 본 저장소 사용자가 매뉴얼을 직접 읽을 때 placeholder를 본문 그대로 읽게 된다. 이는 의도된 설계(진실 원천 보호 + dogfooding 일관성)이며 AGENTS.md 강제 규칙에 명시되어 있다.
 - **AGENTS.md 검증 grep**: 강제 규칙 본문이 placeholder 표기를 인용하면 검증 grep에 잡히는 약점이 있다. 일반화 표기(`예: {REPO_SLUG}`)로 우회했지만, 향후 검증 패턴을 강화한다면 이 인용 규칙을 매뉴얼에 명시하는 게 좋다.
 - **Stage 이중 링크 자동화 부재**: PR 본문의 Stage 보고서·commit URL은 PR 작성자가 직접 채워야 한다. PR #115의 잔여 리스크와 동일.
+- **PR #115 형식과의 일시적 차이**: Stage 5에서 본 저장소가 `변경 내역` 안에 `### 영향 영역`·`### 작업 문서` 하위 목차를 도입했지만 alhangeul-macos는 아직 평면 배치다. upstream 후속 동기화에서 정렬되거나, 의도된 차이로 유지될 수 있다.
 
 ### 후속 작업 후보
 
