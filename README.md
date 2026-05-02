@@ -77,30 +77,70 @@ AI는 다음 순서로 진행합니다.
 | 2. 수행계획 승인 | 수행계획서 검토, 승인 | 구현계획서로 단계 분할 | (수동) |
 | 3. 단계 구현 | 도메인 피드백 제공 | 단계별 구현, 검증 | (수동, 단계마다 검증) |
 | 4. 단계 종료 | 단계 보고서 검토, 다음 단계 승인 | 단계 보고서 작성, 단계 묶음 커밋, 이슈 체크포인트 댓글 | `task-stage-report` + `issue-checkpoint` + `todo` |
-| 5. 최종 보고 | 최종 보고서 검토, PR 생성 승인 | 최종 보고서 작성, draft PR 생성 | `task-final-report` + `issue-checkpoint` + `todo` |
+| 5. 최종 보고 | 최종 보고서 검토, PR 생성 승인 | 최종 보고서 작성, Open PR 생성 | `task-final-report` + `issue-checkpoint` + `todo` |
 | 6. 리뷰 & merge | 리뷰, merge 결정 | PR 본문 보강, 검증 결과 반영 | (수동) |
 | 7. merge 후 정리 | 정리 승인 | 이슈 close, 브랜치 정리, 오늘할일 마감 | `pr-merge-cleanup` + `issue-checkpoint` + `todo` |
 | 별도. 외부 PR 검토 | 외부 PR 검토 요청 | 검토 문서 작성, 검증, 리뷰 응답 | `external-pr-review` |
 
 ## 저장소 구조
 
+저장소 구조는 두 관점에서 봅니다. **(1) 적용 후 대상 저장소 구조** — 사용자가 자신의 프로젝트에 적용한 결과. **(2) 본 저장소(자기 적용 후) 구조** — 프레임워크 보관 + 자기 적용 dogfooding이 함께 있는 모습.
+
+### (1) 적용 후 대상 저장소 구조
+
+`templates/`를 복사하고 placeholder를 치환한 뒤 사용자 저장소에 만들어지는 모습입니다.
+
 ```text
-docs/         방법론 진입 문서 (agent-entrypoint.md)
-templates/    대상 저장소에 복사할 파일
-  ├── AGENTS.md, CLAUDE.md
-  ├── .github/pull_request_template.md
-  └── mydocs/
-      ├── manual/   매뉴얼 (문서 구조, 타스크 진행, Git, PR, 충돌 규칙)
-      ├── skills/   SKILL 진실 원천 (Codex/Claude Code 공용)
-      ├── orders/   오늘할일 (yyyymmdd.md)
-      ├── plans/    수행/구현 계획서
-      ├── working/  단계별 완료 보고서
-      ├── report/   최종 결과 보고서
-      ├── feedback/ 피드백·리뷰 의견
-      ├── tech/     기술 조사
-      ├── troubleshootings/  트러블슈팅
-      └── pr/       외부 PR 검토 기록
+your-repo/
+├── AGENTS.md                       운영 규칙 단일 진실 원천
+├── CLAUDE.md                       Claude Code용 (AGENTS.md 참조)
+├── .github/
+│   └── pull_request_template.md
+├── .agents/
+│   └── skills -> ../mydocs/skills  Codex 인식 경로 (심볼릭 링크)
+├── .claude/
+│   └── skills -> ../mydocs/skills  Claude Code 인식 경로 (심볼릭 링크)
+└── mydocs/
+    ├── manual/             매뉴얼 (문서 구조, 타스크 진행, Git, PR, 충돌 규칙)
+    ├── skills/             SKILL 진실 원천 (Codex/Claude Code 공용)
+    ├── orders/             오늘할일 (yyyymmdd.md)
+    ├── plans/              수행/구현 계획서
+    │   └── archives/
+    ├── working/            단계별 완료 보고서
+    ├── report/             최종 결과 보고서
+    ├── feedback/           피드백·리뷰 의견
+    ├── tech/               기술 조사
+    ├── troubleshootings/   트러블슈팅
+    └── pr/                 외부 PR 검토 기록
+        └── archives/
 ```
+
+### (2) 본 저장소(자기 적용 후) 구조
+
+이 저장소는 위 (1) 구조에 더해, 프레임워크 진실 원천인 `templates/`와 외부 진입 문서 `docs/`를 함께 보관합니다. 매뉴얼·SKILL은 한 번만 작성해 모든 곳에서 같은 본문을 보도록, 자기 적용 쪽 `mydocs/manual`과 `mydocs/skills`를 `templates/mydocs/`로 가는 심볼릭 링크로 둡니다.
+
+```text
+hyper-waterfall/
+├── README.md, LICENSE
+├── AGENTS.md, CLAUDE.md            (자기 적용 — placeholder 치환된 사본)
+├── .github/pull_request_template.md (자기 적용)
+├── .agents/skills  -> ../mydocs/skills        (사용자 적용 저장소와 동일 패턴)
+├── .claude/skills  -> ../mydocs/skills
+├── docs/
+│   └── agent-entrypoint.md         외부 저장소 적용 진입 문서
+├── templates/                      ─── 진실 원천 (대상 저장소에 복사할 파일)
+│   ├── AGENTS.md, CLAUDE.md        placeholder 보존본
+│   ├── .github/pull_request_template.md
+│   └── mydocs/
+│       ├── manual/                 매뉴얼 진실 원천
+│       └── skills/                 SKILL 진실 원천
+└── mydocs/                         ─── 자기 적용 산출물
+    ├── manual  -> ../templates/mydocs/manual    (심볼릭 링크)
+    ├── skills  -> ../templates/mydocs/skills    (심볼릭 링크)
+    └── orders/, plans/, working/, report/, feedback/, tech/, troubleshootings/, pr/
+```
+
+본 저장소에서 매뉴얼이나 SKILL을 수정할 때는 `templates/mydocs/manual/` 또는 `templates/mydocs/skills/`를 직접 수정합니다. `mydocs/manual`과 `mydocs/skills`는 심볼릭 링크라 같은 본문을 즉시 가리키므로 사본 동기화 작업이 필요하지 않습니다.
 
 ## 핵심 SKILL
 
@@ -110,7 +150,7 @@ templates/    대상 저장소에 복사할 파일
 | `issue-checkpoint` | 작업 진행 상태를 이슈 댓글로 추적할 때 | 추적 댓글(현재 상태) + 이벤트별 체크포인트 댓글 |
 | `task-start` | 승인된 이슈 작업을 시작할 때 | `local/task{N}` 브랜치, 오늘할일 행, 수행계획서 템플릿 |
 | `task-stage-report` | 한 Stage 구현이 끝나고 다음 단계로 넘어가기 직전 | 단계 보고서, 단계 묶음 커밋, 단계 검증 결과 |
-| `task-final-report` | 모든 Stage가 끝나고 PR을 게시하기 직전 | 최종 보고서, 오늘할일 완료 처리, draft PR |
+| `task-final-report` | 모든 Stage가 끝나고 PR을 게시하기 직전 | 최종 보고서, 오늘할일 완료 처리, Open PR |
 | `pr-merge-cleanup` | PR이 실제로 merge된 직후 | 이슈 close, `publish/task{N}` 원격 삭제, 로컬 브랜치/worktree 정리 |
 | `external-pr-review` | 외부 기여자 PR을 검토할 때 | `mydocs/pr/` 검토 문서, 검증 결과, 권고(merge/수정/닫기) |
 | `todo` | 오늘할일 보드를 새로 만들거나 갱신할 때 | `mydocs/orders/yyyymmdd.md` 표 형식 갱신 |
