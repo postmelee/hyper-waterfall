@@ -16,9 +16,10 @@
 ## 기본 원칙
 
 - 내부 task PR 본문은 `{PR_TEMPLATE_PATH}`를 따른다.
-- 내부 task PR 본문은 최종 결과 보고서의 압축본으로 작성한다.
+- 내부 task PR 본문은 최종 결과 보고서의 짧은 압축본으로 작성한다.
 - PR 본문에는 실제 실행한 검증만 적는다.
-- 관련 이슈는 merge 시 닫아도 되는 경우에만 `Closes #번호`로 적는다.
+- 현재 PR이 직접 수행하는 issue는 `대상 타스크`에 적는다.
+- `관련 이슈`는 선행, 후속, Epic, upstream, 참고 PR/issue처럼 PR 이해에 필요한 맥락을 적는다.
 - 외부 기여 PR은 코드 변경과 문서 변경을 함께 검토한다.
 - 외부 PR 검토 결과는 `mydocs/pr/` 문서 흐름으로 관리한다.
 - 검토 문서는 재현 가능해야 하며, 실행한 검증 명령/결과를 포함한다.
@@ -29,53 +30,69 @@
 
 PR 본문은 `{PR_TEMPLATE_PATH}`를 기준으로 작성한다. 템플릿은 이 저장소의 하이퍼-워터폴 산출물과 연결되도록 확장한 형식이다.
 
-### 필수 섹션
+### 섹션 구성
 
 내부 task PR에는 다음 섹션을 둔다.
 
 - `요약`
 - `변경 내역`
+- `핵심 리뷰 포인트`
 - `검증`
-- `문서`
+- `스크린샷`
 - `관련 이슈`
+- `후속 이슈 제안`
 - `남은 리스크`
 
-`스크린샷`은 UI 등 시각 확인이 필요한 변경에서만 유지한다. 해당하지 않으면 삭제한다.
+`핵심 리뷰 포인트`, `스크린샷`, `후속 이슈 제안`은 필요한 경우만 유지한다. 해당하지 않으면 삭제하거나 `없음` 한 줄로 정리한다.
 
 ### 섹션별 작성 기준
 
 `요약`:
 
-- 이 PR이 해결하는 문제와 핵심 변경을 간결하게 적는다.
-- 최종 결과 보고서가 있는 경우, 보고서의 결론을 2~5개 bullet로 압축한다.
+- 최대 4개 bullet로 압축한다.
+- 대상 타스크, 변경 이유, 변경 내용, 리뷰어가 먼저 볼 지점을 적는다.
+- 현재 PR이 직접 수행하는 issue는 `대상 타스크`에 적는다.
 
 `변경 내역`:
 
-- stage 기반 작업은 stage 기준으로 적는다.
-- stage 커밋이 이미 존재하면 가능한 한 commit 링크나 짧은 SHA를 함께 적는다.
-- 작은 작업은 stage 대신 파일/기능 단위로 적을 수 있다.
+- Stage 기반 작업은 Stage당 1줄로 적는다.
+- Stage 제목은 단계 보고서로 링크하고, 옆의 짧은 commit SHA는 commit URL로 링크한다.
+- 예: `**[Stage 1](stage-url)** ([0cdbae0](commit-url)): 한 줄 요약`
+- 주요 파일/영역 표는 최대 5행만 남긴다.
+- 수행 계획서, 구현 계획서, 최종 보고서는 `작업 문서` 항목으로 짧게 묶는다.
+- 작업 문서 링크는 PR head commit SHA 기준 GitHub blob URL을 사용하고, raw URL 대신 `[파일명](URL)` 형식으로 표시한다.
+
+`핵심 리뷰 포인트`:
+
+- 리뷰어가 먼저 판단해야 하는 ABI, 스키마, 렌더링 계약, 알고리즘 분기, 호환성 판단이 있을 때만 유지한다.
+- 최대 3개만 적고, 코드 블록은 각 20줄 이하로 제한한다.
 
 `검증`:
 
-- 실제 실행한 명령만 체크한다.
-- 실행하지 않은 항목은 삭제하거나 미체크 상태로 둔다.
+- 실제 실행한 명령과 수동 확인만 적는다.
+- 실행하지 않은 항목은 삭제한다.
 - 수동 확인은 어떤 화면이나 파일에서 확인했는지 짧게 적는다.
 
-`문서`:
+`스크린샷`:
 
-- 수행 계획서, 구현 계획서, 단계별 완료 보고서, 최종 결과 보고서를 적는다.
-- troubleshooting, feedback, manual 문서가 있으면 함께 적는다.
-- 문서 링크는 PR head commit SHA 기준 GitHub blob URL을 사용하고, raw URL 대신 `[파일명](URL)` 형식으로 표시한다.
+- UI, Finder, Quick Look, Thumbnail, renderer 결과처럼 시각적 변경사항이 있을 때만 유지한다.
+- 시각 변경이 있으면 Before/After 표를 사용한다.
+- 실제 이미지나 산출물 없이 형식만 채우지 않는다.
 
 `관련 이슈`:
 
-- merge 시 해당 issue를 닫아도 되는 PR은 `Closes #번호`를 사용한다.
-- 아직 issue를 닫으면 안 되는 경우에는 `Related #번호` 또는 `Refs #번호`를 사용한다.
-- draft PR 단계에서 자동 종료가 부담스러우면 `Refs #번호`로 시작하고, ready 전환 전에 `Closes #번호`로 바꾼다.
+- 현재 PR의 대상 타스크가 아니라 PR 이해에 필요한 맥락 이슈를 적는다.
+- 선행, 후속, Epic, upstream, 참고 PR/issue를 의미 라벨과 함께 적는다.
+- 해당 없으면 `없음`으로 적는다.
+
+`후속 이슈 제안`:
+
+- 아직 이슈가 없지만 분리할 후보를 적는다.
+- 없으면 `없음`으로 적는다.
 
 `남은 리스크`:
 
-- 검증 한계, 후속 task 후보, 운영상 주의사항을 적는다.
+- 검증 한계와 운영상 주의사항을 적는다.
 - 없으면 `없음`으로 적는다.
 
 ### PR 본문과 최종 보고서의 관계
@@ -86,38 +103,41 @@ PR 본문은 `{PR_TEMPLATE_PATH}`를 기준으로 작성한다. 템플릿은 이
   - 전체 맥락, 단계별 결과, 검증 로그, 남은 리스크를 자세히 기록한다.
 - PR 본문:
   - 리뷰어가 merge 판단에 필요한 내용만 압축한다.
-  - 상세 내용은 `문서` 섹션에서 최종 보고서와 단계 보고서를 참조한다.
+  - 상세 내용은 `변경 내역`의 Stage 링크와 작업 문서 링크로 참조한다.
 
 ### 작성 예시
 
 ```md
 ## 요약
 
-- {변경 요약 1}
-- {변경 요약 2}
-- {변경 요약 3}
+- 대상 타스크: #22
+- 왜: {변경 이유}
+- 무엇: {핵심 변경}
+- 리뷰 포인트: {리뷰어가 먼저 볼 지점}
 
 ## 변경 내역
 
-- **Stage 1** (`abc1234`): {Stage 1 요약}
-- **Stage 2** (`def5678`): {Stage 2 요약}
-- **Stage 3** (`789abcd`): {Stage 3 요약}
+- **[Stage 1](https://github.com/{REPO_SLUG}/blob/{sha}/mydocs/working/task_m050_22_stage1.md)** ([abc1234](https://github.com/{REPO_SLUG}/commit/{stage1_sha})): {Stage 1 요약}
+- **[Stage 2](https://github.com/{REPO_SLUG}/blob/{sha}/mydocs/working/task_m050_22_stage2.md)** ([def5678](https://github.com/{REPO_SLUG}/commit/{stage2_sha})): {Stage 2 요약}
 
-## 검증
-
-- [x] `{프로젝트별 검증 명령 1}`
-- [x] `{프로젝트별 검증 명령 2}`
-- [x] `git diff --check`
-
-## 문서
+| 영역 | 변경 | 리뷰 포인트 |
+|------|------|-------------|
+| {영역 1} | {변경 요약} | {리뷰 포인트} |
 
 - 수행 계획서: [task_m050_22.md](https://github.com/{REPO_SLUG}/blob/{sha}/mydocs/plans/task_m050_22.md)
 - 구현 계획서: [task_m050_22_impl.md](https://github.com/{REPO_SLUG}/blob/{sha}/mydocs/plans/task_m050_22_impl.md)
 - 최종 보고서: [task_m050_22_report.md](https://github.com/{REPO_SLUG}/blob/{sha}/mydocs/report/task_m050_22_report.md)
 
+## 검증
+
+- `{프로젝트별 검증 명령 1}`
+- `{프로젝트별 검증 명령 2}`
+- `git diff --check`
+
 ## 관련 이슈
 
-Closes #22
+- 선행: #17
+- 참고: edwardkim/rhwp#385
 
 ## 남은 리스크
 
@@ -134,28 +154,26 @@ git push origin local/task24:publish/task24
 gh pr create \
   --base {BASE_BRANCH} \
   --head publish/task24 \
-  --draft \
   --title "Task #24: PR 템플릿과 PR 생성 규격 표준화" \
   --template {PR_TEMPLATE_PATH}
 ```
 
-`--template`은 템플릿을 시작 본문으로 사용한다. PR 생성 중 editor에서 내용을 채우거나, 생성 후 GitHub에서 본문을 정리한다.
+`--template`은 PR 본문 작성의 출발점으로만 사용한다.
 
-최종 보고서와 단계 보고서를 바탕으로 PR 본문을 미리 완성한 경우에는 `--body-file`을 사용한다.
+최종 보고서와 단계 보고서를 바탕으로 PR 본문을 완성한 경우에는 `--body-file`을 우선 사용한다.
 
 ```bash
 gh pr create \
   --base {BASE_BRANCH} \
   --head publish/task24 \
-  --draft \
   --title "Task #24: PR 템플릿과 PR 생성 규격 표준화" \
   --body-file /tmp/task24-pr-body.md
 ```
 
 운영 기준은 다음과 같다.
 
-- 초안 PR을 빠르게 만들 때: `--template {PR_TEMPLATE_PATH}`
-- 최종 보고서 기반으로 본문을 확정했을 때: `--body-file <작성한 PR 본문 파일>`
+- 템플릿에서 본문을 시작할 때: `--template {PR_TEMPLATE_PATH}`
+- 최종 보고서 기반으로 본문을 확정했을 때: `--body-file <작성한 PR 본문 파일>` 우선
 - `--fill`은 커밋 메시지만으로 본문을 만들기 때문에 이 저장소의 기본 방식으로 쓰지 않는다.
 - `--body`에 긴 본문을 직접 넣는 방식은 재사용과 검토가 어렵기 때문에 피한다.
 

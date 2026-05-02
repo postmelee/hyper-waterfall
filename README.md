@@ -77,7 +77,7 @@ AI는 다음 순서로 진행합니다.
 | 2. 수행계획 승인 | 수행계획서 검토, 승인 | 구현계획서로 단계 분할 | (수동) |
 | 3. 단계 구현 | 도메인 피드백 제공 | 단계별 구현, 검증 | (수동, 단계마다 검증) |
 | 4. 단계 종료 | 단계 보고서 검토, 다음 단계 승인 | 단계 보고서 작성, 단계 묶음 커밋, 이슈 체크포인트 댓글 | `task-stage-report` + `issue-checkpoint` + `todo` |
-| 5. 최종 보고 | 최종 보고서 검토, PR 생성 승인 | 최종 보고서 작성, draft PR 생성 | `task-final-report` + `issue-checkpoint` + `todo` |
+| 5. 최종 보고 | 최종 보고서 검토, PR 생성 승인 | 최종 보고서 작성, Open PR 생성 | `task-final-report` + `issue-checkpoint` + `todo` |
 | 6. 리뷰 & merge | 리뷰, merge 결정 | PR 본문 보강, 검증 결과 반영 | (수동) |
 | 7. merge 후 정리 | 정리 승인 | 이슈 close, 브랜치 정리, 오늘할일 마감 | `pr-merge-cleanup` + `issue-checkpoint` + `todo` |
 | 별도. 외부 PR 검토 | 외부 PR 검토 요청 | 검토 문서 작성, 검증, 리뷰 응답 | `external-pr-review` |
@@ -150,7 +150,7 @@ hyper-waterfall/
 | `issue-checkpoint` | 작업 진행 상태를 이슈 댓글로 추적할 때 | 추적 댓글(현재 상태) + 이벤트별 체크포인트 댓글 |
 | `task-start` | 승인된 이슈 작업을 시작할 때 | `local/task{N}` 브랜치, 오늘할일 행, 수행계획서 템플릿 |
 | `task-stage-report` | 한 Stage 구현이 끝나고 다음 단계로 넘어가기 직전 | 단계 보고서, 단계 묶음 커밋, 단계 검증 결과 |
-| `task-final-report` | 모든 Stage가 끝나고 PR을 게시하기 직전 | 최종 보고서, 오늘할일 완료 처리, draft PR |
+| `task-final-report` | 모든 Stage가 끝나고 PR을 게시하기 직전 | 최종 보고서, 오늘할일 완료 처리, Open PR |
 | `pr-merge-cleanup` | PR이 실제로 merge된 직후 | 이슈 close, `publish/task{N}` 원격 삭제, 로컬 브랜치/worktree 정리 |
 | `external-pr-review` | 외부 기여자 PR을 검토할 때 | `mydocs/pr/` 검토 문서, 검증 결과, 권고(merge/수정/닫기) |
 | `todo` | 오늘할일 보드를 새로 만들거나 갱신할 때 | `mydocs/orders/yyyymmdd.md` 표 형식 갱신 |
