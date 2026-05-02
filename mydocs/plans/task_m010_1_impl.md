@@ -11,6 +11,7 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
 | 2 | mydocs 구조 + 심볼릭 링크 | `mydocs/` 8개 폴더, 4개 심볼릭 링크 | `ls -la`, `diff -q` |
 | 3 | README "저장소 구조" 재작성 | `README.md` 패치 | 두 갈래 섹션 존재 grep |
 | 4 *(2026-05-02 추가)* | PR 규칙 강화 (PR #115 동기화) | templates 5개 파일 + 자기 적용본 3개 파일 갱신 | draft/Closes 표현 잔존 grep, 새 섹션 grep |
+| 5 *(2026-05-02 재추가)* | PR 변경 내역 구조 개선 | PR 템플릿 2개(templates/자기 적용본) + `pr_process_guide.md` | `### 영향 영역` `### 작업 문서` 하위 섹션 grep |
 
 ## Stage 1 — 루트 운영 파일 추가
 
@@ -175,11 +176,47 @@ git diff --check
 Task #1 Stage 4: PR 규칙 강화 (PR #115 동기화)
 ```
 
+## Stage 5 — PR `변경 내역` 섹션 구조 개선
+
+*2026-05-02 scope 재확장으로 추가. 본 저장소 자체 디자인 결정 (upstream 참조 없음).*
+
+### 배경
+
+Stage 4 동기화로 PR #2 본문에서 `변경 내역` 섹션이 Stage timeline + 영역 표 + 작업 문서 링크가 한 섹션에 섞여 산만함이 드러났다. 대형 저장소(kubernetes, rust, llvm) 패턴을 검토한 결과, 변경 내역은 한 줄 timeline만, 영역 정보·작업 문서는 하위 목차나 별도 섹션으로 분리하는 편이 가독성·리뷰 효율에 유리하다.
+
+### 산출물
+
+- `templates/.github/pull_request_template.md`: `## 변경 내역` 본문을 Stage timeline만으로 줄이고, `### 영향 영역`(옵션, 표)과 `### 작업 문서`를 하위 목차로 분리
+- 자기 적용본 `.github/pull_request_template.md`: 동일 구조
+- `templates/mydocs/manual/pr_process_guide.md`: "섹션별 작성 기준"의 `변경 내역` 항목을 새 구조에 맞춰 분할 (변경 내역 / 영향 영역 / 작업 문서). 작성 예시도 새 구조로 갱신
+
+### 검증
+
+```bash
+# templates·자기 적용본에 새 하위 섹션이 모두 있어야 함
+grep -nE '^### (영향 영역|작업 문서)' templates/.github/pull_request_template.md .github/pull_request_template.md
+
+# pr_process_guide의 작성 예시가 새 구조 반영
+grep -nE '^### (영향 영역|작업 문서)' templates/mydocs/manual/pr_process_guide.md
+
+# git diff --check
+git diff --check
+```
+
+각 grep은 templates/자기 적용본 PR 템플릿에서 2건씩, 가이드에서 2건 이상 나와야 한다.
+
+### 커밋
+
+```
+Task #1 Stage 5: PR 변경 내역 섹션 구조 개선 (영향 영역·작업 문서 하위 분리)
+```
+
 ## 단계 의존성
 
 - Stage 1 → Stage 2: 직접 의존 없음. 단, 운영 파일 → 데이터 폴더 순서가 자연스러움
 - Stage 2 → Stage 3: README가 mydocs 구조를 설명하므로 Stage 2 결과가 확정된 뒤 작성
 - Stage 3 → Stage 4: Stage 4의 자기 적용본 갱신은 Stage 1·3의 산출물(`AGENTS.md`, `README.md`)을 수정하므로 그 뒤에 진행
+- Stage 4 → Stage 5: Stage 5는 Stage 4에서 도입한 PR 템플릿 본문을 다시 손보므로 Stage 4 이후에 진행
 
 ## 위험과 대응
 

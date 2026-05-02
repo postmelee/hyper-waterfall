@@ -27,6 +27,11 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
   - `task-final-report` SKILL: draft → **Open PR 기본**, `--body-file` 우선
   - `pr_process_guide.md`, `git_workflow_guide.md`, `task_workflow_guide.md`: 새 섹션·용어·기본 PR 상태 반영
   - 자기 적용본(`AGENTS.md`, `README.md`, 루트 `.github/pull_request_template.md`) 갱신
+- **(scope 재확장 2026-05-02)** PR `변경 내역` 섹션 가독성 개선 (본 저장소 자체 디자인 결정):
+  - `변경 내역`을 Stage timeline만 두고 표·작업 문서를 `### 영향 영역` / `### 작업 문서` 하위 목차로 분리
+  - `영향 영역`은 옵션 (영역 1~2개일 땐 통째 삭제, 최대 5행)
+  - `pr_process_guide.md`의 섹션별 작성 기준·작성 예시 보정
+  - templates와 자기 적용본 PR 템플릿 동일 갱신, PR #2 본문도 같은 구조로 재배치
 
 ### 제외
 
@@ -59,7 +64,7 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
 - `mydocs/orders/20260501.md`
 - `mydocs/plans/task_m010_1.md`, `mydocs/plans/task_m010_1_impl.md`
 - `mydocs/plans/archives/.gitkeep`, `mydocs/working/.gitkeep`, `mydocs/report/.gitkeep`, `mydocs/feedback/.gitkeep`, `mydocs/tech/.gitkeep`, `mydocs/troubleshootings/.gitkeep`, `mydocs/pr/.gitkeep`, `mydocs/pr/archives/.gitkeep`
-- `mydocs/working/task_m010_1_stage{1,2,3,4}.md`
+- `mydocs/working/task_m010_1_stage{1,2,3,4,5}.md`
 - `mydocs/report/task_m010_1_report.md`
 
 수정
@@ -67,7 +72,7 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
 
 ## 잠정 단계
 
-4단계로 분할한다 (Stage 4는 2026-05-02 scope 확장에서 추가). 단계 산출물 마무리(오늘할일 완료 처리, 최종 보고서)는 `task-final-report` 절차에서 처리한다.
+5단계로 분할한다 (Stage 4·5는 2026-05-02 scope 확장에서 추가). 단계 산출물 마무리(오늘할일 완료 처리, 최종 보고서)는 `task-final-report` 절차에서 처리한다.
 
 - **Stage 1** — 루트 운영 파일 추가
   - `AGENTS.md`, `CLAUDE.md`, `.github/pull_request_template.md` 생성·placeholder 치환
@@ -78,6 +83,9 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
 - **Stage 4** *(2026-05-02 추가)* — PR 규칙 강화 적용 (PR #115 동기화)
   - `templates/`의 PR 템플릿·`task-final-report` SKILL·`pr_process_guide.md`·`git_workflow_guide.md`·`task_workflow_guide.md` 갱신
   - 자기 적용본(루트 `.github/pull_request_template.md`, `AGENTS.md`, `README.md`)에서 draft 표현 보정 + 새 템플릿 본문 반영
+- **Stage 5** *(2026-05-02 재추가)* — PR `변경 내역` 섹션 구조 개선
+  - `변경 내역` = Stage timeline만, `### 영향 영역`(옵션)·`### 작업 문서`를 하위 목차로 분리
+  - templates와 자기 적용본 PR 템플릿 동일 갱신, `pr_process_guide.md` 섹션 기준·예시 보정
 
 ## 검증 계획
 
