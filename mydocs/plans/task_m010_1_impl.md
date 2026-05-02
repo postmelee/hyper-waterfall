@@ -10,6 +10,7 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
 | 1 | 루트 운영 파일 | `AGENTS.md`, `CLAUDE.md`, `.github/pull_request_template.md` | placeholder 잔존 grep, `git diff --check` |
 | 2 | mydocs 구조 + 심볼릭 링크 | `mydocs/` 8개 폴더, 4개 심볼릭 링크 | `ls -la`, `diff -q` |
 | 3 | README "저장소 구조" 재작성 | `README.md` 패치 | 두 갈래 섹션 존재 grep |
+| 4 *(2026-05-02 추가)* | PR 규칙 강화 (PR #115 동기화) | templates 5개 파일 + 자기 적용본 3개 파일 갱신 | draft/Closes 표현 잔존 grep, 새 섹션 grep |
 
 ## Stage 1 — 루트 운영 파일 추가
 
@@ -126,10 +127,59 @@ git diff --check
 Task #1 Stage 3: README 저장소 구조 두 갈래 재작성
 ```
 
+## Stage 4 — PR 규칙 강화 (PR #115 동기화)
+
+*2026-05-02 scope 확장으로 추가.*
+
+### 산출물
+
+**templates 갱신**:
+
+- `templates/.github/pull_request_template.md`: PR #115 본문을 베이스로, alhangeul-macos URL을 `{REPO_SLUG}` placeholder로 일반화. 새 섹션 구조 적용.
+- `templates/mydocs/skills/task-final-report/SKILL.md`: draft → Open PR 기본, `--body-file` 우선, Stage report+commit 이중 링크 가이드. `gh pr create` 명령에서 `--draft` 제거. PR 본문 작성 가이드 5개 항목 추가. 검증 항목 4개 갱신.
+- `templates/mydocs/manual/pr_process_guide.md`: 새 섹션 구조 (요약/변경 내역/핵심 리뷰 포인트/검증/스크린샷/관련 이슈/후속 이슈 제안/남은 리스크), "대상 타스크 vs 관련 이슈" 의미 분리, 작성 예시 갱신.
+- `templates/mydocs/manual/git_workflow_guide.md`: draft PR → Open PR (정의·설명·메인테이너 워크플로우 명령). Stage 이중 링크 예시 추가.
+- `templates/mydocs/manual/task_workflow_guide.md`: 11번 항목 draft → Open PR (1줄).
+
+**자기 적용본 갱신**:
+
+- 루트 `.github/pull_request_template.md`: templates 갱신본 기준으로 `{REPO_SLUG}` → `postmelee/hyper-waterfall` 치환한 사본 재생성.
+- 루트 `AGENTS.md`: draft 표현 잔존 검사. 본문에는 직접 등장하지 않으므로 변경 없을 가능성이 높지만 grep으로 확인.
+- 루트 `README.md`: "도입 후 작업 흐름" 표 6번 단계의 "draft PR" → "Open PR" 보정.
+
+**제외 (alhangeul-macos 특유)**: copilot-instructions.md, AppKit/render 검증 명령
+
+### 검증
+
+```bash
+# templates: draft 표현이 없어야 (예시 텍스트로 남겨도 되는 위치는 git diff에서 의도 확인)
+grep -nE 'draft PR|--draft' templates/mydocs/skills/task-final-report/SKILL.md templates/mydocs/manual/git_workflow_guide.md templates/mydocs/manual/task_workflow_guide.md templates/mydocs/manual/pr_process_guide.md
+
+# templates PR 템플릿: 새 섹션 grep
+grep -nE '^## (요약|변경 내역|핵심 리뷰 포인트|검증|스크린샷|관련 이슈|후속 이슈 제안|남은 리스크)' templates/.github/pull_request_template.md
+
+# 자기 적용본 PR 템플릿: placeholder 치환 + 새 섹션
+grep -nE '\{REPO_SLUG\}' .github/pull_request_template.md && echo "FAIL: {REPO_SLUG} 잔존" || echo "OK"
+grep -nE '^## (요약|변경 내역|핵심 리뷰 포인트|검증|스크린샷|관련 이슈|후속 이슈 제안|남은 리스크)' .github/pull_request_template.md
+
+# 자기 적용본 README: draft 표현 잔존 없음
+grep -nE 'draft PR' README.md && echo "FAIL: draft 잔존" || echo "OK"
+
+# git diff --check
+git diff --check
+```
+
+### 커밋
+
+```
+Task #1 Stage 4: PR 규칙 강화 (PR #115 동기화)
+```
+
 ## 단계 의존성
 
 - Stage 1 → Stage 2: 직접 의존 없음. 단, 운영 파일 → 데이터 폴더 순서가 자연스러움
 - Stage 2 → Stage 3: README가 mydocs 구조를 설명하므로 Stage 2 결과가 확정된 뒤 작성
+- Stage 3 → Stage 4: Stage 4의 자기 적용본 갱신은 Stage 1·3의 산출물(`AGENTS.md`, `README.md`)을 수정하므로 그 뒤에 진행
 
 ## 위험과 대응
 

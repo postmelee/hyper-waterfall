@@ -22,12 +22,17 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
   - 심볼릭 링크: `mydocs/manual` → `../templates/mydocs/manual`, `mydocs/skills` → `../templates/mydocs/skills`
 - 루트 `.agents/skills`, `.claude/skills` → `../mydocs/skills` 심볼릭 링크
 - README의 "저장소 구조" 섹션 재작성 (적용 후 대상 저장소 구조 + 본 저장소 자기 적용 후 구조 분리)
+- **(scope 확장 2026-05-02)** [`postmelee/alhangeul-macos#115`](https://github.com/postmelee/alhangeul-macos/pull/115)의 PR 규칙 강화 적용:
+  - PR 템플릿 재구조화: 요약(4 bullet) / 변경 내역(Stage당 1줄 + Stage·commit 이중 링크 + 영역 표 ≤5행 + 작업 문서) / 핵심 리뷰 포인트(선택) / 검증 / 스크린샷(Before/After 조건부) / 관련 이슈(선행·후속·Epic·upstream·참고) / 후속 이슈 제안 / 남은 리스크. `Closes #` 폐지 → `대상 타스크`로 흡수
+  - `task-final-report` SKILL: draft → **Open PR 기본**, `--body-file` 우선
+  - `pr_process_guide.md`, `git_workflow_guide.md`, `task_workflow_guide.md`: 새 섹션·용어·기본 PR 상태 반영
+  - 자기 적용본(`AGENTS.md`, `README.md`, 루트 `.github/pull_request_template.md`) 갱신
 
 ### 제외
 
-- 새 SKILL 추가, 기존 SKILL 본문 변경
-- 매뉴얼 본문 변경 (placeholder 치환만)
+- 새 SKILL 추가, 기존 SKILL 본문 변경 (PR #115의 기존 SKILL 본문 변경은 포함하되, 신규 SKILL은 추가하지 않음)
 - 외부 PR 처리, 다른 task 등록
+- alhangeul-macos 특유 항목(copilot-instructions, AppKit/render 검증 명령)
 
 ## 설계 방향
 
@@ -54,7 +59,7 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
 - `mydocs/orders/20260501.md`
 - `mydocs/plans/task_m010_1.md`, `mydocs/plans/task_m010_1_impl.md`
 - `mydocs/plans/archives/.gitkeep`, `mydocs/working/.gitkeep`, `mydocs/report/.gitkeep`, `mydocs/feedback/.gitkeep`, `mydocs/tech/.gitkeep`, `mydocs/troubleshootings/.gitkeep`, `mydocs/pr/.gitkeep`, `mydocs/pr/archives/.gitkeep`
-- `mydocs/working/task_m010_1_stage{1,2,3}.md`
+- `mydocs/working/task_m010_1_stage{1,2,3,4}.md`
 - `mydocs/report/task_m010_1_report.md`
 
 수정
@@ -62,7 +67,7 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
 
 ## 잠정 단계
 
-3단계로 분할한다. 단계 산출물 마무리(오늘할일 완료 처리, 최종 보고서)는 `task-final-report` 절차에서 처리한다.
+4단계로 분할한다 (Stage 4는 2026-05-02 scope 확장에서 추가). 단계 산출물 마무리(오늘할일 완료 처리, 최종 보고서)는 `task-final-report` 절차에서 처리한다.
 
 - **Stage 1** — 루트 운영 파일 추가
   - `AGENTS.md`, `CLAUDE.md`, `.github/pull_request_template.md` 생성·placeholder 치환
@@ -70,6 +75,9 @@ GitHub Issue: [#1](https://github.com/postmelee/hyper-waterfall/issues/1)
   - 자체 폴더(.gitkeep), `mydocs/manual` `mydocs/skills` 심볼릭 링크, 루트 `.agents/skills` `.claude/skills` 심볼릭 링크
 - **Stage 3** — README "저장소 구조" 섹션 재작성
   - 적용 후 대상 저장소 구조 + 본 저장소 자기 적용 후 구조 두 갈래 표시
+- **Stage 4** *(2026-05-02 추가)* — PR 규칙 강화 적용 (PR #115 동기화)
+  - `templates/`의 PR 템플릿·`task-final-report` SKILL·`pr_process_guide.md`·`git_workflow_guide.md`·`task_workflow_guide.md` 갱신
+  - 자기 적용본(루트 `.github/pull_request_template.md`, `AGENTS.md`, `README.md`)에서 draft 표현 보정 + 새 템플릿 본문 반영
 
 ## 검증 계획
 
