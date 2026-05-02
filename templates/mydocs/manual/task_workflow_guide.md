@@ -73,7 +73,6 @@
 권장 형식:
 
 - `task-register 스킬을 호출합니다.`
-- `issue-checkpoint 스킬을 호출합니다.`
 - `task-start 스킬을 호출합니다.`
 - `task-stage-report 스킬을 호출합니다.`
 - `task-final-report 스킬로 진행합니다.`
