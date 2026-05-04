@@ -1,18 +1,17 @@
 ---
 name: task-final-report
 description: |
-  하이퍼-워터폴 타스크의 최종 보고와 PR 게시 절차를 적용한다. 명시 호출 시에만 사용한다.
+  하이퍼-워터폴 타스크의 최종 보고와 PR 게시 절차를 적용한다.
   최종 결과 보고서(`_report.md`) 작성, 오늘할일 완료 처리, 최종 커밋,
   publish/task{N} 원격 push, {BASE_BRANCH} 대상 Open PR 생성을 수행한다.
   모든 단계 완료 후 PR 직전에만 호출.
-allow_implicit_invocation: false
 ---
 
 # 하이퍼-워터폴 최종 보고와 PR 게시
 
 ## 트리거
 
-- 명시 호출만: 작업지시자가 "최종 보고서 작성", "PR 준비"를 명시 지시한 경우
+- 작업지시자가 "최종 보고서 작성", "PR 준비"를 명시 지시한 경우
 - 본 SKILL을 직접 호출한 경우
 
 ## 사전 조건

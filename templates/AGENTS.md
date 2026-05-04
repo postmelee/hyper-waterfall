@@ -51,7 +51,7 @@
 
 ## Agent Skills
 
-하이퍼-워터폴 절차의 정형 시점은 SKILL로 분리해 명시 호출 시에만 트리거한다. 진실 원천은 `mydocs/skills/`이며, Codex(`.agents/skills`)와 Claude Code(`.claude/skills`)는 심볼릭 링크로 동일 본문을 인식한다. 모든 SKILL은 `allow_implicit_invocation: false`로 명시 호출만 허용한다. 상세: [`document_structure_guide.md`](mydocs/manual/document_structure_guide.md) 의 "Agent Skills 위치 정책".
+하이퍼-워터폴 절차의 정형 시점은 SKILL로 분리한다. 진실 원천은 `mydocs/skills/`이며, Codex(`.agents/skills`)와 Claude Code(`.claude/skills`)는 심볼릭 링크로 동일 본문을 인식한다. 상세: [`document_structure_guide.md`](mydocs/manual/document_structure_guide.md) 의 "Agent Skills 위치 정책".
 
 ## 작업 규칙
 

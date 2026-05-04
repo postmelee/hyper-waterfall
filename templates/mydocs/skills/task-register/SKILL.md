@@ -2,17 +2,16 @@
 name: task-register
 description: |
   하이퍼-워터폴 작업에서 아직 GitHub Issue가 없는 신규 타스크를 등록한다.
-  명시 호출 시에만 사용한다. 열린 milestone과 기존 label을 조회해 후보를 고르고,
+  열린 milestone과 기존 label을 조회해 후보를 고르고,
   이슈 생성 전 작업지시자 확인을 받은 뒤 GitHub Issue 번호를 만든다.
   이슈 생성 후 브랜치/오늘할일/수행계획서는 task-start 절차로 넘긴다.
-allow_implicit_invocation: false
 ---
 
 # 하이퍼-워터폴 이슈 등록
 
 ## 트리거
 
-- 명시 호출만: 작업지시자가 "이 작업 이슈 등록", "새 타스크 생성", "이슈부터 만들어줘"처럼 GitHub Issue 생성을 명시한 경우
+- 작업지시자가 "이 작업 이슈 등록", "새 타스크 생성", "이슈부터 만들어줘"처럼 GitHub Issue 생성을 명시한 경우
 - 작업지시자가 본 SKILL을 직접 호출한 경우
 
 ## 사전 조건

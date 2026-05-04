@@ -1,18 +1,17 @@
 ---
 name: pr-merge-cleanup
 description: |
-  PR merge 확인 후 부산물을 정리하는 절차를 적용한다. 명시 호출 시에만 사용한다.
+  PR merge 확인 후 부산물을 정리하는 절차를 적용한다.
   GitHub 이슈 close, publish/task{N} 원격 브랜치 삭제,
   로컬 local/task{N} 브랜치와 분리 worktree 정리, {BASE_BRANCH} 복귀를 수행한다.
   PR이 실제로 merge된 직후에만 호출.
-allow_implicit_invocation: false
 ---
 
 # PR merge 후 부산물 정리
 
 ## 트리거
 
-- 명시 호출만: 작업지시자가 "merge 후 정리", "타스크 정리"를 명시 지시한 경우
+- 작업지시자가 "merge 후 정리", "타스크 정리"를 명시 지시한 경우
 - 본 SKILL을 직접 호출한 경우
 
 ## 사전 조건

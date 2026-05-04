@@ -2,10 +2,9 @@
 name: todo
 description: |
   하이퍼-워터폴의 오늘할일 보드(`mydocs/orders/yyyymmdd.md`)를 작성·갱신한다.
-  명시 호출 시에만 사용한다. 마일스톤별 표 형식, 상태 갱신, 백로그 섹션
-  작성 규칙을 적용한다. task-start, task-stage-report, task-final-report,
-  pr-merge-cleanup 절차에서 오늘할일을 갱신할 때도 본 SKILL의 형식을 따른다.
-allow_implicit_invocation: false
+  마일스톤별 표 형식, 상태 갱신, 백로그 섹션 작성 규칙을 적용한다.
+  task-start, task-stage-report, task-final-report, pr-merge-cleanup
+  절차에서 오늘할일을 갱신할 때도 본 SKILL의 형식을 따른다.
 ---
 
 # 오늘할일 보드 작성
@@ -16,7 +15,7 @@ allow_implicit_invocation: false
 
 ## 트리거
 
-- 명시 호출만: 작업지시자가 "오늘할일 작성", "orders 갱신", "오늘할일 마감"처럼 명시 지시한 경우
+- 작업지시자가 "오늘할일 작성", "orders 갱신", "오늘할일 마감"처럼 명시 지시한 경우
 - `task-start`, `task-stage-report`, `task-final-report`, `pr-merge-cleanup` 절차에서 오늘할일을 갱신할 때 본 SKILL의 형식을 적용
 - 본 SKILL을 직접 호출한 경우
 

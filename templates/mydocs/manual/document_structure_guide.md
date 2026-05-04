@@ -64,7 +64,6 @@
 - Claude Code 인식 경로: `.claude/skills/` (저장소 루트 심볼릭 링크 → `mydocs/skills`)
 - 두 심볼릭 링크는 git에 mode `120000`으로 커밋된다.
 - skill 본문은 도구 비종속(`gh`, `git`, 파일 생성)으로 작성하고, 도구별 호출 차이는 SKILL.md 말미 "호출 방법" 섹션에만 둔다.
-- 모든 SKILL.md는 frontmatter에 `allow_implicit_invocation: false`를 명시해 양 도구에서 명시 호출만 허용한다.
 
 ## FAQ / 흔한 실수
 

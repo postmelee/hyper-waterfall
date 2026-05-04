@@ -1,17 +1,16 @@
 ---
 name: external-pr-review
 description: |
-  외부 기여자 PR 검토 절차를 적용한다. 명시 호출 시에만 사용한다.
+  외부 기여자 PR 검토 절차를 적용한다.
   PR 정보 수집, mydocs/pr/pr_{N}_review.md 작성, 검증, pr_{N}_report.md 작성,
   처리 완료 시 archives/ 이동을 수행한다. 외부 기여자 PR 전용 (내부 타스크에는 사용 금지).
-allow_implicit_invocation: false
 ---
 
 # 외부 기여자 PR 검토
 
 ## 트리거
 
-- 명시 호출만: 작업지시자가 "PR #N 리뷰" 또는 "외부 PR 검토"를 명시 지시한 경우
+- 작업지시자가 "PR #N 리뷰" 또는 "외부 PR 검토"를 명시 지시한 경우
 - 본 SKILL을 직접 호출한 경우
 
 ## 사전 조건
