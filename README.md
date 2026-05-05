@@ -12,11 +12,16 @@ Hyper-Waterfall은 AI 페어 프로그래머와 함께 소프트웨어를 만들
 
 ## 목차
 
+**Part 1. 최초의 Hyper-Waterfall** ([rhwp](https://github.com/edwardkim/rhwp))
+
 1. [핵심 구조](#핵심-구조)
 2. [핵심 원칙](#핵심-원칙)
 3. [역할 분담](#역할-분담)
 4. [바이브 코딩 vs Hyper-Waterfall](#바이브-코딩-vs-hyper-waterfall)
 5. [왜 강력한가 — AI 없이는 닿을 수 없는 지점](#왜-강력한가--ai-없이는-닿을-수-없는-지점)
+
+**Part 2. 이 저장소의 Hyper-Waterfall** (`postmelee/hyper-waterfall`)
+
 6. [이 저장소가 한 일](#이-저장소가-한-일)
 7. [왜 이 저장소를 써야 하는가](#왜-이-저장소를-써야-하는가)
 8. [새 저장소에 빠르게 적용하기](#새-저장소에-빠르게-적용하기)
