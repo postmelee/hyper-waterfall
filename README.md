@@ -1,11 +1,12 @@
 # Hyper-Waterfall
 
-AI가 없던 시대에는 불가능했던 방법론. 워터폴의 규율과 애자일의 속도를 동시에.
 
 ### 거시적 워터폴 + 미시적 애자일, AI가 이 둘을 동시에 가능하게 한다.
+> AI가 없던 시대에는 불가능했던 방법론. 워터폴의 규율과 애자일의 속도를 동시에.
 
 Hyper-Waterfall은 AI 페어 프로그래머와 함께 소프트웨어를 만들 때 인간의 통제권, 추적 가능성, 엔지니어링 규율을 잃지 않도록 해주는 작업 프레임워크입니다.
 
+> 이 방법론은 [`edwardkim/rhwp`](https://github.com/edwardkim/rhwp)와 [`postmelee/alhangeul-macos`](https://github.com/postmelee/alhangeul-macos) 같은 실제 프로젝트 경험을 바탕으로 정제되었습니다. 
 > 본 방법론의 핵심 철학은 [edwardkim/rhwp · hyper_waterfall.md](https://github.com/edwardkim/rhwp/blob/main/mydocs/manual/hyper_waterfall.md)에 가장 완성된 형태로 정리되어 있습니다. 본 저장소는 그 방법론을 다른 저장소에 손쉽게 적용할 수 있게 모듈화한 프레임워크입니다.
 
 방법론을 먼저 이해하려면 아래 [핵심 구조](#핵심-구조)부터, 우리 저장소의 차별점만 보려면 [이 저장소가 한 일](#이-저장소가-한-일)로 점프하세요.
