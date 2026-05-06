@@ -29,7 +29,8 @@ description: |
    ```
    - 이슈 연결, base/head, mergeable, CI 상태 모두 확인
 2. 검토 문서 작성: `mydocs/pr/pr_{N}_review.md`
-   - 표준 섹션:
+   - 중앙 템플릿 `mydocs/_templates/external_pr_review.md`를 기준으로 작성한다.
+   - 템플릿을 읽을 수 없는 경우에만 다음 최소 섹션을 fallback으로 사용한다:
      - PR 정보 (번호, 작성자, base/head, 연결 이슈)
      - 변경 요약
      - 영향 범위와 호환성 (FFI, build, 문서)
@@ -39,11 +40,13 @@ description: |
      - 작업지시자 승인 요청
 3. 작업지시자 승인 요청 (검토 방향 결정)
 4. 필요 시 수정·검증 계획 문서 작성: `mydocs/pr/pr_{N}_review_impl.md`
+   - 중앙 템플릿 `mydocs/_templates/external_pr_review_impl.md`를 기준으로 작성한다.
    - 본 저장소에서 추가 검증을 직접 수행할 때 사용
    - 작성 후 작업지시자 승인 요청
 5. 검증 수행 (해당하는 경우만)
    - 검증은 변경 유형에 따라 `{PROJECT_VALIDATION_GUIDE}` 정책 적용
 6. 최종 보고서 작성: `mydocs/pr/pr_{N}_report.md`
+   - 중앙 템플릿 `mydocs/_templates/external_pr_report.md`를 기준으로 작성한다.
    - 검토 결과, 검증 결과, 최종 권고, GitHub PR 코멘트 본문(또는 링크)
 7. 작업지시자 승인 후 GitHub PR에 코멘트/리뷰 등록 (merge 결정은 작업지시자가 수행)
 8. 처리 완료 시 문서 보관 이동
@@ -59,9 +62,11 @@ description: |
 
 ## 검증
 
-- `mydocs/pr/pr_{N}_review.md` 9개 표준 섹션 충족
+- `mydocs/pr/pr_{N}_review.md`가 `mydocs/_templates/external_pr_review.md`의 필수 섹션을 채움
+- `mydocs/pr/pr_{N}_review_impl.md`를 작성했다면 `mydocs/_templates/external_pr_review_impl.md`의 필수 섹션을 채움
+- `mydocs/pr/pr_{N}_report.md`가 `mydocs/_templates/external_pr_report.md`의 필수 섹션을 채움
 - 권고 결정이 명시됨 (merge / 수정 / 닫기 중 하나)
-- 처리 완료 후 3개 문서가 `mydocs/pr/archives/`에 존재
+- 처리 완료 후 작성된 PR 검토 문서가 `mydocs/pr/archives/`에 존재
 
 ## 절대 하지 말 것
 

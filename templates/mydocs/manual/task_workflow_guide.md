@@ -10,6 +10,10 @@
 - **최종 결과보고서**: 모든 단계가 끝난 뒤 `mydocs/report/`에 남기는 `_report.md` 보고서.
 - **승인 간주 조건**: 작업지시자가 같은 스레드에서 다음 단계 진행을 명시한 경우에만 해당 단계 승인을 인정하는 기준.
 
+## 문서 출력 형식
+
+계획서, 단계 보고서, 최종 보고서, 오늘할일, 외부 PR 검토 문서는 `mydocs/_templates/`의 중앙 템플릿을 기준으로 작성한다. Skill은 절차와 검증을 정의하고, 중앙 템플릿은 출력 형식을 정의한다. 둘이 어긋나면 같은 PR에서 함께 수정한다.
+
 ## 타스크 번호 관리
 
 - **GitHub Issues**를 타스크 번호로 사용한다. 자동 채번으로 중복 방지.
@@ -84,6 +88,6 @@
 
 ## 관련 매뉴얼
 
-- [`document_structure_guide.md`](document_structure_guide.md): 수행계획서, 단계 보고서, 최종 보고서 위치와 파일명.
+- [`document_structure_guide.md`](document_structure_guide.md): 수행계획서, 단계 보고서, 최종 보고서 위치, 파일명, 중앙 템플릿 정책.
 - [`git_workflow_guide.md`](git_workflow_guide.md): `local/taskN`, `publish/taskN`, `{BASE_BRANCH}` 브랜치 운용과 PR 게시.
 - [`agent_code_hyperfall_rule_conflict.md`](agent_code_hyperfall_rule_conflict.md): 하이퍼-워터폴 규칙과 에이전트 기본 동작이 충돌하는 지점.

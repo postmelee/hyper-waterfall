@@ -24,7 +24,8 @@ description: |
 1. 단계별 검증 명령 실행 (구현 계획서의 해당 단계 "검증" 섹션 그대로)
    - 결과를 보고서에 인용할 수 있도록 출력 보존
 2. 단계 보고서 작성: `mydocs/working/task_m{milestone}_{N}_stage{S}.md`
-   - 표준 섹션:
+   - 중앙 템플릿 `mydocs/_templates/stage_report.md`를 기준으로 작성한다.
+   - 템플릿을 읽을 수 없는 경우에만 다음 최소 섹션을 fallback으로 사용한다:
      - 단계 목적
      - 산출물 (파일 목록 + 라인 수 또는 요약)
      - 본문 변경 정도 / 본문 무손실 여부 (해당 시)
@@ -50,6 +51,7 @@ description: |
 
 - `git log --oneline -1`이 단계 커밋 메시지 표준 형식 충족
 - `mydocs/working/task_m{milestone}_{N}_stage{S}.md` 존재
+- 단계 보고서가 `mydocs/_templates/stage_report.md`의 필수 섹션을 채움
 - 단계별 검증 명령이 실패 없이 통과 (실패 시 단계 미완료로 처리하고 보고서 작성 보류)
 
 ## 절대 하지 말 것
