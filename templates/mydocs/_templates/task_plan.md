@@ -1,0 +1,88 @@
+# 수행계획서 템플릿
+
+이 파일은 `mydocs/plans/task_{milestone}_{issue}.md` 작성용 중앙 템플릿이다. 수행계획서는 구현 전에 작업 목적, 범위, 설계 방향, 검증 기준을 고정하고 작업지시자 승인을 받기 위한 문서다.
+
+GitHub Issue: [#{issue}](https://github.com/{REPO_SLUG}/issues/{issue})
+마일스톤: M{milestone}
+
+## 목적
+
+{이 task가 달성해야 하는 결과를 1~3문단으로 적는다.}
+
+## 배경
+
+{왜 이 작업이 필요한지, 기존 상태의 문제가 무엇인지, 어떤 공식 문서/기존 이슈/이전 산출물을 참고했는지 적는다.}
+
+## 범위
+
+### 포함
+
+- {이번 task에서 반드시 다룰 항목}
+
+### 제외
+
+- {이번 task에서 명시적으로 다루지 않을 항목}
+
+## 설계 방향
+
+- {구조, 정책, 파일 배치, 호환성 판단 등 구현 전에 합의해야 할 방향}
+- {기존 패턴을 따르는 부분과 새로 정하는 부분}
+
+## 예상 변경 파일
+
+신규:
+
+- `{path}`
+
+수정:
+
+- `{path}`
+
+이번 task 산출물:
+
+- `mydocs/orders/{yyyymmdd}.md`
+- `mydocs/plans/task_{milestone}_{issue}.md`
+- `mydocs/plans/task_{milestone}_{issue}_impl.md`
+- `mydocs/working/task_{milestone}_{issue}_stage{N}.md`
+- `mydocs/report/task_{milestone}_{issue}_report.md`
+
+## 잠정 단계
+
+{기본 3~6단계로 나눈다. 한 단계는 구현, 검증, 보고를 한 번에 끝낼 수 있는 크기로 둔다.}
+
+- **Stage 1 — {제목}**
+  - {산출물}
+  - {검증 관점}
+- **Stage 2 — {제목}**
+  - {산출물}
+  - {검증 관점}
+- **Stage 3 — {제목}**
+  - {산출물}
+  - {검증 관점}
+
+## 검증 계획
+
+### 단계별 검증
+
+- Stage 1
+  - `{검증 명령 또는 확인 방법}`
+- Stage 2
+  - `{검증 명령 또는 확인 방법}`
+- Stage 3
+  - `{검증 명령 또는 확인 방법}`
+
+### 통합 검증
+
+- `{최종 수용 기준}`
+- `git status --short`가 PR 준비 전 빈 출력이다.
+- `git diff --check`가 경고 없이 통과한다.
+
+## 리스크
+
+- **{리스크 이름}**: {영향과 대응}
+
+## 승인 요청 사항
+
+- {작업지시자가 승인해야 할 범위, 설계 방향, 제외 항목}
+
+승인되면 `task_{milestone}_{issue}_impl.md`에서 단계별 산출물, 검증 명령, 커밋 메시지를 구체화한다.
