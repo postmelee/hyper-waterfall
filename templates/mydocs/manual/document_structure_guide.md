@@ -1,6 +1,6 @@
 # 문서 구조와 명명 규칙 매뉴얼
 
-본 매뉴얼은 `mydocs/` 하위 폴더 역할, 문서 파일명 규칙, 중앙 문서 템플릿 정책, 외부 기여자 PR 검토 폴더 정책, Agent Skills 위치 정책을 정의한다. 새 문서를 만들거나 기존 문서의 위치를 옮기기 전에 읽는다. 코드 작성 방식, Git 브랜치 운용, 타스크 단계 진행 절차는 이 문서가 아니라 관련 매뉴얼에서 다룬다. 모든 문서는 한국어로 작성한다.
+본 매뉴얼은 `mydocs/` 하위 폴더 역할, 문서 파일명 규칙, 중앙 문서 템플릿 정책, GitHub 플랫폼 템플릿 경계, 외부 기여자 PR 검토 폴더 정책, Agent Skills 위치 정책을 정의한다. 새 문서를 만들거나 기존 문서의 위치를 옮기기 전에 읽는다. 코드 작성 방식, Git 브랜치 운용, 타스크 단계 진행 절차는 이 문서가 아니라 관련 매뉴얼에서 다룬다. 모든 문서는 한국어로 작성한다.
 
 `mydocs/`는 문서를 많이 쌓기 위한 폴더가 아니다. 새 세션의 AI가 "지금 무엇을 해야 하는가", "어떻게 하기로 했는가", "어디까지 했는가", "왜 그렇게 판단했는가", "어떤 함정이 있었는가"를 저장소만 읽고 복원하게 하는 작업 기억 체계다.
 
@@ -8,6 +8,7 @@
 
 - **문서 진실 원천**: 같은 정보를 여러 곳에 복제하지 않고, 최신 기준으로 삼는 단일 문서 또는 폴더.
 - **문서 템플릿 진실 원천**: 산출물별 출력 형식을 정의하는 `mydocs/_templates/` 폴더. 본 프레임워크 저장소에서는 `templates/mydocs/_templates/`가 실제 진실 원천이고, dogfooding용 `mydocs/_templates`는 그 위치를 가리킨다.
+- **GitHub 플랫폼 템플릿**: GitHub Issue나 Pull Request처럼 GitHub UI/CLI가 만드는 플랫폼 산출물의 입력 또는 본문 형식을 정의하는 `.github/ISSUE_TEMPLATE/`와 `.github/pull_request_template.md`.
 - **실제 산출물 문서**: 특정 날짜, 이슈, PR, 조사 주제에 대해 작성된 문서. 예: `orders/20260506.md`, `plans/task_m010_3.md`.
 - **내부 타스크**: GitHub Issue를 기준으로 수행계획서, 구현계획서, 단계 보고서, 최종 보고서를 남기는 저장소 내부 작업.
 - **외부 기여 PR**: 외부 기여자가 제출한 Pull Request를 검토하는 작업. 내부 타스크와 다른 폴더와 절차를 사용한다.
@@ -78,6 +79,28 @@
 - `orders/`, `plans/`, `working/`, `report/`, `feedback/`, `tech/`, `troubleshootings/`, `pr/`에는 실제 산출물만 둔다.
 - 템플릿 파일은 실제 산출물로 오해되지 않도록 첫 제목에 `템플릿`을 포함한다.
 - 템플릿이 바뀌면 관련 Skill의 템플릿 참조와 README의 문서 구조 설명을 함께 확인한다.
+
+## GitHub 플랫폼 템플릿 정책
+
+GitHub Issue와 Pull Request는 `mydocs/` 산출물이 아니라 GitHub 플랫폼 산출물이다. 따라서 해당 형식은 `mydocs/_templates/`에 두지 않고 `.github/` 경로에서 관리한다.
+
+- Issue Form 진실 원천: `templates/.github/ISSUE_TEMPLATE/task.yml`
+- 적용 저장소 위치: `.github/ISSUE_TEMPLATE/task.yml`
+- 본 저장소 dogfooding 위치: `.github/ISSUE_TEMPLATE/task.yml`
+- PR 본문 템플릿 진실 원천: `templates/.github/pull_request_template.md`
+- PR 본문 적용 저장소 위치: `.github/pull_request_template.md`
+
+역할 구분:
+
+- `.github/ISSUE_TEMPLATE/task.yml`: GitHub Issue를 다음 작업의 첫 입력 프롬프트로 만들기 위해 배경, 목표, 포함 범위, 제외 범위, 수용 기준, 검증 기준, 참고, 메타데이터를 구조화한다.
+- `.github/pull_request_template.md`: 최종 보고 후 PR 리뷰 화면에 들어갈 요약, 변경 내역, 검증, 남은 리스크의 출력 형식을 정의한다.
+- `mydocs/_templates/`: 수행계획서, 구현계획서, 단계 보고서, 최종 보고서, 피드백, 기술 조사, 트러블슈팅, 외부 PR 검토 문서처럼 저장소 안에 남는 문서 산출물의 출력 형식을 정의한다.
+
+강제 규칙:
+
+- GitHub Issue Form을 `mydocs/_templates/`에 넣지 않는다.
+- `task-register`는 이슈 본문을 만들 때 `.github/ISSUE_TEMPLATE/task.yml`을 우선 참조하고, 파일을 읽을 수 없을 때만 Skill 본문의 fallback 섹션을 사용한다.
+- `.github/ISSUE_TEMPLATE/task.yml`이 바뀌면 `task-register` Skill, README의 프롬프트 가이드 설명, 본 매뉴얼의 역할 구분을 함께 확인한다.
 
 ## 폴더별 상세 규칙
 
@@ -238,6 +261,8 @@
 ### 산출물 폴더에 템플릿을 두고 싶을 때
 
 두지 않는다. 산출물 폴더 내부에는 템플릿 파일을 두지 않는다. 예를 들어 `orders/`는 `yyyymmdd.md`만 허용하고, 오늘할일 템플릿은 `mydocs/_templates/orders.md`에 둔다. 이렇게 해야 실제 산출물과 출력 형식 정의가 섞이지 않는다.
+
+GitHub Issue Form이나 PR 본문 템플릿도 `mydocs/_templates/`에 넣지 않는다. 이들은 문서 산출물 템플릿이 아니라 GitHub 플랫폼 템플릿이므로 `.github/ISSUE_TEMPLATE/` 또는 `.github/pull_request_template.md`에서 관리한다.
 
 ### 템플릿과 Skill 설명이 다를 때
 

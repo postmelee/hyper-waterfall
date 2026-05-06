@@ -1,0 +1,113 @@
+name: Hyper-Waterfall Task
+description: Create a tracked task that can be used as the next AI work prompt.
+title: "Task: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        이 템플릿은 하이퍼-워터폴 작업 이슈를 만들기 위한 형식입니다.
+        이슈 본문은 다음 AI 작업의 첫 프롬프트로 사용되므로, 작업 의도와 제약을 명확히 적습니다.
+
+  - type: textarea
+    id: background
+    attributes:
+      label: 배경
+      description: 왜 이 작업이 필요한지, 기존 상태의 문제가 무엇인지, 어떤 맥락에서 시작됐는지 적습니다.
+      placeholder: |
+        예:
+        - 현재 구조의 한계
+        - 이전 PR/Issue/문서에서 이어지는 이유
+        - 사용자 요청 또는 외부 기준
+    validations:
+      required: true
+
+  - type: textarea
+    id: goals
+    attributes:
+      label: 목표
+      description: 이 작업이 완료됐을 때 달성돼야 하는 결과를 bullet로 적습니다.
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: included_scope
+    attributes:
+      label: 범위 - 포함
+      description: 이번 task에서 반드시 다룰 파일, 기능, 문서, 검증 범위를 적습니다.
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: excluded_scope
+    attributes:
+      label: 범위 - 제외
+      description: 이번 task에서 명시적으로 다루지 않을 항목을 적습니다.
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: 수용 기준
+      description: 작업 완료 여부를 판단할 수 있는 관찰 가능한 기준을 적습니다.
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: 검증 기준
+      description: 실행해야 할 테스트, grep, 수동 확인, 리뷰 기준을 적습니다.
+      placeholder: |
+        - `git diff --check`
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 참고
+      description: 관련 Issue, PR, 문서, 공식 가이드, 외부 자료를 적습니다.
+      placeholder: |
+        - #...
+        - https://...
+    validations:
+      required: false
+
+  - type: textarea
+    id: metadata
+    attributes:
+      label: 마일스톤과 label 후보
+      description: milestone, label 후보와 선택 이유를 적습니다. 실제 선택은 task-register의 live 조회 결과를 기준으로 확정합니다.
+      placeholder: |
+        - milestone 후보:
+        - label 후보:
+        - 선택 이유:
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: 확인
+      description: 중복과 범위 충돌을 줄이기 위한 확인 항목입니다.
+      options:
+        - label: 기존 열린 이슈와 중복되지 않음을 확인했습니다.
+          required: true
+        - label: 이번 task에서 제외할 항목을 명시했습니다.
+          required: true
+        - label: 작업 시작 전 수행계획서 승인 절차가 필요함을 이해했습니다.
+          required: true
