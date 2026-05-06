@@ -241,7 +241,7 @@ Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
 모든 타스크는 아래 절차를 **엄격하게** 따릅니다.
 
 ```
-1. GitHub Issue 등록
+1. GitHub Issue 확인 또는 등록
 2. 오늘할일(orders/) 기록
 3. 타스크 브랜치 생성 (local/task{번호})
 4. 수행계획서 작성 → [작업지시자 승인]
@@ -257,29 +257,34 @@ Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
 
 ### 타스크 사이클
 
+이슈가 이미 있으면 `task-register`를 건너뛰고 바로 `task-start`로 수행계획서 작성에 들어갑니다. 예를 들어 작업지시자가 `"issue #17 작업을 진행해줘"`라고 지시하면 AI는 #17의 milestone과 본문을 확인한 뒤 `local/task17`, 오늘할일, 수행계획서를 만듭니다. 아직 이슈가 없을 때만 `task-register`가 중복 이슈·milestone·label을 확인하고 생성 전 승인을 받은 뒤 GitHub Issue를 만듭니다.
+
 각 단계 전환에는 작업지시자의 명시 승인이 필요합니다.
 ```
-1. 타스크 등록 → `task-register`
-   └─ 작업지시자: GitHub Issue 생성, 범위 정의
-   
-2. 수행 계획서 → `task-start`
+0. 이슈가 없을 때만 등록 → `task-register`
+   └─ AI: 중복 이슈, milestone, label 후보 확인
+   └─ 작업지시자: 이슈 생성 승인
+   └─ AI: GitHub Issue 생성 후 `task-start` 진입 승인 요청
+
+1. 수행 계획서 → `task-start`
+   └─ 작업지시자: "issue #N 작업을 진행해줘"처럼 기존 이슈를 지정하거나, 방금 생성한 이슈로 시작 승인
    └─ AI: 계획서 작성 (최소 3단계, 최대 6단계)
    └─ 작업지시자: 검토 → 승인 또는 수정 요청
 
-3. 단계별 구현 → `task-stage-report`(단계 수만큼 반복)
+2. 단계별 구현 → `task-stage-report`(단계 수만큼 반복)
    └─ AI: 코드 작성 + 테스트
    └─ AI: 단계 완료 보고서 작성
    └─ 작업지시자: 검증 → 승인 또는 피드백
 
-4. 피드백 반영 → (수동)
+3. 피드백 반영 → (수동)
    └─ 작업지시자: 피드백 문서 작성 (mydocs/feedback/), AI가 반영. scope가 바뀌면 계획서를 갱신해 재승인
    └─ AI: 피드백 반영, 수정
 
-5. 최종 보고 + Open PR → `task-final-report`
+4. 최종 보고 + Open PR → `task-final-report`
    └─ AI: 최종 결과 보고서 작성, Open PR 생성
    └─ 작업지시자: 검증 → 승인 또는 피드백
 
-6. PR 리뷰 + merge + 정리 → `pr-merge-cleanup`
+5. PR 리뷰 + merge + 정리 → `pr-merge-cleanup`
    └─ 작업지시자: PR 검토 → 승인 또는 피드백
    └─ AI: 리뷰·merge 후 이슈 close, 브랜치/오늘할일 정리
 ```
