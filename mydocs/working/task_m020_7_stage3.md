@@ -12,7 +12,7 @@ Stage 3은 Stage 1~2에서 만든 `templates/manifest.json`, `.hyper-waterfall/v
 
 | 파일 | 변경 요약 |
 |---|---|
-| `README.md` | "배포와 업데이트" 섹션 추가, 기존 "프롬프트 한 줄" 설명을 GitHub Release 기준 업데이트 모델과 연결, 적용 저장소 구조에 `.hyper-waterfall/version.json` 추가 |
+| `README.md` | 독립 "배포와 업데이트" 섹션 없이 사용자용 짧은 업데이트 안내만 추가하고, 적용 저장소 구조에 `.hyper-waterfall/version.json` 추가 |
 | `docs/agent-entrypoint.md` | 신규 적용 절차를 manifest 기준으로 보강하고, 기존 적용 저장소 업데이트 진입 절차 추가 |
 | `templates/mydocs/manual/document_structure_guide.md` | README/entrypoint 변경 시 manifest, migration, task/git workflow 설명을 함께 확인하는 규칙과 migration guide 경로 추가 |
 | `templates/mydocs/manual/git_workflow_guide.md` | GitHub Release/tag와 update protocol 용어, release 전 manifest/migration 확인 절차 추가 |
@@ -21,16 +21,18 @@ Stage 3은 Stage 1~2에서 만든 `templates/manifest.json`, `.hyper-waterfall/v
 변경 규모:
 
 ```text
-README.md                                      | 32 +++++++++++++++----
+README.md                                      |  8 ++-
 docs/agent-entrypoint.md                       | 37 +++++++++++++++-------
+mydocs/working/task_m020_7_stage3.md           | 76 ++++++++++++++++++++++
 templates/mydocs/manual/document_structure_guide.md |  2 ++
 templates/mydocs/manual/git_workflow_guide.md  | 19 +++++++++++
 templates/mydocs/manual/task_workflow_guide.md | 12 +++++++
+6 files changed, 142 insertions(+), 12 deletions(-)
 ```
 
 ## 본문 변경 정도 / 본문 무손실 여부
 
-기존 README의 핵심 주장과 타스크 진행 흐름은 유지했다. 새 섹션은 "새 저장소에 빠르게 적용하기"와 "도입 후 작업 흐름" 사이에 추가해, 설치/업데이트 모델이 작업 흐름 설명과 섞이지 않게 했다.
+기존 README의 핵심 주장과 타스크 진행 흐름은 유지했다. 첫 반영에서는 독립 "배포와 업데이트" 섹션을 추가했지만, 작업지시자 피드백에 따라 README 독자가 설치/업데이트 인터페이스만 빠르게 볼 수 있도록 해당 목차와 섹션을 제거했다. 업데이트 상세 프로토콜은 `docs/agent-entrypoint.md`, `docs/migrations/`, Manual에 남기고 README에는 짧은 안내만 유지했다.
 
 `docs/agent-entrypoint.md`는 기존 적용 절차를 "신규 적용 절차"로 재명명하고, Issue Form 복사와 `.hyper-waterfall/version.json` 생성을 추가했다. 기존 금지 원칙은 유지하되 manifest/migration 승인 없이 새 설정을 임의 추가하지 않는 문구로 좁혔다.
 
@@ -42,6 +44,7 @@ Manual 변경은 Stage 1에서 추가한 배포 manifest 정책을 반복 설명
 
 ```bash
 grep -nE 'GitHub Release|manifest|migration|version|\.hyper-waterfall' README.md docs/agent-entrypoint.md templates/mydocs/manual/*.md
+! grep -nE '^## 배포와 업데이트|배포와-업데이트' README.md
 grep -nE '프롬프트|canonical|배포 단위|업데이트 프로토콜|version.json' README.md docs/agent-entrypoint.md templates/mydocs/manual/*.md
 grep -nE 'framework-install|framework-update|manifest|migration' templates/mydocs/manual/task_workflow_guide.md README.md
 ruby -rjson -e 'JSON.parse(File.read("templates/manifest.json"))'
@@ -52,6 +55,7 @@ git diff --check
 결과:
 
 - README, agent entrypoint, Manual에서 `GitHub Release`, `manifest`, `migration`, `version`, `.hyper-waterfall` 참조 확인.
+- README의 독립 `## 배포와 업데이트` 섹션과 목차 항목이 제거됐음을 확인.
 - README와 Manual에서 프롬프트는 인터페이스이고 `canonical` 배포 단위는 GitHub Release/tag라는 설명 확인.
 - `task_workflow_guide.md`와 README에서 후속 `framework-install`, `framework-update` Skill 참조 확인.
 - `templates/manifest.json` JSON parse 통과.
