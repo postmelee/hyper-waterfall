@@ -19,6 +19,7 @@ description: |
 - 아직 이슈 번호가 없는 작업
 - 작업 목적, 배경, 범위가 최소한 초안 수준으로 정리됨
 - 현재 사용자 자격 증명으로 `gh` CLI 인증 완료
+- 가능하면 GitHub Issue Form `.github/ISSUE_TEMPLATE/task.yml` 또는 프레임워크 원본 `templates/.github/ISSUE_TEMPLATE/task.yml`을 읽을 수 있음
 - 이슈 생성 전 제목, 본문, milestone, label 초안을 작업지시자에게 확인받을 수 있음
 
 ## 절차
@@ -66,12 +67,19 @@ description: |
    - 새 label은 만들지 않는다.
 6. 이슈 초안 작성
    - 제목: 작업 단위가 드러나는 한 문장
-   - 본문 권장 섹션:
+   - 본문은 GitHub Issue Form `.github/ISSUE_TEMPLATE/task.yml`을 우선 기준으로 작성한다.
+     - 프레임워크 저장소에서 적용 저장소용 원본을 확인해야 하면 `templates/.github/ISSUE_TEMPLATE/task.yml`을 참조한다.
+     - `gh issue create`는 Issue Form UI를 실행하지 않으므로, Form의 입력 항목을 아래 Markdown 섹션으로 변환해 본문을 만든다.
+   - Issue Form 기준 섹션:
      - 배경
      - 목표
-     - 범위
-     - 제외
+     - 범위 - 포함
+     - 범위 - 제외
+     - 수용 기준
+     - 검증 기준
      - 참고
+     - 마일스톤과 label 후보
+   - Issue Form을 읽을 수 없는 경우에만 fallback으로 위 섹션 목록을 사용한다.
    - milestone: live 조회 결과에서 고른 열린 milestone 1개와 선택 이유
    - label: live 조회 결과에서 고른 기존 label 0개 이상과 선택 이유
    - label 선택 이유는 type/area/kind 기준으로 나누어 적고, 5개 이상이면 예외 사유를 별도로 적는다.
@@ -103,6 +111,7 @@ description: |
 - 일반 이슈 label은 2~4개 권장 범위인지 확인한다.
 - 5개 이상 label이면 승인된 예외 사유가 생성 결과 보고에 포함되어야 한다.
 - `area:*` label은 주 작업 소유 영역 기준으로 선택되어야 한다.
+- 이슈 본문이 `.github/ISSUE_TEMPLATE/task.yml`의 필수 입력에 대응하는 배경, 목표, 포함 범위, 제외 범위, 수용 기준, 검증 기준을 채워야 한다.
 - 생성 결과 보고에 issue number, URL, milestone, label, 선택 이유가 포함되어야 한다.
 
 ## 절대 하지 말 것
