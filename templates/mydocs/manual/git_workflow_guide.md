@@ -9,6 +9,8 @@
 - **`publish/taskN`**: `local/taskN`을 원격에 게시하기 위한 PR용 브랜치. PR merge 후 삭제한다.
 - **Open PR**: 검토 가능한 상태의 PR. 하이퍼-워터폴 최종 보고 후 `{BASE_BRANCH}` 대상으로 만든다.
 - **분리 worktree**: 메인 worktree가 다른 작업에 쓰이고 있을 때 별도 디렉터리에서 같은 저장소의 다른 브랜치를 작업하는 방식.
+- **GitHub Release/tag**: Hyper-Waterfall의 canonical 배포 단위. release에는 `templates/manifest.json`과 migration guide 기준이 함께 따라야 한다.
+- **update protocol**: 적용 저장소의 `.hyper-waterfall/version.json`, release manifest, `docs/migrations/`를 비교해 안전하게 업데이트 PR을 만드는 절차.
 
 ## 브랜치 관리
 
@@ -40,6 +42,19 @@ local/task{N} ── 커밋 · 커밋 · 커밋 ──→ publish/task{N} push
 - **merge 전략**: `{BASE_BRANCH}` 대상 PR은 merge commit 유지 또는 `--no-ff` 원칙을 기본으로 한다. squash merge는 단계별 커밋 의미가 사라질 수 있으므로 기본값으로 두지 않는다.
 - **`{RELEASE_BRANCH}` merge (PR 기반)**: 릴리즈 시점에 `{BASE_BRANCH}` → `{RELEASE_BRANCH}` PR 생성 → 리뷰(approve) → merge 후 태그 생성.
 
+## Release/tag와 update protocol
+
+Hyper-Waterfall 방법론 자체의 배포 기준은 GitHub Release/tag다. `{RELEASE_BRANCH}`에 반영된 상태를 tag로 고정하고, 해당 release의 `templates/manifest.json`과 `docs/migrations/`를 기준으로 기존 적용 저장소가 업데이트한다.
+
+release 준비 시 확인할 항목:
+
+- `templates/manifest.json`의 `frameworkVersion`, `plannedTag`, `baselineTag`가 release 의도와 맞는지 확인
+- release 패키징 시 checksum이 `pending-release`에서 확정 가능한지 확인
+- `docs/migrations/v{from}-to-v{to}.md`가 추가 파일, 수정 파일, 수동 확인, 충돌 가능성, 검증 기준을 포함하는지 확인
+- 적용 저장소의 `.hyper-waterfall/version.json`이 목표 version으로 갱신될 수 있는지 확인
+
+일반 task PR과 release PR은 분리한다. task PR은 `local/taskN -> publish/taskN -> {BASE_BRANCH}` 흐름을 따르고, release PR은 `{BASE_BRANCH} -> {RELEASE_BRANCH}` 흐름을 따른다. 기존 적용 저장소 업데이트는 release 이후 별도 update PR로 수행한다.
+
 ## 메인테이너 워크플로우
 
 ```bash
@@ -56,6 +71,10 @@ gh pr merge --merge --delete-branch
 gh pr create --base {RELEASE_BRANCH} --head {BASE_BRANCH} --title "Release: 제목"
 gh pr review --approve
 gh pr merge --merge --delete-branch=false
+
+# 4. 릴리즈 tag 생성 전 manifest/migration 확인
+ruby -rjson -e 'JSON.parse(File.read("templates/manifest.json"))'
+grep -nE '대상 버전|추가 파일|수정 파일|수동 확인|충돌 가능성|검증' docs/migrations/v{from}-to-v{to}.md
 ```
 
 ## 컨트리뷰터 워크플로우 (Fork 기반)
