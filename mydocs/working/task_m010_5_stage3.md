@@ -50,7 +50,7 @@ grep -nE 'GitHub Issue/PR|출력 형식|GPT-5.5|Opus 4.7' README.md
 grep -nE 'task-register|ISSUE_TEMPLATE|mydocs/_templates|pull_request_template' README.md templates/mydocs/manual/document_structure_guide.md
 grep -nE '첫 작업 프롬프트|첫 입력 프롬프트|첫 human turn|desired input format' README.md || true
 grep -nE 'GitHub Issue 확인 또는 등록|이슈가 이미 있으면|task-register|task-start|issue #[0-9]+ 작업을 진행해줘|이슈가 없을 때만|수행계획서' README.md
-grep -nE '0\. 이슈가 없을 때만 등록|1\. 수행 계획서|2\. 단계별 구현|3\. 피드백 반영|4\. 최종 보고|5\. PR 리뷰' README.md
+grep -nE '0\. 타스크 등록|1\. 수행 계획서|2\. 단계별 구현|3\. 피드백 반영|4\. 최종 보고|5\. PR 리뷰' README.md
 grep -nE 'ISSUE_TEMPLATE/task\.yml|task\.yml|pull_request_template' README.md templates/mydocs/skills/task-register/SKILL.md templates/mydocs/manual/task_workflow_guide.md
 git diff --check
 ```

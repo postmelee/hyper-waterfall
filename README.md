@@ -261,7 +261,7 @@ Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
 
 각 단계 전환에는 작업지시자의 명시 승인이 필요합니다.
 ```
-0. 이슈가 없을 때만 등록 → `task-register`
+0. 타스크 등록 → `task-register`
    └─ AI: 중복 이슈, milestone, label 후보 확인
    └─ 작업지시자: 이슈 생성 승인
    └─ AI: GitHub Issue 생성 후 `task-start` 진입 승인 요청
