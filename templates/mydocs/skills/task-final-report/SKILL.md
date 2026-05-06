@@ -24,7 +24,8 @@ description: |
 
 1. 통합 검증: 구현 계획서의 "수용 기준" 또는 마지막 단계 "검증" 섹션 명령 실행
 2. 최종 보고서 작성: `mydocs/report/task_m{milestone}_{N}_report.md`
-   - 표준 섹션:
+   - 중앙 템플릿 `mydocs/_templates/final_report.md`를 기준으로 작성한다.
+   - 템플릿을 읽을 수 없는 경우에만 다음 최소 섹션을 fallback으로 사용한다:
      - 작업 요약 (이슈 링크, 마일스톤, 단계 수)
      - 변경 파일 목록과 영향 범위
      - 변경 전·후 정량 비교 (라인 수, 토큰, 검증 통과 등 적용 시)
@@ -32,6 +33,7 @@ description: |
      - 잔여 위험과 후속 작업
      - 작업지시자 승인 요청
 3. 오늘할일 갱신: `mydocs/orders/{yyyymmdd}.md`의 #{N} 행
+   - 출력 형식은 `mydocs/_templates/orders.md`를 기준으로 한다.
    - 상태 `완료`로 변경, 비고에 `완료: HH:mm` 기록
 4. 변경 점검
    ```bash
@@ -59,7 +61,8 @@ description: |
      --title "Task #{N}: {제목}" \
      --body-file "$PR_BODY"
    ```
-   - PR 본문은 최대 4개 요약 bullet (대상 타스크/왜/무엇/리뷰 포인트), Stage당 1줄 요약, 검증 결과, 남은 리스크를 포함
+   - PR 본문은 `{PR_TEMPLATE_PATH}`를 기준으로 작성한다.
+   - 최대 4개 요약 bullet (대상 타스크/왜/무엇/리뷰 포인트), Stage당 1줄 요약, 검증 결과, 남은 리스크를 포함
    - Stage 제목은 단계 보고서 URL로, 옆의 짧은 commit SHA는 commit URL로 링크
    - 작업 문서는 `HEAD_SHA` 기준 `https://github.com/{REPO_SLUG}/blob/{HEAD_SHA}/mydocs/...` URL로 연결
    - 링크 표시는 raw URL이 아니라 `[파일명](URL)` 형식으로 작성
@@ -71,6 +74,7 @@ description: |
 ## 검증
 
 - 모든 단계 보고서 + 최종 보고서 존재
+- 최종 보고서가 `mydocs/_templates/final_report.md`의 필수 섹션을 채움
 - `git status --short` 결과 빈 출력
 - `gh pr view` 결과에 draft가 아닌 PR이 정확한 base/head로 등록
 - PR 본문 `변경 내역`의 Stage별 요약이 단계 보고서 링크와 짧은 commit SHA 링크를 함께 사용

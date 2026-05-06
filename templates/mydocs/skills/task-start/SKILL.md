@@ -41,10 +41,12 @@ description: |
    git worktree add ../{repo}-task{N} -b local/task{N} origin/{BASE_BRANCH}
    ```
 4. 오늘할일 갱신: `mydocs/orders/{yyyymmdd}.md`에 행 추가
+   - 출력 형식은 `mydocs/_templates/orders.md`를 기준으로 한다.
    - 형식: `| #{N} | {타스크 제목} | 진행중 | M{milestone}, 수행계획서 작성 후 승인 대기 |`
    - 적절한 마일스톤 섹션에 배치 (운영 작업은 "공통 — 운영 작업")
-5. 수행계획서 템플릿 생성: `mydocs/plans/task_m{milestone}_{N}.md`
-   - 섹션: 목적 / 배경 / 범위(포함·제외) / 설계 방향 / 예상 변경 파일 / 잠정 단계(3~6단계) / 검증 계획 / 리스크 / 승인 요청 사항
+5. 수행계획서 생성: `mydocs/plans/task_m{milestone}_{N}.md`
+   - 중앙 템플릿 `mydocs/_templates/task_plan.md`를 기준으로 작성한다.
+   - 템플릿을 읽을 수 없는 경우에만 다음 최소 섹션을 fallback으로 사용한다: 목적 / 배경 / 범위(포함·제외) / 설계 방향 / 예상 변경 파일 / 잠정 단계(3~6단계) / 검증 계획 / 리스크 / 승인 요청 사항
 6. 변경 검증
    ```bash
    git status --short
@@ -61,7 +63,7 @@ description: |
 
 - `git log --oneline -1`이 `Task #{N}: 수행 계획서 작성과 오늘할일 갱신`을 보여야 한다
 - `mydocs/orders/{yyyymmdd}.md`에 #{N} 행 존재
-- `mydocs/plans/task_m{milestone}_{N}.md` 9개 표준 섹션 모두 채워짐
+- `mydocs/plans/task_m{milestone}_{N}.md`가 `mydocs/_templates/task_plan.md`의 필수 섹션을 채움
 
 ## 절대 하지 말 것
 

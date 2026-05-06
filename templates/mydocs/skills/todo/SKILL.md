@@ -23,8 +23,11 @@ description: |
 
 - 갱신 대상: `mydocs/orders/{yyyymmdd}.md` 한 파일
 - 작성 언어: 한국어
+- 출력 형식 기준: `mydocs/_templates/orders.md`
 
 ## 표준 형식
+
+중앙 템플릿 `mydocs/_templates/orders.md`를 우선 기준으로 사용한다. 아래 내용은 템플릿을 읽을 수 없는 상황을 위한 최소 fallback 형식이다.
 
 - 파일명: `yyyymmdd.md`
 - 제목: `# 오늘 할일 - YYYY년 M월 D일`
@@ -116,6 +119,8 @@ description: |
 - 이슈가 있는데도 `생성필요`로 두기
 
 ## 최소 템플릿
+
+아래 예시는 `mydocs/_templates/orders.md`의 축약본이다. 새 날짜 파일을 만들 때는 중앙 템플릿을 먼저 확인한다.
 
 ```md
 # 오늘 할일 - YYYY년 M월 D일
