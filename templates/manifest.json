@@ -1,0 +1,255 @@
+{
+  "schemaVersion": "0.1.0",
+  "frameworkVersion": "0.2.0",
+  "release": {
+    "canonicalSource": "github-release",
+    "plannedTag": "v0.2.0",
+    "baselineTag": "v0.1.0",
+    "status": "planned"
+  },
+  "versionState": {
+    "targetPath": ".hyper-waterfall/version.json",
+    "format": {
+      "schemaVersion": "0.1.0",
+      "frameworkVersion": "0.2.0",
+      "source": "github-release",
+      "releaseTag": "v0.2.0",
+      "installedAt": "ISO-8601 timestamp",
+      "updatedAt": "ISO-8601 timestamp"
+    },
+    "updatePolicy": "preserve"
+  },
+  "updatePolicies": {
+    "overwrite": {
+      "description": "Replace when the target still matches the previous framework checksum; treat local modifications as conflicts.",
+      "requiresReviewOnConflict": true
+    },
+    "merge": {
+      "description": "Create a patch and require human review before replacing user-visible or commonly customized files.",
+      "requiresReviewOnConflict": true
+    },
+    "manual": {
+      "description": "Do not update automatically; show the migration guide and require explicit maintainer action.",
+      "requiresReviewOnConflict": true
+    },
+    "preserve": {
+      "description": "Create when missing, then keep existing target content unless the maintainer explicitly approves a change.",
+      "requiresReviewOnConflict": true
+    },
+    "symlink": {
+      "description": "Ensure the target is a symlink to the expected path; prompt before replacing an existing file or directory.",
+      "requiresReviewOnConflict": true
+    }
+  },
+  "checksum": {
+    "algorithm": "sha256",
+    "status": "pending-release",
+    "value": null
+  },
+  "files": [
+    {
+      "source": "templates/AGENTS.md",
+      "target": "AGENTS.md",
+      "kind": "file",
+      "role": "agent-runtime-rules",
+      "updatePolicy": "merge",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/CLAUDE.md",
+      "target": "CLAUDE.md",
+      "kind": "file",
+      "role": "claude-entrypoint",
+      "updatePolicy": "merge",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/.github/ISSUE_TEMPLATE/task.yml",
+      "target": ".github/ISSUE_TEMPLATE/task.yml",
+      "kind": "file",
+      "role": "github-issue-form",
+      "updatePolicy": "merge",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/.github/pull_request_template.md",
+      "target": ".github/pull_request_template.md",
+      "kind": "file",
+      "role": "github-pr-template",
+      "updatePolicy": "merge",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/_templates",
+      "target": "mydocs/_templates",
+      "kind": "directory",
+      "role": "document-output-templates",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/manual",
+      "target": "mydocs/manual",
+      "kind": "directory",
+      "role": "manuals",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/skills",
+      "target": "mydocs/skills",
+      "kind": "directory",
+      "role": "agent-skills",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/orders/.gitkeep",
+      "target": "mydocs/orders/.gitkeep",
+      "kind": "file",
+      "role": "artifact-folder-placeholder",
+      "updatePolicy": "preserve",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/plans/archives/.gitkeep",
+      "target": "mydocs/plans/archives/.gitkeep",
+      "kind": "file",
+      "role": "artifact-folder-placeholder",
+      "updatePolicy": "preserve",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/working/.gitkeep",
+      "target": "mydocs/working/.gitkeep",
+      "kind": "file",
+      "role": "artifact-folder-placeholder",
+      "updatePolicy": "preserve",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/report/.gitkeep",
+      "target": "mydocs/report/.gitkeep",
+      "kind": "file",
+      "role": "artifact-folder-placeholder",
+      "updatePolicy": "preserve",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/feedback/.gitkeep",
+      "target": "mydocs/feedback/.gitkeep",
+      "kind": "file",
+      "role": "artifact-folder-placeholder",
+      "updatePolicy": "preserve",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/tech/.gitkeep",
+      "target": "mydocs/tech/.gitkeep",
+      "kind": "file",
+      "role": "artifact-folder-placeholder",
+      "updatePolicy": "preserve",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/troubleshootings/.gitkeep",
+      "target": "mydocs/troubleshootings/.gitkeep",
+      "kind": "file",
+      "role": "artifact-folder-placeholder",
+      "updatePolicy": "preserve",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "templates/mydocs/pr/archives/.gitkeep",
+      "target": "mydocs/pr/archives/.gitkeep",
+      "kind": "file",
+      "role": "artifact-folder-placeholder",
+      "updatePolicy": "preserve",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "pending-release",
+        "value": null
+      }
+    },
+    {
+      "source": "mydocs/skills",
+      "target": ".agents/skills",
+      "kind": "symlink",
+      "role": "codex-skill-discovery",
+      "updatePolicy": "symlink",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "not-applicable",
+        "value": null
+      }
+    },
+    {
+      "source": "mydocs/skills",
+      "target": ".claude/skills",
+      "kind": "symlink",
+      "role": "claude-skill-discovery",
+      "updatePolicy": "symlink",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "not-applicable",
+        "value": null
+      }
+    }
+  ]
+}

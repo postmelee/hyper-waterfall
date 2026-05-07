@@ -1,0 +1,67 @@
+# Hyper-Waterfall migration guide 작성 규칙
+
+이 폴더는 Hyper-Waterfall을 이미 적용한 저장소가 새 GitHub Release/tag로 업데이트할 때 참고하는 migration guide를 보관한다. 신규 설치 절차가 아니라, 기존 적용 저장소의 파일 변경, 사용자 수정 충돌, 수동 확인 항목을 리뷰하기 위한 장기 문서다.
+
+프롬프트는 업데이트 요청을 시작하는 인터페이스이고, 실제 기준은 release에 포함된 `templates/manifest.json`, 적용 저장소의 `.hyper-waterfall/version.json`, 이 폴더의 migration guide다.
+
+## 파일명 규칙
+
+파일명은 다음 형식을 사용한다.
+
+```text
+v{from}-to-v{to}.md
+```
+
+예시:
+
+- `v0.1.0-to-v0.2.0.md`
+- `v0.2.0-to-v0.3.0.md`
+
+여러 patch 버전을 한 번에 건너뛰는 migration은 실제 update path를 기준으로 별도 문서를 만든다. 예를 들어 `v0.1.0`에서 `v0.3.0`으로 직접 업데이트해야 한다면 `v0.1.0-to-v0.3.0.md`를 만들고, 중간 release별 문서를 링크한다.
+
+## 필수 섹션
+
+모든 migration guide는 아래 섹션을 포함한다.
+
+- 대상 버전
+- 변경 요약
+- 추가 파일
+- 수정 파일
+- 적용 저장소 수동 확인
+- 충돌 가능성
+- 검증
+- 후속 작업
+
+섹션을 적용할 내용이 없으면 삭제하지 말고 `없음`과 이유를 적는다. 그래야 후속 `framework-update` Skill이나 update PR이 "누락"과 "해당 없음"을 구분할 수 있다.
+
+## 작성 기준
+
+- `templates/manifest.json`의 `files`, `versionState`, `updatePolicies`, `checksum` 상태를 기준으로 작성한다.
+- 적용 저장소의 현재 version은 `.hyper-waterfall/version.json`에서 읽는 것을 전제로 한다.
+- 사용자 수정 가능성이 높은 `AGENTS.md`, `CLAUDE.md`, `.github/`, `mydocs/manual/`, `mydocs/skills/` 변경은 수동 확인 또는 충돌 가능성에 반드시 언급한다.
+- `overwrite`, `merge`, `manual`, `preserve`, `symlink` update policy의 의미를 문서마다 재정의하지 않는다. 정책 정의는 `templates/mydocs/manual/document_structure_guide.md`와 manifest를 따른다.
+- 실제 GitHub Release/tag 생성, npm publish, Homebrew, Docker, plugin 배포는 migration guide만으로 수행하지 않는다. 해당 작업은 별도 이슈와 승인 절차를 따른다.
+
+## 검증
+
+새 migration guide를 추가하면 최소한 다음을 확인한다.
+
+```bash
+test -f docs/migrations/v{from}-to-v{to}.md
+grep -nE '대상 버전|변경 요약|추가 파일|수정 파일|수동 확인|충돌 가능성|검증|후속 작업' docs/migrations/v{from}-to-v{to}.md
+grep -nE 'manifest|version|GitHub Release|\.hyper-waterfall' docs/migrations/v{from}-to-v{to}.md
+git diff --check
+```
+
+## update PR과의 관계
+
+후속 `framework-update` Skill은 migration guide를 읽고 update PR 본문에 다음을 요약해야 한다.
+
+- 현재 version과 목표 version
+- manifest diff 요약
+- 자동 적용 가능한 파일
+- 수동 확인이 필요한 파일
+- 충돌 가능성이 있는 파일
+- maintainer가 승인해야 할 항목
+
+따라서 migration guide는 단순 changelog가 아니라 update PR 리뷰의 근거 문서로 작성한다.
