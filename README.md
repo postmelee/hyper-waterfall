@@ -315,6 +315,8 @@ Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
 
 > 각 `[승인]` 지점이 품질 게이트입니다. 코드 리뷰만으로는 잡을 수 없는 **방향성 오류**를 문서 리뷰에서 잡는다.
 
+세부 절차는 [타스크 진행 절차 매뉴얼](templates/mydocs/manual/task_workflow_guide.md#타스크-진행-절차)을 기준으로 합니다. 브랜치와 PR 게시 흐름은 [Git 워크플로우 매뉴얼](templates/mydocs/manual/git_workflow_guide.md#브랜치-관리)에서 확인할 수 있습니다.
+
 ### 핵심 SKILL 상세
 
 | SKILL | 사용하는 시점 | 주요 산출물 |
@@ -326,6 +328,8 @@ Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
 | `pr-merge-cleanup` | PR이 실제로 merge된 직후 | 이슈 close, `publish/task{N}` 원격 삭제, 로컬 브랜치/worktree 정리 |
 | `external-pr-review` | 외부 기여자 PR을 검토할 때 | `external_pr_*` 템플릿 기반 `mydocs/pr/` 검토 문서, 검증 결과, 권고(merge/수정/닫기) |
 | `todo` | 오늘할일 보드를 새로 만들거나 갱신할 때 | `orders.md` 기반 `mydocs/orders/yyyymmdd.md` 표 형식 갱신 |
+
+각 SKILL을 언제 사용자에게 표시하는지는 [SKILL 호출 표시 안내](templates/mydocs/manual/task_workflow_guide.md#skill-호출-표시-안내)를 따릅니다. PR 본문 작성과 검증 구조는 [내부 task PR 작성 규칙](templates/mydocs/manual/pr_process_guide.md#내부-task-pr-작성-규칙)을 기준으로 합니다.
 
 ### 타스크 사이클
 
