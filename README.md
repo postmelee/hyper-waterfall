@@ -386,6 +386,8 @@ mydocs/
 └── pr/                                 ← 외부 PR 검토 기록
 ```
 
+폴더별 역할과 허용 파일명은 [문서 구조 매뉴얼의 폴더별 상세 규칙](templates/mydocs/manual/document_structure_guide.md#폴더별-상세-규칙)과 [문서 파일명 규칙](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙)을 기준으로 확인합니다. 산출물 출력 형식은 [중앙 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책)에 정리되어 있습니다.
+
 ## 적용 후 대상 저장소 구조
 
 `templates/`를 복사하고 placeholder를 치환한 뒤 사용자 저장소에 만들어지는 모습입니다.
@@ -419,6 +421,8 @@ your-repo/
     └── pr/                 외부 PR 검토 기록
         └── archives/
 ```
+
+적용 저장소의 `.agents/skills`와 `.claude/skills` 심볼릭 링크 구조는 [Agent Skills 위치 정책](templates/mydocs/manual/document_structure_guide.md#agent-skills-위치-정책)을 따릅니다. `.hyper-waterfall/version.json`과 manifest 기준 업데이트 흐름은 [배포 manifest와 버전 기록 정책](templates/mydocs/manual/document_structure_guide.md#배포-manifest와-버전-기록-정책)에 정리되어 있습니다.
 
 > `_templates/`는 실제 task 산출물이 아니라 출력 형식의 진실 원천입니다. 각 Skill은 산출물을 만들 때 먼저 `mydocs/_templates/`의 해당 템플릿을 참조하고, 템플릿을 읽을 수 없는 상황에서만 Skill 안의 최소 섹션 요약을 fallback으로 사용합니다.
 
