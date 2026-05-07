@@ -32,7 +32,7 @@ v{from}-to-v{to}.md
 - 검증
 - 후속 작업
 
-섹션을 적용할 내용이 없으면 삭제하지 말고 `없음`과 이유를 적는다. 그래야 lifecycle 판단, update PR workflow, CLI가 "누락"과 "해당 없음"을 구분할 수 있다.
+섹션을 적용할 내용이 없으면 삭제하지 말고 `없음`과 이유를 적는다. 그래야 lifecycle 판단, Hyper-Waterfall 버전 업데이트 PR 워크플로우, CLI가 "누락"과 "해당 없음"을 구분할 수 있다.
 
 ## 작성 기준
 
@@ -53,9 +53,9 @@ grep -nE 'manifest|version|GitHub Release|\.hyper-waterfall' docs/migrations/v{f
 git diff --check
 ```
 
-## lifecycle 판단과 update PR의 관계
+## lifecycle 판단과 Hyper-Waterfall 버전 업데이트 PR의 관계
 
-기존 적용 저장소 업데이트는 `docs/agent-entrypoint.md`의 "기존 업데이트 판단 결과 형식"을 따른다. Migration guide는 그 판단 결과와 update PR 후보를 만들 때 다음 항목의 근거로 사용한다.
+기존 적용 저장소 업데이트는 `docs/agent-entrypoint.md`의 "기존 업데이트 판단 결과 형식"을 따른다. Migration guide는 그 판단 결과와 Hyper-Waterfall 버전 업데이트 PR 후보를 만들 때 다음 항목의 근거로 사용한다.
 
 - 현재 version과 목표 version
 - manifest diff 요약
@@ -64,4 +64,17 @@ git diff --check
 - 충돌 가능성이 있는 파일
 - maintainer가 승인해야 할 항목
 
-따라서 migration guide는 단순 changelog가 아니라 lifecycle 판단 결과, update PR 리뷰, 향후 CLI `update`/`doctor` 출력의 근거 문서로 작성한다.
+Hyper-Waterfall 버전 업데이트 PR 본문에서는 migration guide의 각 섹션을 다음처럼 옮긴다.
+
+| migration guide 섹션 | PR 본문 반영 위치 |
+|---|---|
+| 대상 버전 | `요약`의 현재 version과 목표 release/tag |
+| 변경 요약 | `요약`과 `변경 내역` |
+| 추가 파일 | `변경 내역`의 manifest diff |
+| 수정 파일 | `변경 내역`의 manifest diff |
+| 적용 저장소 수동 확인 | `수동/시나리오 검증`, `검증 한계`, `남은 리스크` |
+| 충돌 가능성 | `영향 영역`, `검증 한계`, `남은 리스크` |
+| 검증 | `자동 검증`, `수동/시나리오 검증`, `CI/원격 검증` |
+| 후속 작업 | `후속 이슈 제안`, `남은 리스크` |
+
+따라서 migration guide는 단순 changelog가 아니라 lifecycle 판단 결과, Hyper-Waterfall 버전 업데이트 PR 리뷰, 향후 CLI `update`/`doctor` 출력의 근거 문서로 작성한다.

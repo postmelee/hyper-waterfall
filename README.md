@@ -202,7 +202,7 @@ AI는 **실행하는 역할**에 집중한다:
 
 원본 방법론(rhwp)은 그 저장소의 문서·관습과 강하게 결합되어 있어, 다른 프로젝트에 그대로 가져다 쓰기 어려웠습니다. 본 저장소는 운영 규칙·매뉴얼·SKILL을 `templates/`로 분리하고 진입 절차를 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)로 정형화했습니다. 결과적으로 **AI 코딩 도구에 한 줄 프롬프트만 보내면** 어떤 저장소에든 적용됩니다. AI가 진입 절차를 따라 `REPO_SLUG`·`BASE_BRANCH` 같은 placeholder까지 자동으로 치환합니다.
 
-기존 적용 저장소 업데이트를 위한 lifecycle 기준도 별도 문서로 정리하고 있습니다. GitHub Release/tag, manifest, migration guide, `.hyper-waterfall/version.json`을 읽어 현재 version, 목표 release/tag, manifest diff, update PR 후보를 먼저 판단하는 구조입니다. 본 저장소 자체가 자기 자신에 적용한 dogfooding 첫 사례입니다 (Issue #1, PR #2).
+기존 적용 저장소 업데이트를 위한 lifecycle 기준도 별도 문서로 정리하고 있습니다. GitHub Release/tag, manifest, migration guide, `.hyper-waterfall/version.json`을 읽어 현재 version, 목표 release/tag, manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 판단하는 구조입니다. 본 저장소 자체가 자기 자신에 적용한 dogfooding 첫 사례입니다 (Issue #1, PR #2).
 
 ### 2. 공식 프롬프팅 가이드와의 정합
 
@@ -289,7 +289,7 @@ AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용
 
 도입 후에는 AI가 알아서 Hyper-Waterfall 방식을 지키며 작업을 진행합니다. 처음 시작하는 사용자는 AI에게 `"이거 구현해줘"`와 같은 자연어 명령을 내리기만 하면 됩니다.
 
-기존 적용 저장소 업데이트는 GitHub Release/tag와 manifest를 기준으로 수행합니다. AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)의 기존 업데이트 판단 결과 형식에 따라 현재 version, 목표 release/tag, migration guide, manifest diff, update PR 후보를 먼저 보고하고, 승인된 범위만 별도 task로 진행합니다. 배포 채널이 확정되면 README에는 사용자가 복사할 업데이트 프롬프트나 CLI 명령만 남깁니다.
+기존 적용 저장소 업데이트는 GitHub Release/tag와 manifest를 기준으로 수행합니다. AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)의 기존 업데이트 판단 결과 형식에 따라 현재 version, 목표 release/tag, migration guide, manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 보고하고, 승인된 범위만 별도 task로 진행합니다. 배포 채널이 확정되면 README에는 사용자가 복사할 업데이트 프롬프트나 CLI 명령만 남깁니다.
 
 ## 도입 후 작업 흐름
 
