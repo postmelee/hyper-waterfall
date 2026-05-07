@@ -38,7 +38,7 @@ GitHub Issue: [#13](https://github.com/postmelee/hyper-waterfall/issues/13)
 ```bash
 grep -nE '### 자동 검증|### 수동/시나리오 검증|### CI/원격 검증|### 검증 한계' .github/pull_request_template.md templates/.github/pull_request_template.md
 grep -nE '주제 \\| 검증 방법 \\| 결과 \\| 근거|항목 \\| 결과 \\| 근거|실행하지 않은|긴 로그' .github/pull_request_template.md templates/.github/pull_request_template.md
-grep -n '\\{REPO_SLUG\\}' templates/.github/pull_request_template.md
+grep -nF '{REPO_SLUG}' templates/.github/pull_request_template.md
 diff -u .github/pull_request_template.md templates/.github/pull_request_template.md
 git diff --check
 ```
@@ -107,7 +107,7 @@ Task #13 Stage 2: PR 작성 규칙과 최종 보고 SKILL 동기화
 grep -nE 'task-final-report|Open PR|PR 본문|검증 결과|검증 근거' README.md
 grep -nE 'PR 본문|pull_request_template|검증 한계|검증 결과|SKILL 호출 표시' templates/mydocs/manual/task_workflow_guide.md
 grep -nE '자동 검증|수동/시나리오 검증|CI/원격 검증|검증 한계' .github/pull_request_template.md templates/.github/pull_request_template.md templates/mydocs/manual/pr_process_guide.md templates/mydocs/skills/task-final-report/SKILL.md
-grep -n '\\{REPO_SLUG\\}' templates/.github/pull_request_template.md
+grep -nF '{REPO_SLUG}' templates/.github/pull_request_template.md
 git diff --check
 ```
 
