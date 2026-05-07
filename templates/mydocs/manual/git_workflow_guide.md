@@ -72,7 +72,7 @@ Hyper-Waterfall 버전 업데이트 PR 커밋 메시지 규칙:
 - 단계 커밋: `Task #{N} Stage {S}: Hyper-Waterfall 버전 업데이트 {내용}`
 - 최종 보고 커밋: `Task #{N}: 최종 보고서 작성과 오늘할일 완료 처리`
 
-Hyper-Waterfall 버전 업데이트 PR 브랜치를 별도 prefix로 만들지 않는 이유는 작업 추적 기준을 GitHub Issue와 하이퍼-워터폴 산출물로 유지하기 위해서다. CLI나 자동화가 Hyper-Waterfall 버전 업데이트 PR을 만들더라도 승인된 이슈 번호를 받은 뒤 위 브랜치 규칙을 따른다.
+Hyper-Waterfall 버전 업데이트 PR 브랜치를 별도 prefix로 만들지 않는 이유는 작업 추적 기준을 GitHub Issue와 하이퍼-워터폴 산출물로 유지하기 위해서다. CLI나 자동화가 Hyper-Waterfall 버전 업데이트 PR 후보를 만들더라도 먼저 판단 결과를 출력하고, 승인된 이슈 번호를 받은 뒤 위 브랜치 규칙을 따른다.
 
 ## 메인테이너 워크플로우
 

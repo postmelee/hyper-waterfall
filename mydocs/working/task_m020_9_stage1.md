@@ -27,7 +27,7 @@ Stage 1은 #8에서 정의한 기존 업데이트 판단 결과가 승인된 뒤
 ```bash
 grep -nE 'Hyper-Waterfall 버전 업데이트 PR|브랜치|커밋|PR 제목|release PR|task PR' docs/agent-entrypoint.md templates/mydocs/manual/*.md
 grep -nE 'lifecycle 판단 결과|기존 업데이트 판단 결과|migration guide|manifest diff' docs/agent-entrypoint.md templates/mydocs/manual/*.md
-rg -n '설치·업데이트 전용 Skill|lifecycle 전용 Skill|framework-install|framework-update|후속 Skill|Skill workflow' docs/agent-entrypoint.md templates/mydocs/manual/git_workflow_guide.md templates/mydocs/manual/task_workflow_guide.md
+rg -n '폐기된 예정 구현|별도 유지보수 절차명|Skill workflow|Skill이 아직 없을 때' docs/agent-entrypoint.md templates/mydocs/manual/git_workflow_guide.md templates/mydocs/manual/task_workflow_guide.md
 git diff --check
 ```
 

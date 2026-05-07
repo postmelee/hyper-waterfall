@@ -96,7 +96,7 @@ GitHub Issue: [#9](https://github.com/postmelee/hyper-waterfall/issues/9)
   - `git diff --check`
 - Stage 3
   - `grep -nE 'Hyper-Waterfall 버전 업데이트 PR|migration|version|manifest diff|CLI|doctor|update' README.md docs/migrations/*.md templates/mydocs/manual/*.md`
-  - `rg -n '후속 Skill|전용 Skill|유지보수용 Skill|Skill workflow|Skill이 아직 없을 때' README.md docs templates/mydocs/manual templates/mydocs/skills`
+  - `rg -n '폐기된 예정 구현|별도 유지보수 절차명|Skill workflow|Skill이 아직 없을 때' README.md docs templates/mydocs/manual templates/mydocs/skills`
   - `git diff --check`
 
 ### 통합 검증

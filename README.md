@@ -289,7 +289,7 @@ AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용
 
 도입 후에는 AI가 알아서 Hyper-Waterfall 방식을 지키며 작업을 진행합니다. 처음 시작하는 사용자는 AI에게 `"이거 구현해줘"`와 같은 자연어 명령을 내리기만 하면 됩니다.
 
-기존 적용 저장소 업데이트는 GitHub Release/tag와 manifest를 기준으로 수행합니다. AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)의 기존 업데이트 판단 결과 형식에 따라 현재 version, 목표 release/tag, migration guide, manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 보고하고, 승인된 범위만 별도 task로 진행합니다. 배포 채널이 확정되면 README에는 사용자가 복사할 업데이트 프롬프트나 CLI 명령만 남깁니다.
+기존 적용 저장소 업데이트는 GitHub Release/tag와 manifest를 기준으로 수행합니다. AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)의 기존 업데이트 판단 결과 형식에 따라 현재 version, 목표 release/tag, migration guide, manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 보고하고, 승인된 범위만 일반 task 흐름으로 진행합니다. 향후 CLI가 제공되면 같은 판단 결과를 `update`/`doctor` 출력으로 보여주고, README에는 사용자가 복사할 업데이트 프롬프트나 명령만 남깁니다.
 
 ## 도입 후 작업 흐름
 
