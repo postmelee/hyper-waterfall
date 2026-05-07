@@ -26,6 +26,18 @@
 10. 대상 프로젝트 고유 규칙은 `AGENTS.md`의 지정 섹션에만 추가
 11. `git diff`로 변경 확인 후 작업지시자에게 보고
 
+## 신규 적용 판단 결과 형식
+
+신규 적용 절차에서 파일을 복사하거나 심볼릭 링크를 만들기 전에 다음 판단 결과를 작업지시자에게 먼저 제시하고 승인을 받는다.
+
+- 대상 저장소: Hyper-Waterfall을 적용할 저장소 루트와 기본 브랜치
+- 목표 release/tag: 적용할 Hyper-Waterfall GitHub Release 또는 tag
+- manifest 기준 적용 후보: `templates/manifest.json` 기준으로 복사, preserve, symlink 처리할 파일과 디렉터리
+- 기존 파일 충돌 가능성: 대상 저장소에 이미 존재하는 파일, 사용자 수정 가능 파일, 덮어쓰기 금지 항목
+- `.hyper-waterfall/version.json` 생성 계획: 기록할 version, release, appliedAt, source 정보
+- placeholder 체크리스트: `{REPO_SLUG}`, `{REPO_NAME}`, `{BASE_BRANCH}`, `{RELEASE_BRANCH}`, `{PR_TEMPLATE_PATH}` 등 치환 대상과 보류 대상
+- 작업지시자 승인 요청: 즉시 적용할 항목, 보류할 항목, 별도 이슈로 분리할 항목
+
 ## 기존 적용 저장소 업데이트 진입
 
 1. 대상 저장소의 `.hyper-waterfall/version.json` 존재 여부와 현재 version 확인
@@ -35,7 +47,22 @@
 5. 사용자 수정 파일은 덮어쓰지 않고 update PR 후보로 정리
 6. 작업지시자 승인 후 별도 이슈와 브랜치에서 업데이트 진행
 
-현재 문서는 진입 절차만 정의한다. `framework-install`과 `framework-update` Skill은 후속 M020 작업에서 이 절차를 실제 Skill workflow로 분리한다.
+## 기존 업데이트 판단 결과 형식
+
+기존 적용 저장소 업데이트는 파일을 변경하기 전에 다음 판단 결과를 먼저 제시하고, 승인된 범위만 별도 이슈와 브랜치에서 진행한다.
+
+- 대상 저장소: 업데이트할 저장소 루트와 기준 브랜치
+- 현재 version: 대상 저장소의 `.hyper-waterfall/version.json`에 기록된 version, release, appliedAt
+- 목표 release/tag: 적용하려는 Hyper-Waterfall GitHub Release 또는 tag
+- migration guide: 현재 version에서 목표 version으로 이동할 때 읽어야 하는 `docs/migrations/v{from}-to-v{to}.md`
+- manifest diff: 현재 적용 기준과 목표 release manifest 사이의 추가, 변경, 삭제, symlink 차이 요약
+- 자동 적용 가능: checksum 일치, 사용자 수정 없음, update policy상 자동 반영 가능한 항목
+- 수동 확인 필요: update policy가 `merge`, `manual`, `preserve`이거나 사용자 판단이 필요한 항목
+- conflict: 대상 저장소 수정과 목표 release 변경이 충돌할 가능성이 있어 직접 덮어쓰면 안 되는 항목
+- update PR 후보: 승인 후 별도 PR로 만들 변경 묶음, 검증 항목, 남은 리스크
+- 작업지시자 승인 요청: 자동 적용, 수동 확인, conflict 처리, update PR 생성 여부
+
+이 문서는 Hyper-Waterfall framework lifecycle의 진입점이다. 신규 적용과 기존 업데이트는 core Skill 목록에 설치·업데이트 전용 Skill을 추가해 처리하지 않고, release manifest, version 기록, migration guide를 기준으로 판단한다. 실제 파일 변경은 일반 타스크와 동일하게 이슈, 브랜치, 계획서, 승인, PR 흐름으로 추적한다.
 
 ## Placeholder
 
