@@ -62,7 +62,22 @@
 - update PR 후보: 승인 후 별도 PR로 만들 변경 묶음, 검증 항목, 남은 리스크
 - 작업지시자 승인 요청: 자동 적용, 수동 확인, conflict 처리, update PR 생성 여부
 
-이 문서는 Hyper-Waterfall framework lifecycle의 진입점이다. 신규 적용과 기존 업데이트는 core Skill 목록에 설치·업데이트 전용 Skill을 추가해 처리하지 않고, release manifest, version 기록, migration guide를 기준으로 판단한다. 실제 파일 변경은 일반 타스크와 동일하게 이슈, 브랜치, 계획서, 승인, PR 흐름으로 추적한다.
+## update PR 전환 규칙
+
+기존 업데이트 판단 결과에서 update PR 후보가 승인되면 다음 규칙으로 일반 타스크 흐름에 전환한다.
+
+- 생성 조건: 현재 version, 목표 release/tag, migration guide, manifest diff, 자동 적용 가능 항목, 수동 확인 필요 항목, conflict 항목이 제시되고 작업지시자가 PR 생성을 승인한 경우
+- 이슈: 업데이트 변경 묶음마다 GitHub Issue를 하나 만든다. 이미 이슈가 있으면 해당 이슈 번호를 사용한다.
+- 작업 브랜치: `local/task{issue번호}`
+- PR 게시 브랜치: `publish/task{issue번호}`
+- 커밋 메시지: `Task #{issue번호}: Hyper-Waterfall {fromVersion} -> {toVersion} update` 또는 단계 작업이면 `Task #{issue번호} Stage {N}: Hyper-Waterfall update {내용}`
+- PR 제목: `Task #{issue번호}: Hyper-Waterfall {fromVersion} -> {toVersion} update`
+- PR base: 적용 저장소의 `{BASE_BRANCH}`
+- PR 본문: manifest diff, migration guide 요약, 자동 적용 가능 항목, 수동 확인 필요 항목, conflict 항목, 검증 결과, 검증 한계를 포함한다.
+
+update PR은 release PR이나 일반 기능 task PR과 목적이 다르지만, 추적 단위는 동일하게 GitHub Issue와 하이퍼-워터폴 문서 산출물이다. 즉 별도 예외 브랜치 체계를 만들지 않고 기존 `local/task{N}` -> `publish/task{N}` -> `{BASE_BRANCH}` 흐름을 따른다.
+
+이 문서는 Hyper-Waterfall framework lifecycle의 진입점이다. 신규 적용과 기존 업데이트는 core task workflow 안에 배포 lifecycle을 섞지 않고, release manifest, version 기록, migration guide를 기준으로 판단한다. 실제 파일 변경은 일반 타스크와 동일하게 이슈, 브랜치, 계획서, 승인, PR 흐름으로 추적한다.
 
 ## Placeholder
 
