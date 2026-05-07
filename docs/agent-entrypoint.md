@@ -35,7 +35,7 @@
 5. 사용자 수정 파일은 덮어쓰지 않고 update PR 후보로 정리
 6. 작업지시자 승인 후 별도 이슈와 브랜치에서 업데이트 진행
 
-현재 문서는 진입 절차만 정의한다. `framework-install`과 `framework-update` Skill은 후속 M020 작업에서 이 절차를 실제 Skill workflow로 분리한다.
+이 문서는 Hyper-Waterfall framework lifecycle의 진입점이다. 신규 적용과 기존 업데이트는 core Skill 목록에 설치·업데이트 전용 Skill을 추가해 처리하지 않고, release manifest, version 기록, migration guide를 기준으로 판단한다. 실제 파일 변경은 일반 타스크와 동일하게 이슈, 브랜치, 계획서, 승인, PR 흐름으로 추적한다.
 
 ## Placeholder
 
