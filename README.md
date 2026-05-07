@@ -315,6 +315,8 @@ Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
 
 > 각 `[승인]` 지점이 품질 게이트입니다. 코드 리뷰만으로는 잡을 수 없는 **방향성 오류**를 문서 리뷰에서 잡는다.
 
+세부 절차는 [타스크 진행 절차 매뉴얼](templates/mydocs/manual/task_workflow_guide.md#타스크-진행-절차)을 기준으로 합니다. 브랜치와 PR 게시 흐름은 [Git 워크플로우 매뉴얼](templates/mydocs/manual/git_workflow_guide.md#브랜치-관리)에서 확인할 수 있습니다.
+
 ### 핵심 SKILL 상세
 
 | SKILL | 사용하는 시점 | 주요 산출물 |
@@ -326,6 +328,8 @@ Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
 | `pr-merge-cleanup` | PR이 실제로 merge된 직후 | 이슈 close, `publish/task{N}` 원격 삭제, 로컬 브랜치/worktree 정리 |
 | `external-pr-review` | 외부 기여자 PR을 검토할 때 | `external_pr_*` 템플릿 기반 `mydocs/pr/` 검토 문서, 검증 결과, 권고(merge/수정/닫기) |
 | `todo` | 오늘할일 보드를 새로 만들거나 갱신할 때 | `orders.md` 기반 `mydocs/orders/yyyymmdd.md` 표 형식 갱신 |
+
+각 SKILL을 언제 사용자에게 표시하는지는 [SKILL 호출 표시 안내](templates/mydocs/manual/task_workflow_guide.md#skill-호출-표시-안내)를 따릅니다. PR 본문 작성과 검증 구조는 [내부 task PR 작성 규칙](templates/mydocs/manual/pr_process_guide.md#내부-task-pr-작성-규칙)을 기준으로 합니다.
 
 ### 타스크 사이클
 
@@ -382,6 +386,12 @@ mydocs/
 └── pr/                                 ← 외부 PR 검토 기록
 ```
 
+폴더별 역할과 허용 파일명은 [문서 구조 매뉴얼의 폴더별 상세 규칙](templates/mydocs/manual/document_structure_guide.md#폴더별-상세-규칙)과 [문서 파일명 규칙](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙)을 기준으로 확인합니다. 산출물 출력 형식은 [중앙 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책)에 정리되어 있습니다.
+
+`_templates/`는 실제 task 산출물이 아니라 출력 형식의 진실 원천입니다. 각 Skill은 산출물을 만들 때 먼저 `mydocs/_templates/`의 해당 템플릿을 참조하고, 템플릿을 읽을 수 없는 상황에서만 Skill 안의 최소 섹션 요약을 fallback으로 사용합니다.
+
+GitHub Issue와 Pull Request는 GitHub 플랫폼 산출물입니다. 이슈 본문은 `.github/ISSUE_TEMPLATE/task.yml`, PR 본문은 `.github/pull_request_template.md`를 기준으로 구조화하고, 저장소 안에 남는 작업 문서는 `mydocs/_templates/`를 기준으로 작성합니다. 세부 경계는 [GitHub 플랫폼 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#github-플랫폼-템플릿-정책)을 따릅니다.
+
 ## 적용 후 대상 저장소 구조
 
 `templates/`를 복사하고 placeholder를 치환한 뒤 사용자 저장소에 만들어지는 모습입니다.
@@ -416,11 +426,9 @@ your-repo/
         └── archives/
 ```
 
-> `_templates/`는 실제 task 산출물이 아니라 출력 형식의 진실 원천입니다. 각 Skill은 산출물을 만들 때 먼저 `mydocs/_templates/`의 해당 템플릿을 참조하고, 템플릿을 읽을 수 없는 상황에서만 Skill 안의 최소 섹션 요약을 fallback으로 사용합니다.
+적용 저장소의 `.agents/skills`와 `.claude/skills` 심볼릭 링크 구조는 [Agent Skills 위치 정책](templates/mydocs/manual/document_structure_guide.md#agent-skills-위치-정책)을 따릅니다. `.hyper-waterfall/version.json`과 manifest 기준 업데이트 흐름은 [배포 manifest와 버전 기록 정책](templates/mydocs/manual/document_structure_guide.md#배포-manifest와-버전-기록-정책)에 정리되어 있습니다.
 
-> GitHub Issue와 Pull Request는 GitHub 플랫폼 산출물입니다. 이슈 본문은 `.github/ISSUE_TEMPLATE/task.yml`, PR 본문은 `.github/pull_request_template.md`를 기준으로 구조화하고, 저장소 안에 남는 작업 문서는 `mydocs/_templates/`를 기준으로 작성합니다.
-
-> 문서 템플릿의 진실 원천은 `templates/mydocs/_templates/`, GitHub Issue Form의 진실 원천은 `templates/.github/ISSUE_TEMPLATE/task.yml`, SKILL의 진실 원천은 `templates/mydocs/skills/`입니다. 적용 저장소에서는 `.agents/skills`와 `.claude/skills` 심볼릭 링크가 같은 Skill 본문을 가리킵니다.
+프레임워크의 문서 템플릿, GitHub Issue Form, SKILL 진실 원천은 각각 `templates/mydocs/_templates/`, `templates/.github/ISSUE_TEMPLATE/task.yml`, `templates/mydocs/skills/`입니다. 적용 저장소에서는 `.agents/skills`와 `.claude/skills` 심볼릭 링크가 같은 `mydocs/skills` 본문을 가리킵니다.
 
 ## 살아있는 예시 — 직접 따라가보기
 
