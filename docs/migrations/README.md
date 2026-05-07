@@ -32,7 +32,7 @@ v{from}-to-v{to}.md
 - 검증
 - 후속 작업
 
-섹션을 적용할 내용이 없으면 삭제하지 말고 `없음`과 이유를 적는다. 그래야 후속 `framework-update` Skill이나 update PR이 "누락"과 "해당 없음"을 구분할 수 있다.
+섹션을 적용할 내용이 없으면 삭제하지 말고 `없음`과 이유를 적는다. 그래야 lifecycle 판단, update PR workflow, CLI가 "누락"과 "해당 없음"을 구분할 수 있다.
 
 ## 작성 기준
 
@@ -53,9 +53,9 @@ grep -nE 'manifest|version|GitHub Release|\.hyper-waterfall' docs/migrations/v{f
 git diff --check
 ```
 
-## update PR과의 관계
+## lifecycle 판단과 update PR의 관계
 
-후속 `framework-update` Skill은 migration guide를 읽고 update PR 본문에 다음을 요약해야 한다.
+기존 적용 저장소 업데이트는 `docs/agent-entrypoint.md`의 "기존 업데이트 판단 결과 형식"을 따른다. Migration guide는 그 판단 결과와 update PR 후보를 만들 때 다음 항목의 근거로 사용한다.
 
 - 현재 version과 목표 version
 - manifest diff 요약
@@ -64,4 +64,4 @@ git diff --check
 - 충돌 가능성이 있는 파일
 - maintainer가 승인해야 할 항목
 
-따라서 migration guide는 단순 changelog가 아니라 update PR 리뷰의 근거 문서로 작성한다.
+따라서 migration guide는 단순 changelog가 아니라 lifecycle 판단 결과, update PR 리뷰, 향후 CLI `update`/`doctor` 출력의 근거 문서로 작성한다.
