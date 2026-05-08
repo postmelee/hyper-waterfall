@@ -73,6 +73,8 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 위 명령으로 신규 적용, 기존 업데이트, 상태 진단의 판단 결과를 재현 가능하게 출력한다.
 
+첫 npm publish 전에는 위 `npx` 명령은 publish 이후 사용할 안정 경로다. `hyper-waterfall@0.2.0` publish 전 검증과 승인 게이트는 `docs/releases/v0.2.0-npm-publish.md`를 기준으로 확인한다.
+
 비목표:
 
 - 사용자 저장소 파일을 무승인으로 수정하지 않는다.
@@ -83,7 +85,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 - 이미 M020 MVP가 있으므로 P0로 유지한다.
 - Homebrew와 Docker는 npm CLI를 재사용하거나 같은 출력 계약을 유지해야 한다.
-- npm publish와 publish 자동화는 별도 이슈로 분리한다.
+- npm publish 실행은 별도 승인 게이트로 분리하고, publish 자동화는 후속 이슈로 분리한다.
 
 ### Homebrew
 
@@ -209,13 +211,13 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 3. P2: Docker는 `doctor`와 `update --dry-run` read-only image부터 검증한다.
 4. P3: Codex plugin과 Claude plugin은 packaging 검증 task를 먼저 만들고, 실제 배포는 그 결과를 보고 분리한다.
 
-## 후속 마일스톤 후보
+## 구현 후보
 
-다음 마일스톤 후보는 구현 단위를 작게 나눈다.
+아래 후보는 배포 채널별 구현 단위를 작게 나눈다.
 
 | 후보 | 범위 | 제외 |
 |---|---|---|
-| M030 - npm publish 준비 | npm package publish checklist, tag/release 정합성, publish 전 검증 | Homebrew, Docker, plugin 구현 |
+| M020 - npm publish 준비 | npm package publish checklist, tag/release 정합성, publish 전 검증 | Homebrew, Docker, plugin 구현, 승인 없는 publish |
 | M030 - Homebrew formula/tap PoC | `hyper-waterfall` CLI 설치, version 확인, `doctor` smoke | 자동 release pipeline |
 | M030 - Docker read-only CLI image PoC | `doctor`, `init --dry-run`, `update --dry-run` 실행 image | host 파일 자동 수정 |
 | M030 - Codex plugin packaging 검증 | Codex plugin bundle 구조, canonical 문서 참조 방식, fallback 확인 | 실제 public 배포 |
