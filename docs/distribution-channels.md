@@ -50,7 +50,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 - Hyper-Waterfall의 version을 고정한다.
 - `templates/manifest.json`과 migration guide를 함께 묶어 update protocol의 기준을 제공한다.
-- checksum 확정과 release notes를 통해 적용 저장소 maintainer가 변경 근거를 검토할 수 있게 한다.
+- 확정 가능한 file checksum, root/directory checksum 보류 정책, release notes를 통해 적용 저장소 maintainer가 변경 근거를 검토할 수 있게 한다.
 
 비목표:
 
@@ -97,7 +97,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 - Homebrew formula가 manifest나 migration guide를 자체적으로 재정의하지 않는다.
 - formula가 적용 저장소 파일을 직접 수정하지 않는다.
-- npm package publish, GitHub Release checksum 확정 없이 formula만 먼저 안정 채널처럼 배포하지 않는다.
+- npm package publish, GitHub Release checksum 정책 확정 없이 formula만 먼저 안정 채널처럼 배포하지 않는다.
 
 운영 비용:
 
@@ -236,7 +236,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 | 리스크 | 영향 | 대응 |
 |---|---|---|
 | canonical 기준 혼선 | 채널마다 다른 manifest나 migration 기준을 쓰면 적용 저장소 업데이트가 재현 불가능해진다. | GitHub Release/tag + manifest + migration guide만 기준으로 둔다. |
-| checksum 미확정 상태 배포 | 실제 release 전 `pending-release` 상태를 안정 배포처럼 보이게 할 수 있다. | release/tag 확정 전 채널은 PoC 또는 planned 상태로만 표현한다. |
+| checksum 미확정 상태 배포 | root/directory `pending-release` 상태를 전체 checksum 확정처럼 보이게 할 수 있다. | release/tag 확정 전 채널은 PoC 또는 planned 상태로만 표현하고, file checksum `ready`와 root/directory `pending-release`를 구분한다. |
 | 사용자 파일 자동 덮어쓰기 | Hyper-Waterfall 승인 게이트를 우회한다. | 모든 채널은 판단 결과와 승인 요청만 출력한다. |
 | channel drift | npm, Homebrew, Docker, plugin 설명과 동작이 서로 달라진다. | npm CLI 출력 계약과 agent entrypoint 판단 결과 형식을 공통 기준으로 둔다. |
 | tool-specific lock-in | Codex/Claude plugin이 특정 도구에만 맞는 절차를 만들 수 있다. | `AGENTS.md`, `CLAUDE.md`, `mydocs/skills` canonical 구조를 유지하고 plugin은 발견/실행 계층으로 제한한다. |
