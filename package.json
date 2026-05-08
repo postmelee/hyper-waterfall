@@ -1,0 +1,29 @@
+{
+  "name": "hyper-waterfall",
+  "version": "0.2.0",
+  "description": "CLI helpers for Hyper-Waterfall framework lifecycle checks.",
+  "license": "MIT",
+  "bin": {
+    "hyper-waterfall": "./bin/hyper-waterfall.js"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "bin",
+    "src",
+    "templates",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "hyper-waterfall",
+    "cli",
+    "workflow",
+    "ai-coding"
+  ]
+}
