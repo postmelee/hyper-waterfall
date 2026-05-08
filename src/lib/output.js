@@ -97,9 +97,46 @@ function renderScaffoldResult({ command, title, nextStage, options }) {
   ].join("\n");
 }
 
+function renderBulletList(items, indent = "  ") {
+  return items.map((item) => `${indent}- ${item}`);
+}
+
+function renderKeyValues(entries, indent = "  ") {
+  return entries.map(([key, value]) => `${indent}- ${key}: ${value}`);
+}
+
+function renderLifecycleReport({ title, sections }) {
+  const lines = [title, ""];
+
+  for (const section of sections) {
+    lines.push(`${section.title}:`);
+
+    if (section.entries) {
+      lines.push(...renderKeyValues(section.entries));
+    }
+
+    if (section.items) {
+      lines.push(...renderBulletList(section.items));
+    }
+
+    if (!section.entries && !section.items) {
+      lines.push("  - 없음");
+    }
+
+    lines.push("");
+  }
+
+  lines.push("Safety:");
+  lines.push("  - 파일을 자동 수정하지 않습니다.");
+  lines.push("  - 승인 전에는 manifest diff에 포함된 파일을 적용하지 않습니다.");
+
+  return lines.join("\n");
+}
+
 module.exports = {
   parseOptions,
   renderCommandHelp,
+  renderLifecycleReport,
   renderScaffoldResult,
   writeLine
 };
