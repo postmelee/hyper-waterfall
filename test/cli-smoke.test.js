@@ -1,4 +1,6 @@
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const os = require("node:os");
 const { spawnSync } = require("node:child_process");
 const path = require("node:path");
 const test = require("node:test");
@@ -110,4 +112,19 @@ test("doctor prints non-destructive diagnostics", () => {
   assert.match(result.stdout, /symlink/);
   assert.match(result.stdout, /placeholder/);
   assert.match(result.stdout, /자동 수정하지 않습니다/);
+});
+
+test("init can use the bundled manifest outside the framework repository", () => {
+  const tempRepo = fs.mkdtempSync(path.join(os.tmpdir(), "hyper-waterfall-cli-"));
+  const result = runCli([
+    "init",
+    "--repo",
+    tempRepo,
+    "--dry-run"
+  ]);
+
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /신규 적용 판단 결과/);
+  assert.match(result.stdout, /templates\/manifest\.json/);
+  assert.match(result.stdout, /targetStatus: missing=17/);
 });

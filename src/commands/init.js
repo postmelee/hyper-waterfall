@@ -13,7 +13,7 @@ const name = "init";
 const summary = "Prepare a new repository adoption dry-run.";
 const options = [
   ["--repo <path>", "Target repository path. Defaults to the current directory."],
-  ["--manifest <path>", "Framework manifest path. Defaults to templates/manifest.json."],
+  ["--manifest <path>", "Framework manifest path. Defaults to repo templates/manifest.json, then bundled manifest."],
   ["--target-release <tag>", "Target Hyper-Waterfall release or tag."],
   ["--dry-run", "Print the adoption plan without writing files."]
 ];

@@ -3,16 +3,28 @@ const path = require("node:path");
 
 const DEFAULT_MANIFEST_PATH = "templates/manifest.json";
 
+function getPackageManifestPath() {
+  return path.resolve(__dirname, "..", "..", DEFAULT_MANIFEST_PATH);
+}
+
 function resolveRepositoryPath(repoValue = ".") {
   return path.resolve(process.cwd(), repoValue || ".");
 }
 
-function resolveManifestPath(repoPath, manifestValue = DEFAULT_MANIFEST_PATH) {
+function resolveManifestPath(repoPath, manifestValue) {
+  if (!manifestValue) {
+    const repoManifestPath = path.resolve(repoPath, DEFAULT_MANIFEST_PATH);
+    if (fs.existsSync(repoManifestPath)) {
+      return repoManifestPath;
+    }
+    return getPackageManifestPath();
+  }
+
   if (path.isAbsolute(manifestValue)) {
     return manifestValue;
   }
 
-  return path.resolve(repoPath, manifestValue || DEFAULT_MANIFEST_PATH);
+  return path.resolve(repoPath, manifestValue);
 }
 
 function readJsonFile(filePath, label) {
@@ -218,6 +230,7 @@ module.exports = {
   classifyUpdateCandidates,
   describeCounts,
   formatPathItems,
+  getPackageManifestPath,
   getTargetRelease,
   loadManifest,
   resolveManifestPath,

@@ -12,7 +12,7 @@ const name = "doctor";
 const summary = "Diagnose framework lifecycle files without modifying them.";
 const options = [
   ["--repo <path>", "Target repository path. Defaults to the current directory."],
-  ["--manifest <path>", "Framework manifest path. Defaults to templates/manifest.json."]
+  ["--manifest <path>", "Framework manifest path. Defaults to repo templates/manifest.json, then bundled manifest."]
 ];
 
 function help() {
