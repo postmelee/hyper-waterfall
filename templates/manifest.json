@@ -55,8 +55,8 @@
       "updatePolicy": "merge",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "b18d24c46b836c76d68940064ad382a05b48c26e1285740c08e24e4c96d79cb6"
       }
     },
     {
@@ -67,8 +67,8 @@
       "updatePolicy": "merge",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "0e10e5cabc3c9f5e3c3cc6442b922bec8694b4b156683aa478e2964829c0cc10"
       }
     },
     {
@@ -79,8 +79,8 @@
       "updatePolicy": "merge",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "3425ce2cbec9d585c5795da3212233761c28f431bccca38d726b9f4d4d6fe927"
       }
     },
     {
@@ -91,8 +91,8 @@
       "updatePolicy": "merge",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "88d818c3c2b740dbcffe499e8e06e078d95309acc1eb8bb4e727edf473fab7d6"
       }
     },
     {
@@ -139,8 +139,8 @@
       "updatePolicy": "preserve",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
     {
@@ -151,8 +151,8 @@
       "updatePolicy": "preserve",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
     {
@@ -163,8 +163,8 @@
       "updatePolicy": "preserve",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
     {
@@ -175,8 +175,8 @@
       "updatePolicy": "preserve",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
     {
@@ -187,8 +187,8 @@
       "updatePolicy": "preserve",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
     {
@@ -199,8 +199,8 @@
       "updatePolicy": "preserve",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
     {
@@ -211,8 +211,8 @@
       "updatePolicy": "preserve",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
     {
@@ -223,8 +223,8 @@
       "updatePolicy": "preserve",
       "checksum": {
         "algorithm": "sha256",
-        "status": "pending-release",
-        "value": null
+        "status": "ready",
+        "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
       }
     },
     {
