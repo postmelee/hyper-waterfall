@@ -11,6 +11,7 @@
 - **분리 worktree**: 메인 worktree가 다른 작업에 쓰이고 있을 때 별도 디렉터리에서 같은 저장소의 다른 브랜치를 작업하는 방식.
 - **GitHub Release/tag**: Hyper-Waterfall의 canonical 배포 단위. release에는 `templates/manifest.json`과 migration guide 기준이 함께 따라야 한다.
 - **update protocol**: 적용 저장소의 `.hyper-waterfall/version.json`, release manifest, `docs/migrations/`를 비교해 안전하게 업데이트 PR을 만드는 절차.
+- **Hyper-Waterfall 버전 업데이트 PR**: 기존 적용 저장소를 새 Hyper-Waterfall release/tag로 올리기 위해 만드는 issue-backed PR. 입력은 lifecycle 판단 결과, manifest diff, migration guide다.
 
 ## 브랜치 관리
 
@@ -53,7 +54,25 @@ release 준비 시 확인할 항목:
 - `docs/migrations/v{from}-to-v{to}.md`가 추가 파일, 수정 파일, 수동 확인, 충돌 가능성, 검증 기준을 포함하는지 확인
 - 적용 저장소의 `.hyper-waterfall/version.json`이 목표 version으로 갱신될 수 있는지 확인
 
-일반 task PR과 release PR은 분리한다. task PR은 `local/taskN -> publish/taskN -> {BASE_BRANCH}` 흐름을 따르고, release PR은 `{BASE_BRANCH} -> {RELEASE_BRANCH}` 흐름을 따른다. 기존 적용 저장소 업데이트는 release 이후 별도 update PR로 수행한다.
+일반 task PR과 release PR은 분리한다. task PR은 `local/taskN -> publish/taskN -> {BASE_BRANCH}` 흐름을 따르고, release PR은 `{BASE_BRANCH} -> {RELEASE_BRANCH}` 흐름을 따른다. 기존 적용 저장소 업데이트는 release 이후 별도 Hyper-Waterfall 버전 업데이트 PR로 수행한다.
+
+### PR 유형 구분
+
+| 유형 | 목적 | 브랜치 흐름 | PR 제목 |
+|---|---|---|---|
+| task PR | 저장소 기능, 문서, 운영 작업을 이슈 단위로 반영 | `local/task{N}` -> `publish/task{N}` -> `{BASE_BRANCH}` | `Task #{N}: {작업 제목}` |
+| release PR | `{BASE_BRANCH}`에 누적된 프레임워크 변경을 `{RELEASE_BRANCH}`로 승격하고 tag 기준을 만든다 | `{BASE_BRANCH}` -> `{RELEASE_BRANCH}` | `Release: {version}` |
+| Hyper-Waterfall 버전 업데이트 PR | 기존 적용 저장소를 현재 version에서 목표 release/tag로 올린다 | `local/task{N}` -> `publish/task{N}` -> `{BASE_BRANCH}` | `Task #{N}: Hyper-Waterfall {fromVersion} -> {toVersion} 버전 업데이트` |
+
+Hyper-Waterfall 버전 업데이트 PR은 일반 task PR과 같은 브랜치 흐름을 사용한다. 차이는 PR의 입력과 본문이다. Hyper-Waterfall 버전 업데이트 PR은 `docs/agent-entrypoint.md`의 기존 업데이트 판단 결과를 입력으로 삼고, PR 본문에 `manifest diff`, migration guide 요약, 자동 적용 가능 항목, 수동 확인 필요 항목, conflict 항목, 검증 결과를 남긴다.
+
+Hyper-Waterfall 버전 업데이트 PR 커밋 메시지 규칙:
+
+- 단일 커밋: `Task #{N}: Hyper-Waterfall {fromVersion} -> {toVersion} 버전 업데이트`
+- 단계 커밋: `Task #{N} Stage {S}: Hyper-Waterfall 버전 업데이트 {내용}`
+- 최종 보고 커밋: `Task #{N}: 최종 보고서 작성과 오늘할일 완료 처리`
+
+Hyper-Waterfall 버전 업데이트 PR 브랜치를 별도 prefix로 만들지 않는 이유는 작업 추적 기준을 GitHub Issue와 하이퍼-워터폴 산출물로 유지하기 위해서다. CLI나 자동화가 Hyper-Waterfall 버전 업데이트 PR 후보를 만들더라도 먼저 판단 결과를 출력하고, 승인된 이슈 번호를 받은 뒤 위 브랜치 규칙을 따른다.
 
 ## 메인테이너 워크플로우
 
