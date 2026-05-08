@@ -301,6 +301,8 @@ AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용
 
 Homebrew, Docker, Codex plugin, Claude plugin 같은 추가 배포 채널도 canonical 기준을 대체하지 않는 프로토콜 실행 수단으로만 다룹니다. 채널별 목적, 비목표, 운영 비용, 우선순위는 [`docs/distribution-channels.md`](docs/distribution-channels.md)에 정리합니다.
 
+첫 npm publish 전에는 아래 `npx` 예시는 publish 이후 사용할 안정 경로입니다. publish 전 검증과 승인 게이트는 [`docs/releases/v0.2.0-npm-publish.md`](docs/releases/v0.2.0-npm-publish.md)에서 관리합니다.
+
 ```bash
 npx hyper-waterfall init --repo . --dry-run
 npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --dry-run

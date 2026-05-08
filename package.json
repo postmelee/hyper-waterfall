@@ -3,6 +3,14 @@
   "version": "0.2.0",
   "description": "CLI helpers for Hyper-Waterfall framework lifecycle checks.",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/postmelee/hyper-waterfall.git"
+  },
+  "bugs": {
+    "url": "https://github.com/postmelee/hyper-waterfall/issues"
+  },
+  "homepage": "https://github.com/postmelee/hyper-waterfall#readme",
   "bin": {
     "hyper-waterfall": "./bin/hyper-waterfall.js"
   },
