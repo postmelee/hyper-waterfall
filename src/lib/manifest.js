@@ -114,11 +114,15 @@ function getTargetStatuses(repoPath, manifest) {
     let targetStatus = "missing";
     let sourceStatus = "missing";
     let isSymlink = false;
+    let symlinkTarget = null;
 
     try {
       const targetStat = fs.lstatSync(targetPath);
       targetStatus = "exists";
       isSymlink = targetStat.isSymbolicLink();
+      if (isSymlink) {
+        symlinkTarget = fs.readlinkSync(targetPath);
+      }
     } catch (error) {
       if (error.code !== "ENOENT") {
         targetStatus = `error:${error.code}`;
@@ -137,7 +141,10 @@ function getTargetStatuses(repoPath, manifest) {
     return {
       ...file,
       isSymlink,
+      sourcePath,
       sourceStatus,
+      symlinkTarget,
+      targetPath,
       targetStatus
     };
   });

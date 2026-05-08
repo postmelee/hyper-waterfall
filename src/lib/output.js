@@ -133,9 +133,38 @@ function renderLifecycleReport({ title, sections }) {
   return lines.join("\n");
 }
 
+function renderDiagnosticReport({ title, summary, diagnostics }) {
+  const lines = [
+    title,
+    "",
+    "Levels: OK, WARN, ERROR, INFO",
+    ""
+  ];
+
+  if (summary && summary.length > 0) {
+    lines.push("Summary:");
+    lines.push(...renderKeyValues(summary));
+    lines.push("");
+  }
+
+  lines.push("Diagnostics:");
+  for (const diagnostic of diagnostics) {
+    lines.push(`  [${diagnostic.level}] ${diagnostic.scope}: ${diagnostic.message}`);
+  }
+
+  lines.push("");
+  lines.push("Safety:");
+  lines.push("  - 자동 수정하지 않습니다.");
+  lines.push("  - 파일 복사, 덮어쓰기, symlink 재생성, PR 생성은 수행하지 않습니다.");
+  lines.push("  - 필요한 조치는 승인 후 일반 task workflow에서 수행합니다.");
+
+  return lines.join("\n");
+}
+
 module.exports = {
   parseOptions,
   renderCommandHelp,
+  renderDiagnosticReport,
   renderLifecycleReport,
   renderScaffoldResult,
   writeLine

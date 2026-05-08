@@ -91,3 +91,23 @@ test("update prints lifecycle checkpoint fields", () => {
   assert.match(result.stdout, /보류/);
   assert.match(result.stdout, /승인 요청/);
 });
+
+test("doctor prints non-destructive diagnostics", () => {
+  const result = runCli([
+    "doctor",
+    "--repo",
+    ".",
+    "--manifest",
+    "templates/manifest.json"
+  ]);
+
+  assert.equal(result.status, 0);
+  assert.match(result.stdout, /doctor 진단 결과/);
+  assert.match(result.stdout, /Levels: OK, WARN, ERROR, INFO/);
+  assert.match(result.stdout, /version-state/);
+  assert.match(result.stdout, /manifest-source/);
+  assert.match(result.stdout, /manifest-target/);
+  assert.match(result.stdout, /symlink/);
+  assert.match(result.stdout, /placeholder/);
+  assert.match(result.stdout, /자동 수정하지 않습니다/);
+});
