@@ -10,7 +10,15 @@ Hyper-Waterfall은 AI 페어 프로그래머와 함께 소프트웨어를 만들
 > 누구나 GitHub 저장소에 Hyper-Waterfall을 적용하고, Codex·Claude Code 등 여러 AI 코딩 에이전트가 같은 규율 위에서 작업하게 만듭니다.
 > </br> AI에게 “그냥 만들어줘”라고 맡기는 대신, 계획·승인·구현·검증·보고·PR까지 이어지는 작업 레일을 저장소 안에 설치합니다.
 
+### 바로 적용하기
 
+AI 코딩 도구에 다음 한 줄을 보내면 이 저장소의 적용 절차가 시작됩니다.
+
+```text
+https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘.
+```
+
+AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)를 기준으로 적용 후보를 먼저 보고하고, 파일 변경 전 작업지시자 승인을 요청합니다. npm CLI는 dry-run 판단을 보조하는 채널이며, canonical 기준은 GitHub Release/tag, `templates/manifest.json`, migration guide입니다.
 
 ### 적용하면 바로 달라지는 것
 
