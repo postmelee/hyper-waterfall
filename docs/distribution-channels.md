@@ -73,7 +73,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 위 명령으로 신규 적용, 기존 업데이트, 상태 진단의 판단 결과를 재현 가능하게 출력한다.
 
-첫 npm publish 전에는 위 `npx` 명령은 publish 이후 사용할 안정 경로다. `hyper-waterfall@0.2.0` publish 전 검증과 승인 게이트는 `docs/releases/v0.2.0-npm-publish.md`를 기준으로 확인한다.
+`hyper-waterfall@0.2.0`은 npm registry에 publish되어 있으며, 위 `npx` 명령은 lifecycle 판단을 실행하는 안정 경로다. publish 전후 검증 결과는 `docs/releases/v0.2.0-npm-publish.md`를 기준으로 확인한다.
 
 비목표:
 
