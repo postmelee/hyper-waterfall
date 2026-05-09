@@ -112,6 +112,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 - 다음 구현 후보로 가장 현실적이다.
 - 단, 실제 구현은 `v0.2.0` release/tag와 npm package 배포 기준이 안정된 뒤 진행한다.
+- formula/tap PoC의 최소 범위와 접근안 비교는 [`docs/homebrew-formula-tap-poc.md`](homebrew-formula-tap-poc.md)에 둔다.
 - 후속 마일스톤 후보: `M030 - Homebrew formula/tap PoC`.
 
 ### Docker
