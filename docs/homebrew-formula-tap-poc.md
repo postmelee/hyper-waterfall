@@ -183,6 +183,15 @@ brew test postmelee/tap/hyper-waterfall
 - README에 Homebrew 설치 안내를 넣을지 판단
 - release마다 formula를 갱신하는 수동 checklist 또는 자동화 이슈 등록
 
+## 수용 기준 점검
+
+| 수용 기준 | 문서 반영 |
+|---|---|
+| Homebrew가 해결하는 사용자 문제와 비목표가 명확하다. | `목적`과 `비목표`에서 macOS 설치 발견성 개선과 제외 범위를 분리했다. |
+| PoC에서 검증할 설치 경로와 smoke 명령이 명확하다. | `smoke 검증 경로`에서 local PoC 명령 후보와 `hyper-waterfall --version`, `hyper-waterfall doctor --repo .`, `brew test` 기대 결과를 정리했다. |
+| formula가 canonical 기준을 대체하지 않고 CLI 실행 수단으로만 동작한다는 경계가 드러난다. | `책임 경계`, `version과 checksum 기준`, `추천 PoC`에서 GitHub Release/tag, manifest, migration guide와 Homebrew wrapper의 역할을 분리했다. |
+| 실제 public 배포 여부는 별도 승인 지점으로 남는다. | `public tap 배포 승인 게이트`에서 tap 공개, formula push, README 안내, 자동화 여부를 별도 승인 항목으로 남겼다. |
+
 ## 결론
 
 Homebrew PoC는 별도 tap 저장소의 npm package wrapper를 1순위로 둔다. 이 접근은 macOS 설치 UX를 개선하면서도 canonical 기준을 formula 내부로 옮기지 않는다.
