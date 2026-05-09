@@ -2,7 +2,7 @@
 
 이 문서는 Hyper-Waterfall CLI를 Homebrew로 설치하는 PoC의 최소 범위, 접근안 비교, smoke 검증 경로, 승인 게이트를 정리한다. 실제 Homebrew tap 공개 배포, npm publish, GitHub Release/tag 생성, 자동 release pipeline 구현은 이 문서만으로 수행하지 않는다.
 
-Task #34에서 local tap smoke를 실행했고 결과는 [`homebrew-formula-local-tap-smoke.md`](homebrew-formula-local-tap-smoke.md)에 기록했다.
+Task #34에서 local tap smoke를 실행했고 결과는 [`task_m040_34_homebrew_local_tap_smoke.md`](../mydocs/tech/task_m040_34_homebrew_local_tap_smoke.md)에 기록했다.
 
 ## 목적
 

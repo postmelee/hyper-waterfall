@@ -11,7 +11,7 @@ GitHub Issue: [#34](https://github.com/postmelee/hyper-waterfall/issues/34)
 | 1 | npm tarball 기준과 로컬 Homebrew 환경 확인 | `mydocs/working/task_m040_34_stage1.md`, `/private/tmp/hyper-waterfall-task34-homebrew` | npm registry metadata, tarball SHA256, Homebrew/Node 환경 확인 |
 | 2 | formula 후보와 local tap 준비 | `mydocs/working/task_m040_34_stage2.md`, `/private/tmp/hyper-waterfall-task34-homebrew/homebrew-hyper-waterfall-local/Formula/hyper-waterfall.rb` | formula syntax, URL/SHA256/Node/std_npm_args/test 수동 검토 |
 | 3 | Homebrew audit/install/smoke 검증 | `mydocs/working/task_m040_34_stage3.md`, local Homebrew install 상태 | `brew audit`, `brew install --build-from-source`, `--version`, `doctor`, `brew test`, read-only 확인 |
-| 4 | 결과 문서화와 public tap readiness 판단 | `docs/homebrew-formula-tap-poc.md` 또는 `docs/homebrew-formula-local-tap-smoke.md`, `mydocs/working/task_m040_34_stage4.md` | smoke 결과 grep, public tap 보류 조건 확인, `git diff --check` |
+| 4 | 결과 문서화와 public tap readiness 판단 | `docs/homebrew-formula-tap-poc.md` 또는 `mydocs/tech/task_m040_34_homebrew_local_tap_smoke.md`, `mydocs/working/task_m040_34_stage4.md` | smoke 결과 grep, public tap 보류 조건 확인, `git diff --check` |
 
 ## Stage 1 - npm tarball 기준과 로컬 Homebrew 환경 확인
 
@@ -178,7 +178,7 @@ Task #34 Stage 3: Homebrew local tap smoke 검증
 신규:
 
 - `mydocs/working/task_m040_34_stage4.md`
-- 필요 시 `docs/homebrew-formula-local-tap-smoke.md`
+- 필요 시 `mydocs/tech/task_m040_34_homebrew_local_tap_smoke.md`
 
 수정:
 
@@ -196,7 +196,7 @@ Task #34 Stage 3: Homebrew local tap smoke 검증
 ### 검증
 
 ```bash
-rg -n 'Homebrew|formula|tap|SHA256|brew audit|brew install|doctor|public tap|보류|readiness' docs mydocs/working mydocs/orders/20260510.md
+rg -n 'Homebrew|formula|tap|SHA256|brew audit|brew install|doctor|public tap|보류|readiness' docs mydocs/tech mydocs/working mydocs/orders/20260510.md
 git diff --check
 git status --short --branch
 ```

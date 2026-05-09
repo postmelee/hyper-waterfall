@@ -14,7 +14,7 @@ Stage 1~3의 npm tarball SHA256, formula 후보, Homebrew audit/install/smoke/te
 
 | 파일 | 변경 요약 |
 |---|---|
-| `docs/homebrew-formula-local-tap-smoke.md` | Task #34 local tap smoke 결과 신설. tarball URL/SHA256, formula 후보, 검증 결과, cleanup, readiness, #35 인계 항목 기록 |
+| `mydocs/tech/task_m040_34_homebrew_local_tap_smoke.md` | Task #34 local tap smoke 결과 신설. tarball URL/SHA256, formula 후보, 검증 결과, cleanup, readiness, #35 인계 항목 기록 |
 | `docs/homebrew-formula-tap-poc.md` | Task #34 smoke 결과 문서 링크, 확인된 SHA256, public tap 승인 게이트 상태, 후속 작업 후보, 결론 갱신 |
 | `mydocs/orders/20260510.md` | #34 비고를 Stage 4 결과 문서화 후 승인 대기로 갱신 |
 | `mydocs/working/task_m040_34_stage4.md` | Stage 4 검증 결과와 다음 단계 영향 기록 |
@@ -30,7 +30,7 @@ Stage 1~3의 npm tarball SHA256, formula 후보, Homebrew audit/install/smoke/te
 실행 명령:
 
 ```bash
-rg -n 'Homebrew|formula|tap|SHA256|brew audit|brew install|doctor|public tap|보류|readiness' docs mydocs/working mydocs/orders/20260510.md
+rg -n 'Homebrew|formula|tap|SHA256|brew audit|brew install|doctor|public tap|보류|readiness' docs mydocs/tech mydocs/working mydocs/orders/20260510.md
 git diff --check
 git status --short --branch
 ```
@@ -38,7 +38,7 @@ git status --short --branch
 결과:
 
 - OK: `rg` 검증에서 신규 smoke 결과 문서, 기존 PoC 문서, Stage 보고서, 오늘할일에서 Homebrew/formula/tap/SHA256/audit/install/doctor/public tap/보류/readiness 관련 내용을 확인했다.
-- OK: `docs/homebrew-formula-local-tap-smoke.md`에 다음 결과가 기록됐다.
+- OK: `mydocs/tech/task_m040_34_homebrew_local_tap_smoke.md`에 다음 결과가 기록됐다.
   - npm tarball URL: `https://registry.npmjs.org/hyper-waterfall/-/hyper-waterfall-0.2.0.tgz`
   - SHA256: `34dc90ca4b9cefa3f13034711e6bffc3f3c184360c44ab4924e00e26163e0cc7`
   - `brew audit --new --formula` 통과

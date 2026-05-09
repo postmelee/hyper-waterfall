@@ -21,7 +21,7 @@ GitHub Issue: [#34](https://github.com/postmelee/hyper-waterfall/issues/34)
 | `mydocs/working/task_m040_34_stage2.md` | Homebrew formula 후보와 `/private/tmp` local tap repository 준비 결과 기록 | 단계 보고서 |
 | `mydocs/working/task_m040_34_stage3.md` | `brew audit`, install, `--version`, `doctor`, `brew test`, cleanup 결과 기록 | 단계 보고서 |
 | `mydocs/working/task_m040_34_stage4.md` | smoke 결과 문서화와 public tap readiness 판단 결과 기록 | 단계 보고서 |
-| `docs/homebrew-formula-local-tap-smoke.md` | local tap smoke 결과 문서 신설. tarball URL/SHA256, formula 후보, 검증 결과, 보류 조건, #35 인계 항목 정리 | Homebrew public tap 배포 전 판단 근거 |
+| `mydocs/tech/task_m040_34_homebrew_local_tap_smoke.md` | local tap smoke 결과 문서 신설. tarball URL/SHA256, formula 후보, 검증 결과, 보류 조건, #35 인계 항목 정리 | Homebrew public tap 배포 전 판단 근거 |
 | `docs/homebrew-formula-tap-poc.md` | Task #34 smoke 결과 링크, 확인된 SHA256, public tap 승인 게이트 상태, 후속 작업 후보 갱신 | 기존 Homebrew PoC 설계 문서 |
 | `mydocs/report/task_m040_34_report.md` | 최종 결과보고서 작성 | PR 전 장기 보관 보고 |
 
@@ -56,7 +56,7 @@ GitHub Issue: [#34](https://github.com/postmelee/hyper-waterfall/issues/34)
 | `brew audit --new --formula`가 통과한다. | OK — Stage 3에서 name 기반 audit가 출력 없이 성공 |
 | `brew test` 가능 여부를 확인한다. | OK — Stage 3에서 `brew test postmelee/hyper-waterfall-local/hyper-waterfall` 통과 |
 | formula가 manifest, migration guide, checksum 정책을 복제하지 않는다. | OK — Stage 2에서 canonical 기준 복제 의심 키워드 no-match 검증, Stage 4 문서에 CLI wrapper 경계 기록 |
-| public tap 배포 가능 여부와 보류 조건이 정리된다. | OK — `docs/homebrew-formula-local-tap-smoke.md`와 `docs/homebrew-formula-tap-poc.md`에 local smoke 통과와 public 배포 보류 조건 분리 |
+| public tap 배포 가능 여부와 보류 조건이 정리된다. | OK — `mydocs/tech/task_m040_34_homebrew_local_tap_smoke.md`와 `docs/homebrew-formula-tap-poc.md`에 local smoke 통과와 public 배포 보류 조건 분리 |
 | `git diff --check`가 경고 없이 통과한다. | OK — Stage 1-4와 최종 보고 전 통합 검증에서 통과 |
 
 ### 단계별 검증 결과
@@ -69,7 +69,7 @@ GitHub Issue: [#34](https://github.com/postmelee/hyper-waterfall/issues/34)
 통합 검증:
 
 - `test -f mydocs/plans/task_m040_34.md` 등 계획서와 Stage 1-4 보고서 존재 확인 -> 통과
-- `test -f docs/homebrew-formula-local-tap-smoke.md` -> 통과
+- `test -f mydocs/tech/task_m040_34_homebrew_local_tap_smoke.md` -> 통과
 - `rg -n 'SHA256|34dc90ca4b9cefa3f13034711e6bffc3f3c184360c44ab4924e00e26163e0cc7|brew audit|brew install --build-from-source|hyper-waterfall --version|doctor --repo|brew test|public tap|보류' ...` -> 통과
 - `git diff --check` -> 통과
 - `git status --short --branch` -> 최종 보고서 작성 전 기준 `local/task34...origin/main [ahead 6]`
