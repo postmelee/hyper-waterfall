@@ -72,7 +72,7 @@ GitHub Issue: [#34](https://github.com/postmelee/hyper-waterfall/issues/34)
 - `test -f mydocs/tech/task_m040_34_homebrew_local_tap_smoke.md` -> 통과
 - `rg -n 'SHA256|34dc90ca4b9cefa3f13034711e6bffc3f3c184360c44ab4924e00e26163e0cc7|brew audit|brew install --build-from-source|hyper-waterfall --version|doctor --repo|brew test|public tap|보류' ...` -> 통과
 - `git diff --check` -> 통과
-- `git status --short --branch` -> 최종 보고서 작성 전 기준 `local/task34...origin/main [ahead 6]`
+- `git status --short --branch` -> PR 게시 직전 기준 작업트리 clean
 
 ## 잔여 위험과 후속 작업
 
