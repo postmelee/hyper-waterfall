@@ -159,19 +159,21 @@ brew test postmelee/tap/hyper-waterfall
 
 ## public tap 배포 승인 게이트
 
-다음 항목이 모두 충족되기 전에는 public tap을 만들거나 formula를 push하지 않는다.
+Task #35에서 public tap 배포와 공개 설치 smoke를 실행했다. 다음 항목은 public tap 생성과 formula push 전 승인 게이트였으며, 현재 상태를 함께 기록한다.
 
-- [ ] 작업지시자가 Homebrew tap 공개 배포를 명시 승인했다.
+- [x] 작업지시자가 Homebrew tap 공개 배포를 명시 승인했다.
 - [x] `v0.2.0` GitHub Release/tag와 npm package version 정합성을 확인했다.
 - [x] npm tarball 또는 release asset SHA256을 확인했다.
 - [x] local tap에서 `brew install --build-from-source`가 통과했다.
+- [x] public tap repository `postmelee/homebrew-tap`을 생성하고 `Formula/hyper-waterfall.rb`를 push했다.
+- [x] public tap에서 `brew install --build-from-source`가 통과했다.
 - [x] `hyper-waterfall --version` smoke가 통과했다.
 - [x] `hyper-waterfall doctor --repo .` smoke가 read-only로 동작했다.
 - [x] `brew test`가 통과했다.
-- [ ] README 또는 release notes에 Homebrew 설치 안내를 추가할지 별도 승인했다.
+- [x] README 또는 release notes에 Homebrew 설치 안내를 추가할지 별도 승인했다.
 - [ ] formula 업데이트 자동화 여부를 별도 이슈로 분리했다.
 
-Task #34 결과 기준으로 local technical smoke는 통과했지만 public tap 배포는 아직 보류한다. 남은 보류 조건은 public tap 배포 승인, tap repository 이름과 공개 범위, README 또는 release notes 안내 승인, formula 업데이트 운영 방식, Homebrew `node` 의존성 안내다.
+Task #35 결과 기준으로 public tap technical smoke는 통과했다. 사용자-facing 설치 명령은 `brew install postmelee/tap/hyper-waterfall`이다. 아무 tap도 지정하지 않는 `brew install hyper-waterfall` 첫 설치 경로는 Homebrew core 등재가 필요하므로 [#46](https://github.com/postmelee/hyper-waterfall/issues/46)에서 별도로 검토한다.
 
 ## 운영 비용
 
@@ -186,11 +188,7 @@ Task #34 결과 기준으로 local technical smoke는 통과했지만 public tap
 
 ## 후속 작업 후보
 
-- `homebrew-tap` 저장소 이름과 공개 범위 결정
-- Task #34에서 확인한 tarball SHA256과 formula 후보를 public tap 후보로 이관
-- public tap 기준 `brew audit --new --formula` 재실행
-- public tap 기준 macOS install smoke 검증
-- README에 Homebrew 설치 안내를 넣을지 판단
+- Homebrew core 등재 가능성 평가와 제출 준비: [#46](https://github.com/postmelee/hyper-waterfall/issues/46)
 - release마다 formula를 갱신하는 수동 checklist 또는 자동화 이슈 등록
 
 ## 수용 기준 점검
@@ -200,10 +198,10 @@ Task #34 결과 기준으로 local technical smoke는 통과했지만 public tap
 | Homebrew가 해결하는 사용자 문제와 비목표가 명확하다. | `목적`과 `비목표`에서 macOS 설치 발견성 개선과 제외 범위를 분리했다. |
 | PoC에서 검증할 설치 경로와 smoke 명령이 명확하다. | `smoke 검증 경로`에서 local PoC 명령 후보와 `hyper-waterfall --version`, `hyper-waterfall doctor --repo .`, `brew test` 기대 결과를 정리했다. |
 | formula가 canonical 기준을 대체하지 않고 CLI 실행 수단으로만 동작한다는 경계가 드러난다. | `책임 경계`, `version과 checksum 기준`, `추천 PoC`에서 GitHub Release/tag, manifest, migration guide와 Homebrew wrapper의 역할을 분리했다. |
-| 실제 public 배포 여부는 별도 승인 지점으로 남는다. | `public tap 배포 승인 게이트`에서 tap 공개, formula push, README 안내, 자동화 여부를 별도 승인 항목으로 남겼다. |
+| 실제 public 배포 실행과 남은 운영 자동화가 승인 지점으로 분리되어 있다. | `public tap 배포 승인 게이트`에서 Task #35의 tap 공개, formula push, README 안내 승인 상태를 기록하고, formula 업데이트 자동화는 별도 항목으로 남겼다. |
 
 ## 결론
 
 Homebrew PoC는 별도 tap 저장소의 npm package wrapper를 1순위로 둔다. 이 접근은 macOS 설치 UX를 개선하면서도 canonical 기준을 formula 내부로 옮기지 않는다.
 
-Task #34에서 `v0.2.0` npm tarball SHA256과 local Homebrew smoke는 확인됐다. 실제 public 배포는 작업지시자가 public tap 배포를 별도 승인하고, tap 저장소·설치 안내·formula 업데이트 운영 방식을 확정한 뒤에만 진행한다.
+Task #35에서 `postmelee/homebrew-tap` public repository와 `postmelee/tap/hyper-waterfall` 설치 경로가 공개됐고, public tap smoke가 통과했다. Homebrew는 계속 CLI 설치 wrapper이며 canonical 기준은 GitHub Release/tag, `templates/manifest.json`, migration guide다. `brew install hyper-waterfall` 단독 경로는 Homebrew core 등재 검토 결과에 따라 별도 판단한다.

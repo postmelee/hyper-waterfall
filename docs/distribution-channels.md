@@ -110,10 +110,10 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 판단:
 
-- 다음 구현 후보로 가장 현실적이다.
-- 단, 실제 구현은 `v0.2.0` release/tag와 npm package 배포 기준이 안정된 뒤 진행한다.
-- formula/tap PoC의 최소 범위와 접근안 비교는 [`docs/homebrew-formula-tap-poc.md`](homebrew-formula-tap-poc.md)에 둔다.
-- 후속 마일스톤 후보: `M030 - Homebrew formula/tap PoC`.
+- `postmelee/homebrew-tap` public tap이 생성됐고, `postmelee/tap/hyper-waterfall` 공개 설치 smoke가 통과했다.
+- 사용자-facing 설치 명령은 `brew install postmelee/tap/hyper-waterfall`이다. 이 명령은 Homebrew가 tap을 자동으로 추가하고 formula를 설치하는 한 줄 경로다.
+- 아무 tap도 지정하지 않는 `brew install hyper-waterfall` 첫 설치 경로는 Homebrew core 등재가 필요하므로 [#46](https://github.com/postmelee/hyper-waterfall/issues/46)에서 별도로 검토한다.
+- formula/tap PoC와 public smoke 결과는 [`docs/homebrew-formula-tap-poc.md`](homebrew-formula-tap-poc.md)와 `mydocs/tech/task_m040_35_homebrew_public_tap_smoke.md`에 둔다.
 
 ### Docker
 
@@ -200,7 +200,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 |---|---|---|---|
 | P0 | GitHub Release/tag + manifest + migration guide 유지 | canonical 기준이 흔들리면 모든 채널이 갈라진다. | release checklist, checksum, migration guide 유지 |
 | P0 | npm CLI 안정화 | 다른 실행 채널이 재사용할 최소 실행 계층이다. | `init/update/doctor` 출력 계약 유지, test 유지 |
-| P1 | Homebrew formula/tap | macOS 개발자 설치 경험 개선 효과가 크고 Docker/plugin보다 운영 모델이 단순하다. | 실제 release/tag, npm publish 또는 release asset 전략 확정 |
+| P1 | Homebrew formula/tap | macOS 개발자 설치 경험 개선 효과가 크고 Docker/plugin보다 운영 모델이 단순하다. | public tap smoke 통과. core 등재 가능성은 #46에서 별도 검토 |
 | P2 | Docker read-only image | CI와 격리 실행 가치가 있지만 volume/path 검증 비용이 있다. | CLI read-only 보장, image tag/version 정책 확정 |
 | P3 | Codex plugin packaging 검증 | agent UI 통합 가치는 크지만 사양 변화와 lock-in 위험이 있다. | plugin packaging 사양 확인, canonical 문서 참조 방식 확정 |
 | P3 | Claude plugin packaging 검증 | Codex와 같은 가치를 갖지만 중복 구현 위험이 있다. | 공통 plugin 원칙 확정, Claude Code 진입 방식 검증 |
@@ -208,7 +208,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 권장 순서:
 
 1. P0: `v0.2.0` GitHub Release/tag와 npm CLI publish 준비를 안정화한다.
-2. P1: Homebrew formula/tap PoC를 별도 이슈로 진행한다.
+2. P1: Homebrew public tap은 `postmelee/tap/hyper-waterfall` 경로로 유지하고, core 등재 가능성은 #46에서 별도로 평가한다.
 3. P2: Docker는 `doctor`와 `update --dry-run` read-only image부터 검증한다.
 4. P3: Codex plugin과 Claude plugin은 packaging 검증 task를 먼저 만들고, 실제 배포는 그 결과를 보고 분리한다.
 
@@ -219,7 +219,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 | 후보 | 범위 | 제외 |
 |---|---|---|
 | M020 - npm publish 준비 | npm package publish checklist, tag/release 정합성, publish 전 검증 | Homebrew, Docker, plugin 구현, 승인 없는 publish |
-| M030 - Homebrew formula/tap PoC | `hyper-waterfall` CLI 설치, version 확인, `doctor` smoke | 자동 release pipeline |
+| M040 - Homebrew public tap 배포 | `postmelee/tap/hyper-waterfall` 설치, version 확인, `doctor` smoke | 자동 release pipeline, Homebrew core 제출 |
 | M030 - Docker read-only CLI image PoC | `doctor`, `init --dry-run`, `update --dry-run` 실행 image | host 파일 자동 수정 |
 | M030 - Codex plugin packaging 검증 | Codex plugin bundle 구조, canonical 문서 참조 방식, fallback 확인 | 실제 public 배포 |
 | M030 - Claude plugin packaging 검증 | Claude plugin bundle 구조, `.claude/skills`와 canonical 문서 참조 방식 확인 | 실제 public 배포 |
@@ -228,7 +228,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 보류:
 
-- Homebrew formula 구현은 이번 task에서 하지 않는다.
+- Homebrew core 제출은 이번 task에서 하지 않는다. `brew install hyper-waterfall` 첫 설치 경로는 #46에서 별도 검토한다.
 - Docker image 구현은 이번 task에서 하지 않는다.
 - Codex plugin과 Claude plugin 실제 packaging과 배포는 이번 task에서 하지 않는다.
 - 자동 릴리스 파이프라인은 이번 task에서 하지 않는다.
