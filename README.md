@@ -349,6 +349,8 @@ Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
 
 각 SKILL을 언제 사용자에게 표시하는지는 [SKILL 호출 표시 안내](templates/mydocs/manual/task_workflow_guide.md#skill-호출-표시-안내)를 따릅니다. PR 본문 작성과 검증 구조는 [내부 task PR 작성 규칙](templates/mydocs/manual/pr_process_guide.md#내부-task-pr-작성-규칙)을 기준으로 합니다.
 
+문서 구조와 manual 문서 중립성 기준은 별도 SKILL이 아니라 [문서 구조 매뉴얼](templates/mydocs/manual/document_structure_guide.md)을 기준으로 확인합니다.
+
 ### 타스크 사이클
 
 이슈가 이미 있으면 `task-register`를 건너뛰고 바로 `task-start`로 수행계획서 작성에 들어갑니다. 예를 들어 작업지시자가 `"issue #17 작업을 진행해줘"`라고 지시하면 AI는 #17의 milestone과 본문을 확인한 뒤 `local/task17`, 오늘할일, 수행계획서를 만듭니다. 아직 이슈가 없을 때만 `task-register`가 중복 이슈·milestone·label을 확인하고 생성 전 승인을 받은 뒤 GitHub Issue를 만듭니다.
@@ -405,6 +407,8 @@ mydocs/
 ```
 
 폴더별 역할과 허용 파일명은 [문서 구조 매뉴얼의 폴더별 상세 규칙](templates/mydocs/manual/document_structure_guide.md#폴더별-상세-규칙)과 [문서 파일명 규칙](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙)을 기준으로 확인합니다. 산출물 출력 형식은 [중앙 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책)에 정리되어 있습니다.
+
+`manual/` 문서는 반복 적용되는 운영 기준과 절차를 담고, 특정 이슈·PR·릴리즈 검증·장애 기록은 해당 산출물 문서로 분리합니다. 세부 경계는 [manual 문서 중립성 정책](templates/mydocs/manual/document_structure_guide.md#manual-문서-중립성-정책)을 따릅니다.
 
 `_templates/`는 실제 task 산출물이 아니라 출력 형식의 진실 원천입니다. 각 Skill은 산출물을 만들 때 먼저 `mydocs/_templates/`의 해당 템플릿을 참조하고, 템플릿을 읽을 수 없는 상황에서만 Skill 안의 최소 섹션 요약을 fallback으로 사용합니다.
 

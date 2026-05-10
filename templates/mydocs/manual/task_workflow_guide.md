@@ -125,6 +125,8 @@ Hyper-Waterfall 버전 업데이트 PR은 release PR과 다르다. Release PR은
 
 이 표시는 해당 하이퍼-워터폴 절차를 적용할 때 사용한다.
 
+문서 구조 정책 검토나 manual 문서 중립성 판단은 그 자체로 별도 SKILL 호출 표시 대상이 아니다. 그 판단 결과로 이슈 등록, 타스크 시작, 단계 종료 같은 core Skill 절차를 실행할 때만 해당 Skill 호출 표시를 사용한다.
+
 `task-final-report`는 최종 보고서뿐 아니라 위 PR 본문 검증 구조까지 맞춰 Open PR을 게시하는 절차다.
 
 설치·업데이트 lifecycle 판단 자체는 별도 하이퍼-워터폴 절차 호출 표시 대상이 아니다. 다만 그 결과로 GitHub Issue를 등록하거나 타스크를 시작하면 `task-register`, `task-start` 등 실제로 적용하는 core Skill의 호출 표시 원칙을 따른다.
