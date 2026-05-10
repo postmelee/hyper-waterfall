@@ -60,6 +60,37 @@
 | `pr/archives/` | 처리 완료된 PR 검토 기록 보관 | |
 | `skills/` | Agent Skills SKILL.md 진실 원천 | `.agents/skills`와 `.claude/skills` 심볼릭 링크가 이 폴더를 가리킨다 |
 
+## manual 문서 중립성 정책
+
+`mydocs/manual/` 문서는 장기적으로 반복 적용되는 원칙, 절차, 판단 기준을 기록한다. 특정 이슈, 특정 PR, 특정 Stage, 특정 release, 일회성 검증 결과, 실패 사건의 세부 기록은 manual 본문에 누적하지 않는다.
+
+manual 본문에 둘 수 있는 내용:
+
+- 반복 적용 가능한 정책과 guardrail
+- 작업자가 직접 재사용할 수 있는 절차와 확인 기준
+- 바뀌면 문서 자체를 갱신해야 하는 운영 기준과 책임 경계
+- 하위 문서나 산출물 위치를 찾기 위한 짧은 entrypoint와 링크
+
+manual 본문에서 분리해야 하는 내용:
+
+- 특정 이슈, PR, Stage의 분석, 판단 근거, 완료 결과
+- 특정 release 준비, 배포 검증, release decision의 상세 기록
+- 특정 migration/update 검토 결과와 후속 이슈 handoff
+- 실제 실패 증상, 재현 조건, 원인, 재발 방지 절차가 필요한 사건 기록
+
+분리 위치:
+
+| 내용 | 위치 |
+|---|---|
+| 내부 task의 단계 결과와 승인 근거 | `mydocs/working/` |
+| 내부 task의 최종 결과와 장기 보관 보고 | `mydocs/report/` |
+| 재사용 가능한 기술 조사와 설계 판단 | `mydocs/tech/` |
+| 실패 증상, 원인, 해결, 재발 방지 기록 | `mydocs/troubleshootings/` |
+| Hyper-Waterfall release 준비와 배포 검증 기록 | `docs/releases/` |
+| 기존 적용 저장소의 migration/update 판단 기준 | `docs/migrations/` |
+
+manual에서 특정 사건 문서를 참조해야 할 때는 사건 내용을 복제하지 않는다. 본문에는 일반화한 판단 기준과 짧은 링크만 두고, 상세 맥락은 해당 산출물 문서에 남긴다.
+
 ## 중앙 템플릿 정책
 
 문서 출력 형식은 `mydocs/_templates/`에서 관리한다. 각 Skill은 가능한 한 중앙 템플릿을 먼저 참조하고, 템플릿을 읽을 수 없는 상황에서만 Skill 본문에 남은 최소 섹션 요약을 fallback으로 사용한다.
