@@ -309,6 +309,16 @@ npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --dry-run
 npx hyper-waterfall doctor --repo .
 ```
 
+macOS에서는 Homebrew public tap으로 CLI를 설치할 수 있습니다.
+
+```bash
+brew install postmelee/tap/hyper-waterfall
+hyper-waterfall --version
+hyper-waterfall doctor --repo .
+```
+
+이 Homebrew formula는 npm CLI를 설치하는 wrapper이며, canonical 기준인 GitHub Release/tag, `templates/manifest.json`, migration guide를 대체하지 않습니다. Homebrew는 Node runtime을 의존성으로 설치할 수 있습니다. 아무 tap도 지정하지 않는 `brew install hyper-waterfall` 경로는 Homebrew core 등재가 필요하므로 [#46](https://github.com/postmelee/hyper-waterfall/issues/46)에서 별도로 검토합니다.
+
 ## 도입 후 작업 흐름
 
 Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
