@@ -1,0 +1,75 @@
+# Hyper-Waterfall Claude Plugin Candidate
+
+이 디렉터리는 Claude Code용 Hyper-Waterfall plugin 배포 후보이다. 목적은 Claude Code 안에서 Hyper-Waterfall 진입점과 canonical Skill 흐름을 쉽게 발견하게 하는 것이다.
+
+이 plugin은 Hyper-Waterfall의 새 진실 원천이 아니다. canonical 기준은 계속 GitHub Release/tag, `templates/manifest.json`, `docs/migrations/`, `docs/agent-entrypoint.md`, `AGENTS.md`, `CLAUDE.md`, `templates/mydocs/skills`에 있다.
+
+## 구조
+
+```text
+plugins/claude/hyper-waterfall/
+├── .claude-plugin/
+│   └── plugin.json
+├── skills/
+│   └── hyper-waterfall/
+│       └── SKILL.md
+├── README.md
+└── CHANGELOG.md
+```
+
+## Local validation
+
+저장소 루트에서 실행한다.
+
+```bash
+claude plugin validate plugins/claude/hyper-waterfall
+```
+
+## Local directory smoke
+
+Claude Code에서 local plugin directory를 세션 단위로 로드한다.
+
+```bash
+claude --plugin-dir plugins/claude/hyper-waterfall
+```
+
+로드 후 기대하는 Skill 호출 후보는 다음이다.
+
+```text
+/hyper-waterfall:hyper-waterfall
+```
+
+대화식 세션을 열 수 있으므로 자동화 검증에서는 먼저 `claude plugin validate`를 통과시킨 뒤 수행한다.
+
+## Zip smoke
+
+zip plugin smoke는 Claude Code v2.1.128 이상이 필요하다. 현재 #40 Stage 1 기준 local Claude Code는 `2.1.111`이므로 zip smoke는 업데이트 후 Stage 3에서 수행한다.
+
+예상 후보:
+
+```bash
+claude --plugin-dir /tmp/hyper-waterfall-claude-plugin.zip
+```
+
+## Fallback
+
+plugin이 설치되지 않았거나 로드되지 않으면 다음 경로로 진행한다.
+
+- `AGENTS.md`
+- `CLAUDE.md`
+- `.claude/skills`
+- `mydocs/skills`
+- `docs/agent-entrypoint.md`
+- `npx hyper-waterfall@0.2.0 --help`
+
+fallback은 절차를 단순화하는 예외가 아니다. 파일 변경 전 승인, 이슈 추적, 수행계획서, 구현계획서, Stage 보고서, 최종 보고서, PR 흐름은 그대로 유지한다.
+
+## Hook policy
+
+이 후보에는 `hooks/hooks.json`이 없다. `PermissionRequest` 자동 allow, persistent permission update, mode 변경, 자동 질의 응답은 Hyper-Waterfall 승인 게이트와 충돌할 수 있으므로 기본 후보에서 제외한다.
+
+Hook guardrail이 필요하면 별도 승인 항목에서 좁은 범위의 report-only 또는 deny 후보로 검토한다.
+
+## Public distribution
+
+이 후보는 source-managed local candidate이다. public marketplace 배포, release asset 생성, zip 배포는 Stage 3 smoke 결과와 작업지시자 별도 승인 후 판단한다.

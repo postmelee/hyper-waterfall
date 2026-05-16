@@ -130,6 +130,84 @@ Stage 2 작성 기준:
 - CHANGELOG는 candidate version과 기준 문서 상태를 기록한다.
 - hook config는 만들지 않는다.
 
+## Stage 2 반영 결과
+
+Stage 2에서는 hook 없는 Claude plugin 후보 디렉터리를 작성했다.
+
+작성한 구조:
+
+```text
+plugins/claude/hyper-waterfall/
+├── .claude-plugin/
+│   └── plugin.json
+├── skills/
+│   └── hyper-waterfall/
+│       └── SKILL.md
+├── README.md
+└── CHANGELOG.md
+```
+
+### Manifest
+
+`plugins/claude/hyper-waterfall/.claude-plugin/plugin.json`에는 다음 metadata를 둔다.
+
+| 필드 | 값 |
+|---|---|
+| `name` | `hyper-waterfall` |
+| `version` | `0.2.0-candidate.1` |
+| `description` | Claude Code discovery layer for the Hyper-Waterfall framework. |
+| `repository` | `https://github.com/postmelee/hyper-waterfall` |
+| `license` | `MIT` |
+| `skills` | `./skills/` |
+
+`name`은 Claude plugin namespace가 되므로 Stage 3의 예상 호출 후보는 `/hyper-waterfall:hyper-waterfall`이다.
+
+### Thin wrapper Skill
+
+`skills/hyper-waterfall/SKILL.md`는 다음 역할로 제한했다.
+
+- `AGENTS.md`, `CLAUDE.md`, `docs/agent-entrypoint.md`, `templates/manifest.json`, `.claude/skills`, `mydocs/skills`를 먼저 읽게 한다.
+- 신규 적용 요청은 `docs/agent-entrypoint.md`의 신규 적용 판단 결과 형식을 따르게 한다.
+- 기존 업데이트 요청은 `.hyper-waterfall/version.json`, 목표 release manifest, migration guide, conflict 후보를 확인하게 한다.
+- 이미 적용된 저장소의 task 요청은 `.claude/skills` 또는 `mydocs/skills`의 canonical Skill로 넘긴다.
+- `npx hyper-waterfall@0.2.0 --help`를 CLI fallback으로 안내한다.
+
+wrapper가 하지 않는 일:
+
+- core Skill 본문을 plugin 안에서 요약해 새 절차로 만들지 않는다.
+- `templates/manifest.json`이나 migration guide를 복제하지 않는다.
+- 승인 게이트, 이슈 추적, Stage 보고, PR 흐름을 우회하지 않는다.
+- public publish, issue close, PR merge를 별도 승인 없이 실행하지 않는다.
+
+### README와 CHANGELOG
+
+README는 다음을 설명한다.
+
+- local validation: `claude plugin validate plugins/claude/hyper-waterfall`
+- local directory smoke: `claude --plugin-dir plugins/claude/hyper-waterfall`
+- expected namespaced Skill 후보: `/hyper-waterfall:hyper-waterfall`
+- zip smoke는 Claude Code v2.1.128 이상 업데이트 후 Stage 3에서 수행
+- plugin unavailable fallback: `AGENTS.md`, `CLAUDE.md`, `.claude/skills`, `mydocs/skills`, `docs/agent-entrypoint.md`, npm CLI
+- hook 미포함과 public distribution 보류
+
+CHANGELOG는 `0.2.0-candidate.1` 후보와 #36/#39 입력 조건, hook 미포함, zip smoke Stage 3 수행 계획을 기록한다.
+
+### Hook 제외 확인
+
+Stage 2 후보에는 `hooks/` directory와 `hooks/hooks.json`을 만들지 않았다.
+
+`README.md`와 `CHANGELOG.md`에는 `PermissionRequest`와 zip smoke 관련 문구가 있지만, 이는 금지/보류 정책 설명이다. 실제 hook config, permission allow decision, `updatedPermissions`, `setMode`, 자동 질의 응답 구현은 없다.
+
+### 업데이트 계획 반영
+
+작업지시자가 Claude Code local version 업데이트 계획을 밝혔다. 따라서 Stage 3은 업데이트 후 다음 순서로 진행하는 것이 적절하다.
+
+1. 업데이트 후 `claude --version`을 재확인한다.
+2. `claude plugin validate plugins/claude/hyper-waterfall`을 실행한다.
+3. directory `--plugin-dir` smoke를 시도한다.
+4. v2.1.128 이상이면 zip archive를 만들고 zip `--plugin-dir` smoke를 수행한다.
+5. 업데이트 전후 version과 smoke 결과를 Stage 3 보고서에 남긴다.
+
 ## Stage 1 검증 메모
 
 Stage 1 검증 명령은 통과했다.
