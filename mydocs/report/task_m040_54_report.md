@@ -54,7 +54,7 @@ GitHub Issue: [#54](https://github.com/postmelee/hyper-waterfall/issues/54)
 | public install/load/discovery smoke 결과가 기록된다. | OK with limit — public listing/asset이 없어 public URL smoke는 실행하지 않았고, directory/zip `--plugin-dir` list/details smoke를 대체 경로로 기록했다. |
 | #52와 겹치는 공통 문서 변경 위험을 재확인한 기록이 남는다. | OK — #52 worktree와 변경 파일을 Stage 1/4에서 재확인했고, 현재 공통 `docs/` 변경은 없다고 기록했다. |
 | 승인 없는 공개 배포 또는 release asset 게시가 발생하지 않는다. | OK — Official directory submission form 제출, GitHub Release asset upload, independent marketplace publish 모두 실행하지 않았다. |
-| `git status --short`가 PR 준비 전 빈 출력이다. | OK — Stage 4 산출물 커밋 후 clean 상태로 확인한다. |
+| `git status --short`가 PR 준비 전 빈 출력이다. | OK — Stage 4 산출물 커밋 후 clean 상태를 확인했다. |
 | `git diff --check`가 경고 없이 통과한다. | OK — Stage 1-4 검증에서 출력 없이 통과했다. |
 
 ### 단계별 검증 결과
