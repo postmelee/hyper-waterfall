@@ -1,0 +1,28 @@
+{
+  "name": "hyper-waterfall",
+  "version": "0.2.0",
+  "description": "Discover Hyper-Waterfall workflows and lifecycle checks in Codex.",
+  "repository": "https://github.com/postmelee/hyper-waterfall",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "codex",
+    "project-management"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Hyper-Waterfall",
+    "shortDescription": "Issue-first waterfall workflow guardrails for coding agents.",
+    "longDescription": "Use Hyper-Waterfall workflow entrypoints, lifecycle checks, and fallback guidance from Codex without making the plugin a new canonical source.",
+    "developerName": "postmelee",
+    "category": "Productivity",
+    "capabilities": [
+      "Read"
+    ],
+    "websiteURL": "https://github.com/postmelee/hyper-waterfall",
+    "defaultPrompt": [
+      "Use Hyper-Waterfall to start the current GitHub issue workflow.",
+      "Use Hyper-Waterfall to check whether this repository should be initialized or updated."
+    ]
+  }
+}
