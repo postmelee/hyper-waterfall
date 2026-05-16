@@ -108,3 +108,62 @@ codex plugin marketplace add .
 - Stage 3 local marketplace smoke는 repo root를 marketplace root로 두는 방향으로 보정해야 한다.
 - Hook 포함과 public 배포는 Stage 1 기준으로도 별도 승인 전 실행하지 않는다.
 - Stage 2 전에 공식 사양 때문에 막히는 항목은 없다.
+
+## Stage 2 bundle 생성 결과
+
+Stage 2에서는 Stage 1에서 확정한 hook 없는 thin wrapper 구조를 실제 repository 산출물로 생성했다.
+
+생성 파일:
+
+```text
+plugins/hyper-waterfall-codex/.codex-plugin/plugin.json
+plugins/hyper-waterfall-codex/README.md
+plugins/hyper-waterfall-codex/skills/hyper-waterfall/SKILL.md
+```
+
+### Manifest 결과
+
+| field | 값 | 판단 |
+|---|---|---|
+| `name` | `hyper-waterfall` | kebab-case stable identifier로 사용 가능 |
+| `version` | `0.2.0` | v0.2.0 배포 후보와 맞춤. plugin artifact version과 framework version의 혼동은 README와 보고서에서 관리 |
+| `description` | `Discover Hyper-Waterfall workflows and lifecycle checks in Codex.` | install surface 설명 |
+| `repository` | `https://github.com/postmelee/hyper-waterfall` | canonical repository 참조 |
+| `license` | `MIT` | repository license와 일치 |
+| `keywords` | `workflow`, `codex`, `project-management` | discovery metadata |
+| `skills` | `./skills/` | plugin root 내부 상대 경로, 공식 path rule 충족 |
+| `interface.capabilities` | `["Read"]` | thin wrapper의 읽기/안내 성격에 맞춰 제한 |
+
+기본 bundle에는 `hooks`, `apps`, `mcpServers`, `assets`를 넣지 않았다.
+
+### Thin wrapper 결과
+
+`skills/hyper-waterfall/SKILL.md`는 다음 원칙을 따른다.
+
+- `This plugin is not a canonical source.`라고 명시했다.
+- 현재 저장소의 `AGENTS.md`를 먼저 읽게 한다.
+- 정형 task 절차는 현재 저장소의 `mydocs/skills/{skill-name}/SKILL.md`를 읽게 한다.
+- 신규 적용과 기존 업데이트 판단은 `docs/agent-entrypoint.md`, `templates/manifest.json`, `docs/migrations/`, npm CLI dry-run으로 보낸다.
+- 승인 없이 파일 수정, issue close, PR merge, publish, release 생성을 하지 말라고 명시했다.
+- fallback은 canonical 파일을 찾지 못할 때 사용자에게 저장소 루트와 release 기준 확인을 요청하는 수준으로 제한했다.
+
+### README 결과
+
+`README.md`는 local candidate의 목적, 포함 파일, 설계 원칙, local smoke 후보, 공개 배포 게이트를 설명한다. Stage 3에서 사용할 조건부 command 후보는 repo root 기준 `codex plugin marketplace add .`로 기록했다.
+
+### Stage 2 검증 결과
+
+| 항목 | 결과 | 근거 |
+|---|---|---|
+| 파일 구조 | OK | `find plugins/hyper-waterfall-codex -maxdepth 5 -type f`가 manifest, README, wrapper Skill 세 파일만 출력 |
+| Manifest JSON | OK | `jq . plugins/hyper-waterfall-codex/.codex-plugin/plugin.json` 통과 |
+| Canonical/fallback 문구 | OK | `AGENTS.md`, `mydocs/skills`, `docs/agent-entrypoint.md`, `npx hyper-waterfall`, `승인`, `canonical`, `진실 원천`, `not a canonical source`, `not execute public` 확인 |
+| Manifest 복제 금지 | OK | `plugins/hyper-waterfall-codex/templates/manifest.json` 없음 |
+| Migration 복제 금지 | OK | `plugins/hyper-waterfall-codex/docs/migrations` 없음 |
+| Manual 복제 금지 | OK | `plugins/hyper-waterfall-codex/templates/mydocs/manual` 없음 |
+
+### Stage 2 결론
+
+- Stage 2 bundle 후보는 공식 Codex plugin path rule과 #37 canonical 원칙을 충족한다.
+- 기본 bundle은 hook 없는 thin wrapper로 유지됐다.
+- Stage 3에서는 repo-local marketplace 파일을 만들고, local config/cache 변경 가능성이 있는 `codex plugin marketplace add .` 실행 여부를 별도 확인해야 한다.
