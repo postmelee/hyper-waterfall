@@ -444,6 +444,70 @@ plugins/hyper-waterfall-codex/
 - 공통 원칙 문서 변경은 Stage 2에서는 필요하지 않다. 다만 Stage 4에서 #37 전체 결과를 종합해 `docs/plugin-distribution-principles.md`의 `codex_hooks` 계열 표현 보정 여부를 판단한다.
 - Stage 4는 #38 1차 bundle을 hook 없는 thin wrapper로 둘지, hook opt-in candidate까지 같이 만들지 go/no-go로 분리해야 한다.
 
+## Stage 4 local 검증 가능성과 go/no-go
+
+Stage 4는 실제 plugin bundle을 만들거나 install/load smoke를 수행하지 않고, #38에서 수행 가능한 local 검증 표면과 go/no-go를 정리했다.
+
+### Local tooling 확인
+
+실행 명령:
+
+```bash
+codex --version
+codex plugin --help
+codex plugin marketplace --help
+codex plugin marketplace add --help
+```
+
+결과:
+
+- `codex --version`은 `codex-cli 0.131.0-alpha.9`를 출력했다.
+- `codex plugin --help`에서 `marketplace` 하위 명령이 확인됐다.
+- `codex plugin marketplace --help`에서 `add`, `upgrade`, `remove` 하위 명령이 확인됐다.
+- `codex plugin marketplace add --help`에서 local marketplace root directory를 `<SOURCE>`로 받을 수 있고 `owner/repo[@ref]`, HTTP(S) Git URL, SSH URL, local marketplace root directory를 지원한다고 확인됐다.
+- sandbox 때문에 Codex CLI가 PATH 업데이트 warning을 출력했지만 help와 version 확인은 정상 수행됐다.
+
+Stage 4 판단:
+
+- #38에서 local marketplace root를 만들고 `codex plugin marketplace add ./<marketplace-root>` 형태의 smoke를 설계할 수 있다.
+- 실제 add/install/load는 `~/.codex/config.toml`, plugin cache, Codex restart 또는 plugin UI 조작이 필요하므로 #37 범위에서는 실행하지 않았다.
+
+### Go/no-go
+
+| 항목 | 판단 | 근거 | #38 인계 |
+|---|---|---|---|
+| Hook 없는 thin wrapper bundle | GO | `.codex-plugin/plugin.json`, `skills: "./skills/"`, `skills/hyper-waterfall/SKILL.md` 구조가 공식 path rule과 canonical 원칙을 충족한다. | #38 1차 bundle 후보로 생성 |
+| Release snapshot bundle | CONDITIONAL | offline discoverability는 좋아지지만 snapshot drift 위험이 있다. | thin wrapper smoke가 부족하면 2차 후보로 검토 |
+| Hook 포함 bundle | NO-GO for default, CONDITIONAL for opt-in | `[features].plugin_hooks = true`, non-managed trust review, incomplete interception, side effect 한계가 있다. | #38에서 별도 승인 항목으로만 다룸 |
+| App/MCP 포함 | NO-GO | 이번 task 목적과 무관하고 external auth/setup surface가 늘어난다. | 별도 이슈 필요 |
+| Public 배포 | NO-GO in #37 | #37은 packaging 검증 task이고 실제 배포 후보 생성/설치 smoke는 #38 범위다. | #38에서 bundle 생성과 install/load smoke 수행 |
+
+### #38 인계 조건
+
+#38은 다음 순서로 진행하는 것이 적절하다.
+
+1. `plugins/hyper-waterfall-codex/` 아래에 hook 없는 thin wrapper bundle을 생성한다.
+2. `.codex-plugin/plugin.json`에는 `skills: "./skills/"`만 component pointer로 둔다.
+3. `skills/hyper-waterfall/SKILL.md` wrapper는 `AGENTS.md`, `mydocs/skills`, `docs/agent-entrypoint.md`, npm CLI dry-run으로 넘긴다.
+4. repo 또는 temporary marketplace root에 marketplace JSON을 만들고 local source path를 `./plugins/hyper-waterfall-codex`로 둔다.
+5. Codex CLI 또는 app plugin directory에서 install/load surface를 확인한다.
+6. 설치 후 새 thread에서 `@hyper-waterfall` 또는 bundled Skill invocation이 가능한지 확인한다.
+7. hook 포함 smoke는 기본 bundle smoke 이후 별도 승인으로만 진행한다.
+
+### 보류 조건
+
+- thin wrapper Skill이 plugin directory나 prompt invocation에서 충분히 발견되지 않으면 release snapshot 후보를 재검토한다.
+- Codex CLI/app이 local marketplace를 install하지 못하면 marketplace root 구조, path 해석, restart 요구를 #38 보고서에 남긴다.
+- plugin cache나 config 변경이 필요하면 cleanup 절차를 #38 계획에 포함한다.
+- hook을 포함하려면 trust review 안내, `plugin_hooks` 활성화 UX, fixture 기반 script 검증이 먼저 필요하다.
+
+### Stage 4 결정
+
+- #38 진입은 가능하다.
+- #38 기본 scope는 hook 없는 thin wrapper bundle 생성과 install/load smoke다.
+- hook guardrail은 packaging 후보로만 남기고 기본 배포 후보에서는 제외한다.
+- `docs/plugin-distribution-principles.md`는 Codex plugin-bundled hook의 feature key를 `[features].plugin_hooks = true`로 명시하도록 보정한다.
+
 ## 참고 링크
 
 - [Build plugins - Codex](https://developers.openai.com/codex/plugins/build)
