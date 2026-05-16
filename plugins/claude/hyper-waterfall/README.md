@@ -43,13 +43,17 @@ claude --plugin-dir plugins/claude/hyper-waterfall
 
 ## Zip smoke
 
-zip plugin smoke는 Claude Code v2.1.128 이상이 필요하다. 현재 #40 Stage 3 기준 local Claude Code는 `2.1.111`이므로 zip smoke는 업데이트 후 별도 검증으로 수행한다.
+zip plugin smoke는 Claude Code v2.1.128 이상이 필요하다. #40 Stage 4 기준 local Claude Code `2.1.143`에서 zip load smoke를 통과했다.
 
-예상 후보:
+검증 후보:
 
 ```bash
-claude --plugin-dir /tmp/hyper-waterfall-claude-plugin.zip
+zip -r /private/tmp/hyper-waterfall-claude-plugin-task40.zip .
+claude --plugin-dir /private/tmp/hyper-waterfall-claude-plugin-task40.zip plugin list
+claude --plugin-dir /private/tmp/hyper-waterfall-claude-plugin-task40.zip plugin details hyper-waterfall
 ```
+
+`claude plugin validate <zip>`은 zip archive를 plugin root로 해석하지 않고 JSON manifest로 직접 읽으려 하므로, zip 검증은 source directory manifest validation과 zip `--plugin-dir` load smoke 조합으로 판단한다.
 
 ## Fallback
 
@@ -74,4 +78,4 @@ Hook guardrail이 필요하면 별도 승인 항목에서 좁은 범위의 repor
 
 ## Public distribution
 
-이 후보는 source-managed local candidate이다. public marketplace 배포, release asset 생성, zip 배포는 Stage 3 smoke 결과와 작업지시자 별도 승인 후 판단한다.
+이 후보는 source-managed local/zip candidate이다. public marketplace 배포와 release asset 생성은 작업지시자 별도 승인 후 판단한다.

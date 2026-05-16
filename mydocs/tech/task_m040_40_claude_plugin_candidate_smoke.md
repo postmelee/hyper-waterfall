@@ -313,6 +313,88 @@ zip smoke는 실행하지 않았다.
 
 Stage 4에서는 public 배포 판단에서 zip smoke 미수행을 제한 사항으로 남긴다. 작업지시자가 별도 환경에서 Claude Code를 v2.1.128 이상으로 업데이트하면 같은 후보를 zip으로 묶어 추가 smoke를 수행할 수 있다.
 
+## Stage 4 반영 결과
+
+Stage 4에서는 작업지시자가 수동으로 업데이트한 Claude Code `2.1.143` 기준으로 zip smoke를 추가 확인했고, public 배포 GO/NO-GO를 정리했다.
+
+### 업데이트 후 재검증
+
+실행 명령:
+
+```bash
+claude --version
+zip -r /private/tmp/hyper-waterfall-claude-plugin-task40.zip .
+/opt/homebrew/bin/timeout 60s claude plugin validate plugins/claude/hyper-waterfall
+/opt/homebrew/bin/timeout 60s claude --plugin-dir plugins/claude/hyper-waterfall plugin list
+/opt/homebrew/bin/timeout 60s claude --plugin-dir /private/tmp/hyper-waterfall-claude-plugin-task40.zip plugin list
+/opt/homebrew/bin/timeout 60s claude --plugin-dir /private/tmp/hyper-waterfall-claude-plugin-task40.zip plugin details hyper-waterfall
+unzip -l /private/tmp/hyper-waterfall-claude-plugin-task40.zip
+```
+
+결과:
+
+| 항목 | 결과 | 판단 |
+|---|---|---|
+| Claude Code version | `2.1.143 (Claude Code)` | zip smoke 최소 version 조건 충족 |
+| zip archive | `CHANGELOG.md`, `README.md`, `.claude-plugin/plugin.json`, `skills/hyper-waterfall/SKILL.md` 포함 | plugin root 기준 archive 구조 확인 |
+| directory manifest validation | `Validation passed` | source-managed candidate manifest OK |
+| directory load | `hyper-waterfall@inline`, version `0.2.0-candidate.1`, status `loaded` | directory `--plugin-dir` GO |
+| zip load | temp session path에서 `hyper-waterfall@inline`, version `0.2.0-candidate.1`, status `loaded` | zip `--plugin-dir` GO |
+| component inventory | Skills 1, Agents 0, Hooks 0, MCP servers 0, LSP servers 0 | hook 없는 thin wrapper 후보 의도와 일치 |
+| token cost | always-on 약 63 tok, on-invoke 약 470 tok | discovery layer로 수용 가능한 규모 |
+
+`claude plugin validate /private/tmp/hyper-waterfall-claude-plugin-task40.zip`는 zip을 plugin archive로 해석하지 않고 JSON manifest로 직접 읽으려 해 `Unexpected identifier "PK"` 오류가 났다. 따라서 zip 검증은 `plugin validate`가 아니라 zip `--plugin-dir` load와 `plugin details` inventory로 판단한다.
+
+업데이트 후 2.1.143의 `plugin validate`와 `plugin list`는 sandbox 안에서 `~/.claude` 설정/telemetry 쓰기 제한 때문에 timeout될 수 있었다. 권한 상승 실행에서는 정상 통과했다.
+
+### GO/NO-GO 판단
+
+| 범위 | 판단 | 근거 |
+|---|---|---|
+| source-managed local directory candidate | GO | manifest validation, directory load, component inventory 통과 |
+| local zip candidate | GO | zip archive 구조, zip `--plugin-dir` load, component inventory 통과 |
+| public marketplace 배포 | NO-GO for this task | 작업지시자 별도 승인, marketplace 제출 절차, release 운영 판단이 필요 |
+| release asset 게시 | NO-GO for this task | v0.2.0 release asset 정책과 #41 최종 채널 감사가 필요 |
+| hook 포함 | NO-GO | 기본 후보는 hook 없는 thin wrapper. hook guardrail은 별도 승인 항목 |
+
+### 대체 설치/사용 경로
+
+public 배포 전 사용 경로:
+
+```bash
+claude --plugin-dir plugins/claude/hyper-waterfall
+claude --plugin-dir /private/tmp/hyper-waterfall-claude-plugin-task40.zip
+```
+
+plugin 미사용 fallback:
+
+- `AGENTS.md`
+- `CLAUDE.md`
+- `.claude/skills`
+- `mydocs/skills`
+- `docs/agent-entrypoint.md`
+- `npx hyper-waterfall@0.2.0 --help`
+
+### 문서 반영
+
+`docs/distribution-channels.md`를 보정했다.
+
+- Claude plugin local/zip candidate 위치와 smoke 통과 결과를 반영했다.
+- public marketplace 배포와 release asset 게시를 보류로 남겼다.
+- "plugin 실제 packaging을 하지 않는다"는 오래된 표현을 Claude plugin candidate 범위에 맞게 보정했다.
+
+`docs/plugin-distribution-principles.md`는 수정하지 않았다. 공통 원칙과 check matrix는 여전히 유효하며, #40 결과는 그 원칙을 따른 실제 후보 생성과 smoke 결과이기 때문이다.
+
+### #41 인계 조건
+
+#41에서는 다음을 확인해야 한다.
+
+- #38 Codex plugin 배포 후보 생성과 설치 smoke 완료 여부
+- Codex/Claude plugin candidate의 naming, version, canonical reference, fallback 문구 정합성
+- Claude plugin public marketplace 제출 여부
+- Claude plugin zip/release asset을 v0.2.0 release에 포함할지 여부
+- hook 없는 후보를 유지할지, 별도 hook guardrail task를 만들지 여부
+
 ## Stage 1 검증 메모
 
 Stage 1 검증 명령은 통과했다.
