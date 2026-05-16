@@ -117,3 +117,59 @@ plugins/hyper-waterfall-codex/skills/hyper-waterfall/SKILL.md
 - 공식 문서 기준으로 public Plugin Directory 추가와 self-serve publishing/management는 아직 coming soon이다.
 - Stage 2는 repo-local marketplace add/remove와 UI 또는 `/plugins` discovery 확인에 집중한다.
 - Stage 3에서 public 배포는 별도 승인뿐 아니라 공식 publishing surface 존재 여부를 기준으로 GO/NO-GO를 판단해야 한다.
+
+## Stage 2 UI discovery와 Skill invocation smoke
+
+Stage 2에서는 repo-local marketplace를 현재 Codex CLI 설정에 임시 등록하고, CLI `/plugins` browser에서 local marketplace와 plugin 후보가 발견되는지 확인했다. 설치는 수행하지 않았다.
+
+### Pre-cleanup 확인
+
+실행 위치: `/private/tmp/hyper-waterfall-task52`
+
+| 명령 | 결과 | 판단 |
+|---|---|---|
+| `codex plugin marketplace remove hyper-waterfall-local` | `marketplace 'hyper-waterfall-local' is not configured or installed` | Stage 2 시작 시 기존 local marketplace 등록이 없었다. |
+
+### Marketplace add
+
+| 명령 | 결과 | 판단 |
+|---|---|---|
+| `codex plugin marketplace add .` | sandbox 안에서는 `failed to add marketplace 'hyper-waterfall-local' to user config.toml: Operation not permitted` | `~/.codex/config.toml` 쓰기가 필요하므로 sandbox 제한으로 실패했다. |
+| `codex plugin marketplace add .` | escalated 실행에서 `Added marketplace 'hyper-waterfall-local' from /private/tmp/hyper-waterfall-task52.` / `Installed marketplace root: /private/tmp/hyper-waterfall-task52` | repo root local marketplace add smoke 성공. |
+
+### CLI `/plugins` discovery
+
+`codex --no-alt-screen -C /private/tmp/hyper-waterfall-task52` interactive CLI를 실행해 `/plugins`를 열었다.
+
+초기 sandbox 실행은 `~/.codex` state database write 제한 때문에 실패했다. escalated 실행에서는 TERM이 `dumb`이라는 warning이 있었지만 inline TUI가 열렸고, Plugin Directory 화면을 확인할 수 있었다.
+
+확인 결과:
+
+| 화면 | 확인 내용 | 판단 |
+|---|---|---|
+| Plugin browser | marketplace tab에 `Hyper-Waterfall Local Plugins`가 표시됐다. | repo-local marketplace discovery 성공 |
+| Plugin search | `hyper-waterfall` 검색 결과에 `[-] Hyper-Waterfall`가 표시되고 상태가 `Available`로 보였다. | plugin 후보 discovery 성공 |
+| Plugin details | `Hyper-Waterfall · Can be installed · hyper-waterfall-local` 표시. 설명은 `Discover Hyper-Waterfall workflows and lifecycle checks in Codex.`로 표시됐다. | manifest metadata가 details 화면에 반영됨 |
+| Plugin details | `Skills           hyper-waterfall:hyper-waterfall` 표시. | bundled wrapper Skill prompt discovery 성공 |
+| Plugin details | `Hooks No plugin hooks`, `Apps No plugin apps`, `MCP Servers No plugin MCP servers` 표시. | #38 thin wrapper/no hook 원칙 유지 확인 |
+
+설치와 실제 skill invocation은 수행하지 않았다. 이번 Stage의 확인 범위는 Plugin Directory 후보 표시와 bundled skill prompt discovery다. 설치 후 새 thread에서의 `@hyper-waterfall` invocation은 local plugin install 상태를 남길 수 있어, Stage 2에서는 manual discovery 확인으로 제한했다.
+
+interactive CLI 실행 중 GitHub MCP authentication warning이 표시됐지만 Plugin Directory rendering과 local plugin discovery에는 영향을 주지 않았다.
+
+### Cleanup
+
+| 명령 | 결과 | 판단 |
+|---|---|---|
+| `codex plugin marketplace remove hyper-waterfall-local` | `Removed marketplace 'hyper-waterfall-local'.` | Stage 2 local marketplace registration cleanup 성공 |
+
+Codex CLI에는 marketplace list 명령이 없어 별도 listing으로 cleanup을 재검증하지 못했다. remove 명령 성공을 cleanup 근거로 둔다.
+
+### Stage 2 결론
+
+- `codex plugin marketplace add .`는 repo root local marketplace를 정상 등록했다.
+- CLI `/plugins`에서 `Hyper-Waterfall Local Plugins` marketplace와 `Hyper-Waterfall` plugin 후보가 표시됐다.
+- Plugin details에서 bundled Skill `hyper-waterfall:hyper-waterfall`가 표시돼 prompt discovery를 확인했다.
+- Plugin install과 실제 invocation은 수행하지 않았다.
+- `codex plugin marketplace remove hyper-waterfall-local`로 local registration cleanup을 완료했다.
+- Stage 3에서는 official self-serve public publishing surface 부재, legal/asset gap, Stage 2 discovery 성공을 기준으로 public 배포 GO/NO-GO를 판단한다.
