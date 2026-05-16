@@ -55,7 +55,7 @@ git diff --check
 - OK: zip `--plugin-dir` load는 temp session path에서 `hyper-waterfall@inline`, version `0.2.0-candidate.1`, status `loaded`를 출력했다.
 - OK: directory와 zip `plugin details` 모두 Skills 1, Agents 0, Hooks 0, MCP servers 0, LSP servers 0을 출력했다.
 - OK: component inventory의 token cost는 always-on 약 63 tok, on-invoke 약 470 tok로 확인됐다.
-- OK: #38은 아직 `OPEN` 상태다.
+- OK: Stage 4 최초 검증 시점에는 #38이 `OPEN`이었다. 최종 보고 전 `origin/main` 재적용 후 #38은 `CLOSED`로 재확인했다.
 - OK: 기술 기록과 Stage 4 보고서에서 public 배포, GO/NO-GO, 보류, 대체 설치, fallback, #41, #38, 검증 한계 관련 기록이 확인됐다.
 - OK: `docs/distribution-channels.md`와 `docs/plugin-distribution-principles.md`에서 Claude plugin, local plugin, public, 보류, fallback 관련 기준이 확인됐다.
 - OK: `git diff --check`는 출력 없이 통과했다.
@@ -69,14 +69,14 @@ git diff --check
 
 - public marketplace 배포는 실행하지 않았다. 제출 권한, 심사/제출 절차, 공개 설명 문구는 별도 승인이 필요하다.
 - release asset 게시도 실행하지 않았다. v0.2.0 release asset에 zip 후보를 포함할지는 #41 또는 별도 승인에서 판단해야 한다.
-- #38이 아직 open이므로 Codex/Claude plugin candidate 최종 정합성 비교는 #41에서 #38 완료 후 재확인해야 한다.
+- Codex/Claude plugin candidate 최종 정합성 비교는 #41에서 #38/#40 최종 결과 기준으로 재확인해야 한다.
 - slash command UI에서 실제 `/hyper-waterfall:hyper-waterfall` 호출 화면은 비대화식 환경에서 직접 확인하지 못했다. 다만 `plugin details`에서 Skill 1개가 로드됨은 확인했다.
 - hook guardrail은 이번 후보에 포함하지 않았다.
 
 ## 다음 단계 영향
 
 - 다음 절차는 `task-final-report`에 따른 최종 보고서 작성, 오늘할일 완료 처리, 최종 커밋, `publish/task40` push, PR 생성이다.
-- #41에서는 #38 상태와 Codex/Claude plugin candidate 정합성, public marketplace/release asset 보류 판단을 다시 확인해야 한다.
+- #41에서는 #38/#40 결과와 Codex/Claude plugin candidate 정합성, public marketplace/release asset 보류 판단을 다시 확인해야 한다.
 - Claude plugin local/zip candidate는 GO 상태로 보고하되, public 배포는 별도 승인 전 실행하지 않는다.
 
 ## 승인 요청

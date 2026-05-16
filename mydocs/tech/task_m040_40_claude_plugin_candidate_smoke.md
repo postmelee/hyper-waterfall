@@ -77,7 +77,7 @@ claude plugin validate --help
 | 항목 | 상태 | #40 영향 |
 |---|---|---|
 | #37 Codex plugin packaging 검증 | closed, main 반영 | 공통 원칙과 Codex packaging 최종 산출물은 참고 가능 |
-| #38 Codex plugin 배포 후보 생성과 설치 smoke | open | Codex/Claude 최종 smoke 비교는 #41에서 #38 완료 후 재확인 |
+| #38 Codex plugin 배포 후보 생성과 설치 smoke | Stage 1 당시 open, 최종 보고 전 origin/main 재적용 후 closed 확인 | Codex/Claude 최종 smoke 비교는 #41에서 #38/#40 결과 기준으로 재확인 |
 | #39 Claude plugin packaging 검증 | closed, main 반영 | #40의 직접 입력 |
 
 ## #39 인계 조건 반영
@@ -389,7 +389,7 @@ plugin 미사용 fallback:
 
 #41에서는 다음을 확인해야 한다.
 
-- #38 Codex plugin 배포 후보 생성과 설치 smoke 완료 여부
+- #38 Codex plugin 배포 후보 생성과 설치 smoke 결과와 #40 Claude plugin 후보 결과의 정합성
 - Codex/Claude plugin candidate의 naming, version, canonical reference, fallback 문구 정합성
 - Claude plugin public marketplace 제출 여부
 - Claude plugin zip/release asset을 v0.2.0 release에 포함할지 여부
@@ -402,7 +402,7 @@ Stage 1 검증 명령은 통과했다.
 - OK: `claude --version`에서 `2.1.111 (Claude Code)` 확인.
 - OK: `claude plugin --help`에서 `validate` 명령 확인.
 - OK: `claude plugin validate --help`에서 path 기반 validation 명령 확인.
-- OK: #38은 open 상태로 확인.
+- OK: Stage 1 당시 #38은 open 상태였다. 최종 보고 전 `origin/main` 재적용 후 #38은 closed 상태로 재확인했다.
 - OK: #37과 #39는 closed 상태로 확인.
 - OK: #39 기술 기록과 최종 보고서에서 #40, 배포 후보, 설치 smoke, thin wrapper, zip, public, 보류 키워드 확인.
 - OK: `docs/plugin-distribution-principles.md`와 `docs/distribution-channels.md`에서 Claude plugin, check matrix, #40, canonical, fallback, hook 기준 확인.
@@ -411,5 +411,5 @@ Stage 1 검증 명령은 통과했다.
 
 - local Claude Code version이 zip plugin smoke 기준보다 낮다.
 - directory `--plugin-dir` smoke는 대화식 세션을 열 수 있으므로 Stage 3에서 비대화식 경로를 우선 확인해야 한다.
-- #38이 open이므로 #41에서 Codex/Claude 최종 배포 후보 결과를 다시 비교해야 한다.
+- #38과 #40의 최종 배포 후보 결과는 #41에서 다시 비교해야 한다.
 - public marketplace 배포 권한과 절차는 아직 확인만 했고 실행하지 않았다.
