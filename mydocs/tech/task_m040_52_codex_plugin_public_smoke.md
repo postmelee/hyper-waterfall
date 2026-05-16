@@ -1,0 +1,119 @@
+# Task #52 Codex plugin public smoke validation
+
+GitHub Issue: [#52](https://github.com/postmelee/hyper-waterfall/issues/52)
+확인일: 2026-05-17
+
+## 목적
+
+이 문서는 Codex plugin public 배포와 UI discovery smoke의 기준과 실행 결과를 기록한다. Stage 1에서는 실제 marketplace add, UI discovery, public 배포를 수행하지 않고, 공식 문서, local CLI surface, #38 산출물, 현재 배포 후보 gap을 재확인한다.
+
+## Stage 1 공식 문서 재확인
+
+OpenAI Docs MCP search/fetch 도구가 현재 Codex 세션의 callable tool로 노출되지 않아, 공식 OpenAI domain 웹 문서를 fallback으로 확인했다. 사용한 출처는 모두 `developers.openai.com`이다.
+
+| 문서 | URL | #52 적용 항목 |
+|---|---|---|
+| Codex Plugins | https://developers.openai.com/codex/plugins | Codex app Plugin Directory와 CLI `/plugins`에서 plugin을 browse/install하고, 설치 후 새 thread에서 plugin을 사용한다. 특정 plugin 또는 bundled skill은 `@`로 명시 invocation할 수 있다. |
+| Codex Build plugins | https://developers.openai.com/codex/plugins/build | repo marketplace 위치, `source.path` 기준, CLI marketplace add source, plugin manifest, install-surface metadata, public plugin publishing 상태를 확인했다. |
+| Agent Skills | https://developers.openai.com/codex/skills | Skill은 workflow authoring format이고 plugin은 reusable skill/app distribution unit이라는 관계를 확인했다. |
+
+## Stage 1 공식 사양 요약
+
+| 항목 | 확인 결과 | #52 판단 |
+|---|---|---|
+| Plugin Directory | Codex app의 Plugins 화면에서 curated plugin을 browse/install한다. CLI에서는 `codex` 진입 후 `/plugins`로 plugin list를 연다. | Stage 2에서 Codex app 또는 CLI `/plugins` 확인이 필요하다. 비대화식 CLI에는 list/install subcommand가 없다. |
+| Marketplace source | `codex plugin marketplace add`는 GitHub shorthand, Git URL, SSH URL, local marketplace root directory를 source로 받는다. | repo root에서 `codex plugin marketplace add .`를 Stage 2 smoke 후보로 유지한다. |
+| Repo marketplace | repo-scoped marketplace는 `$REPO_ROOT/.agents/plugins/marketplace.json`이고, plugin은 보통 `$REPO_ROOT/plugins/` 아래에 둔다. | 현재 `.agents/plugins/marketplace.json`과 `plugins/hyper-waterfall-codex/` 구조는 공식 repo marketplace 구조와 맞다. |
+| Marketplace path | `source.path`는 `.agents/plugins/` 폴더가 아니라 marketplace root 기준이며 `./`로 시작하고 root 내부에 있어야 한다. | 현재 `./plugins/hyper-waterfall-codex`는 repo root 기준 상대 경로라 유지 가능하다. |
+| Marketplace metadata | `name`, `interface.displayName`, `plugins[]`, `policy.installation`, `policy.authentication`, `category`를 사용한다. | 현재 local marketplace는 필수 형식을 충족한다. |
+| Plugin install/cache | Codex는 plugin을 `~/.codex/plugins/cache/$MARKETPLACE_NAME/$PLUGIN_NAME/$VERSION/`에 설치하고, local plugin version은 `local`로 처리한다. enabled 상태는 `~/.codex/config.toml`에 저장된다. | Stage 2 add/remove smoke는 local config/cache 부작용과 cleanup을 반드시 기록해야 한다. |
+| Manifest entry point | `.codex-plugin/plugin.json`이 required entry point다. `plugin.json`만 `.codex-plugin/`에 두고 skills/assets/hooks 등은 plugin root에 둔다. | 현재 후보는 required entry point와 `skills/` 위치를 충족한다. |
+| Published manifest | published plugin은 minimal manifest보다 rich metadata를 쓰는 편이며, manifest는 식별, bundled component path, install-surface metadata를 제공한다. | 현재 후보는 식별/skills/read capability는 있으나 `author`, `homepage`, `privacyPolicyURL`, `termsOfServiceURL`, `brandColor`, `composerIcon`, `logo`, `screenshots`가 없다. |
+| Visual/legal metadata | install-surface metadata에는 `websiteURL`, `privacyPolicyURL`, `termsOfServiceURL`, `defaultPrompt`, `brandColor`, `composerIcon`, `logo`, `screenshots`가 포함될 수 있다. | public 배포 전 legal link와 asset 필요 여부를 Stage 3 판단에 반영해야 한다. |
+| Public publishing | 공식 Plugin Directory 추가와 self-serve plugin publishing/management는 coming soon 상태다. | 현재 공식 self-serve public 배포 명령은 확인되지 않는다. #52 public 배포는 실행보다 보류/대체 경로 문서화 가능성이 높다. |
+| Skills 관계 | Skill은 reusable workflow authoring format이고, plugin은 reusable skill/app의 installable distribution unit이다. | thin wrapper Skill 전략은 유지 가능하다. core Skill 본문 fork는 계속 제외한다. |
+
+## Local CLI surface
+
+실행 위치: `/private/tmp/hyper-waterfall-task52`
+
+| 명령 | 결과 요약 | 판단 |
+|---|---|---|
+| `codex --version` | `codex-cli 0.131.0-alpha.9` 출력. PATH update warning은 있었지만 version 확인은 성공했다. | Stage 2 smoke 실행 가능 |
+| `codex plugin --help` | `marketplace` subcommand만 노출된다. | 비대화식 install/list/load subcommand는 없음 |
+| `codex plugin marketplace --help` | `add`, `upgrade`, `remove` subcommand 확인. | add/remove smoke 가능 |
+| `codex plugin marketplace add --help` | `<SOURCE>`가 GitHub shorthand, Git URL, SSH URL, local marketplace root directory를 지원한다고 출력. | repo root local marketplace add 후보 유지 |
+
+## 현재 후보 구조 점검
+
+현재 plugin 후보 파일:
+
+```text
+plugins/hyper-waterfall-codex/.codex-plugin/plugin.json
+plugins/hyper-waterfall-codex/README.md
+plugins/hyper-waterfall-codex/skills/hyper-waterfall/SKILL.md
+.agents/plugins/marketplace.json
+```
+
+### Manifest 점검
+
+| 항목 | 현재 값 | 판단 |
+|---|---|---|
+| `name` | `hyper-waterfall` | kebab-case stable identifier로 적합 |
+| `version` | `0.2.0` | M040/v0.2.0 candidate와 일치 |
+| `description` | `Discover Hyper-Waterfall workflows and lifecycle checks in Codex.` | 기본 설명 존재 |
+| `repository` | `https://github.com/postmelee/hyper-waterfall` | canonical repository 연결 |
+| `license` | `MIT` | repository license와 일치 |
+| `keywords` | `workflow`, `codex`, `project-management` | discovery metadata 존재 |
+| `skills` | `./skills/` | plugin root 내부 상대 경로 |
+| `interface.displayName` | `Hyper-Waterfall` | install-surface title 존재 |
+| `interface.shortDescription` | `Issue-first waterfall workflow guardrails for coding agents.` | install-surface copy 존재 |
+| `interface.longDescription` | canonical source를 새로 만들지 않는 workflow entrypoint 설명 | thin wrapper 원칙과 맞음 |
+| `interface.developerName` | `postmelee` | publisher display metadata 존재 |
+| `interface.category` | `Productivity` | marketplace category 존재 |
+| `interface.capabilities` | `Read` | thin wrapper 성격과 맞음 |
+| `interface.websiteURL` | GitHub repository URL | external link 존재 |
+| `interface.defaultPrompt` | 2개 prompt | starter prompt 존재 |
+| `privacyPolicyURL` / `termsOfServiceURL` | 없음 | public install-surface 전 추가 필요 여부 확인 필요 |
+| `brandColor` / `composerIcon` / `logo` / `screenshots` | 없음 | public install-surface 전 asset 필요 여부 확인 필요 |
+
+### Marketplace 점검
+
+| 항목 | 현재 값 | 판단 |
+|---|---|---|
+| `name` | `hyper-waterfall-local` | local marketplace 식별 가능 |
+| `interface.displayName` | `Hyper-Waterfall Local Plugins` | Codex-facing marketplace title 존재 |
+| `plugins[0].name` | `hyper-waterfall` | manifest name과 일치 |
+| `source.source` | `local` | repo-local candidate와 일치 |
+| `source.path` | `./plugins/hyper-waterfall-codex` | marketplace root 기준 path rule 충족 |
+| `policy.installation` | `AVAILABLE` | 공식 예시와 맞음 |
+| `policy.authentication` | `ON_INSTALL` | 공식 예시와 맞음 |
+| `category` | `Productivity` | manifest category와 일치 |
+
+## #38 baseline
+
+| #38 결과 | #52 Stage 1 판단 |
+|---|---|
+| `codex plugin marketplace add .` local smoke 성공 | Stage 2에서 같은 repo root 기준으로 재확인한다. |
+| `codex plugin marketplace remove hyper-waterfall-local` cleanup 성공 | Stage 2에서도 add/remove를 같은 단계 안에서 처리한다. |
+| 실제 Plugin Directory 표시와 Skill invocation은 Codex restart/UI 확인 필요 | Stage 2의 핵심 확인 범위로 유지한다. |
+| public 배포는 별도 승인 전 보류 | Stage 3에서 별도 승인 여부와 공식 publishing surface 부재를 함께 판단한다. |
+| fallback 경로는 `AGENTS.md`, `docs/agent-entrypoint.md`, `templates/mydocs/skills/`, npm CLI | public 배포 보류 시 대체 설치/사용 경로로 이어받는다. |
+
+## Gap 분석
+
+| Gap | 영향 | Stage 2-3 처리 |
+|---|---|---|
+| Official self-serve public publishing 명령/절차 미확인 | 현재 상태에서 즉시 public 배포를 실행할 수 없다. | Stage 3에서 public 배포 NO-GO 또는 보류 근거로 기록한다. |
+| UI discovery 미확인 | repo-local marketplace가 실제 Codex app/CLI plugin browser에 표시되는지 아직 모른다. | Stage 2에서 app 또는 CLI `/plugins` 확인을 시도한다. |
+| Skill invocation 미확인 | thin wrapper가 설치 후 `@` 또는 skill invocation surface에서 발견되는지 아직 모른다. | Stage 2에서 prompt discovery 또는 수동 확인을 기록한다. |
+| legal link 부재 | public install-surface에서 privacy/terms URL이 요구되면 배포 전 보강 필요. | Stage 3에서 필요 여부와 보류 사유로 분리한다. |
+| visual asset 부재 | composer icon, logo, screenshots가 public listing 품질 또는 요건에 필요할 수 있다. | Stage 3에서 보강 필요 여부를 후속 후보로 남긴다. |
+
+## Stage 1 결론
+
+- 현재 plugin 후보는 repo-local marketplace 구조, manifest entry point, `skills` path, thin wrapper 원칙을 유지할 수 있다.
+- Codex CLI `0.131.0-alpha.9`는 marketplace add/remove surface를 제공하지만 비대화식 plugin list/install/load subcommand는 노출하지 않는다.
+- 공식 문서 기준으로 public Plugin Directory 추가와 self-serve publishing/management는 아직 coming soon이다.
+- Stage 2는 repo-local marketplace add/remove와 UI 또는 `/plugins` discovery 확인에 집중한다.
+- Stage 3에서 public 배포는 별도 승인뿐 아니라 공식 publishing surface 존재 여부를 기준으로 GO/NO-GO를 판단해야 한다.
