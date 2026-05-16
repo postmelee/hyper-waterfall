@@ -85,8 +85,7 @@ git diff --check
 
 ### 후속 작업 후보
 
-- Codex Plugin Directory UI discovery와 Skill invocation 수동 smoke
-- Public 배포 승인 시 install-surface asset/legal link 보강
+- [#52 Codex plugin public 배포와 UI discovery smoke](https://github.com/postmelee/hyper-waterfall/issues/52): Codex Plugin Directory UI discovery, Skill invocation 수동 smoke, public 배포 승인 게이트, install-surface asset/legal link 검토
 - Thin wrapper discoverability가 부족하면 release snapshot bundle 검토
 - Hook guardrail 구현과 fixture test가 필요하면 별도 이슈로 분리
 

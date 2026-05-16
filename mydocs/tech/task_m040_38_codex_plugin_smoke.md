@@ -297,9 +297,12 @@ templates/manifest.json, and migration guides remain canonical.
 | Hook 포함 배포 | NO-GO | 기본 bundle에 hook을 포함하지 않기로 한 #37/#38 판단을 유지한다. |
 | Release snapshot bundle | 보류 | Thin wrapper 후보가 만들어졌고 local add smoke가 통과했으므로, snapshot은 discoverability 부족이 확인될 때만 후속 후보로 둔다. |
 
+후속 public 배포와 UI discovery smoke는 [#52](https://github.com/postmelee/hyper-waterfall/issues/52)로 등록했다.
+
 ### Stage 4 결론
 
 - #38은 Codex plugin repo-local 배포 후보를 생성했고, local marketplace add smoke까지 통과했다.
 - public 배포 실행은 별도 승인 전 보류한다.
 - 자동 install/load/discovery 전체 검증은 Codex restart/UI 확인이 필요하므로 제한 사항으로 남긴다.
 - 대체 경로는 `AGENTS.md`, `docs/agent-entrypoint.md`, `templates/mydocs/skills/`, npm CLI fallback으로 유지된다.
+- public 배포와 UI discovery smoke는 #52에서 이어간다.
