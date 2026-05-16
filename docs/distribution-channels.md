@@ -144,6 +144,8 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 ### Codex plugin
 
+Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plugin-distribution-principles.md)의 공통 원칙을 먼저 따른다. 해당 문서는 plugin이 canonical source가 아니라 발견/실행 계층이라는 경계, bundle 포함/참조/fallback 분류, hook guardrail 원칙, #37-#40 packaging check matrix를 정의한다.
+
 목적:
 
 - Codex 사용자가 저장소 안에서 Hyper-Waterfall 절차와 Skill 흐름을 쉽게 발견하게 한다.
@@ -165,7 +167,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 판단:
 
 - 사용자 경험 가치는 크지만 tool-specific lock-in과 사양 변화 위험이 크다.
-- 구현보다 먼저 plugin packaging 검증 task를 분리한다.
+- 구현보다 먼저 공통 원칙과 plugin packaging 검증 task를 분리한다.
 - 후속 마일스톤 후보: `M030 - Codex plugin packaging 검증`.
 
 ### Claude plugin
@@ -191,7 +193,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 판단:
 
 - Codex plugin과 같은 수준의 후보지만, 둘을 한 번에 구현하면 중복과 drift가 커진다.
-- Codex/Claude 공통 plugin 설계 원칙을 먼저 정한 뒤 도구별 구현을 분리한다.
+- Codex/Claude 공통 plugin 설계 원칙은 `docs/plugin-distribution-principles.md`를 기준으로 두고, 도구별 구현을 분리한다.
 - 후속 마일스톤 후보: `M030 - Claude plugin packaging 검증`.
 
 ## 구현 우선순위
@@ -202,7 +204,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 | P0 | npm CLI 안정화 | 다른 실행 채널이 재사용할 최소 실행 계층이다. | `init/update/doctor` 출력 계약 유지, test 유지 |
 | P1 | Homebrew formula/tap | macOS 개발자 설치 경험 개선 효과가 크고 Docker/plugin보다 운영 모델이 단순하다. | public tap smoke 통과. core 제출은 #46에서 보류 판단 |
 | P2 | Docker read-only image | CI와 격리 실행 가치가 있지만 volume/path 검증 비용이 있다. | CLI read-only 보장, image tag/version 정책 확정 |
-| P3 | Codex plugin packaging 검증 | agent UI 통합 가치는 크지만 사양 변화와 lock-in 위험이 있다. | plugin packaging 사양 확인, canonical 문서 참조 방식 확정 |
+| P3 | Codex plugin packaging 검증 | agent UI 통합 가치는 크지만 사양 변화와 lock-in 위험이 있다. | 공통 plugin 원칙 확정, Codex packaging 사양 확인, canonical 문서 참조 방식 검증 |
 | P3 | Claude plugin packaging 검증 | Codex와 같은 가치를 갖지만 중복 구현 위험이 있다. | 공통 plugin 원칙 확정, Claude Code 진입 방식 검증 |
 
 권장 순서:
