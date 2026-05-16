@@ -127,7 +127,7 @@ Task #38 Stage 2: Codex thin wrapper bundle 생성
 
 - repo-local marketplace 후보 `.agents/plugins/marketplace.json`을 작성한다.
 - marketplace `source.path`는 plugin bundle 위치를 가리키되, #37에서 확인한 local marketplace root 상대 path 규칙을 따른다.
-- 가능한 경우 `codex plugin marketplace add` 흐름을 실행해 local marketplace add 또는 install/load surface를 확인한다.
+- 가능한 경우 repo root를 marketplace root로 두고 `codex plugin marketplace add` 흐름을 실행해 local marketplace add 또는 install/load surface를 확인한다.
 - Codex CLI 또는 app이 plugin install/load/discovery를 지원하지 않거나 restart/user config 접근이 필요한 경우, 실패 조건과 필요한 수동 확인을 기록한다.
 - smoke 중 user config, plugin cache, local marketplace registration을 변경했다면 변경 위치와 cleanup 절차를 기록한다.
 - wrapper Skill discoverability가 충분하지 않으면 release snapshot 후보 검토 필요성을 Stage 4로 넘긴다.
@@ -145,7 +145,7 @@ git diff --check
 조건부 검증:
 
 ```bash
-codex plugin marketplace add ./.agents/plugins
+codex plugin marketplace add .
 ```
 
 수동 확인:
@@ -245,6 +245,6 @@ Task #38 Stage 4: Codex plugin smoke 결과와 배포 판단 정리
 
 - Stage 1-4 분할, 산출물, 검증 명령, 커밋 메시지에 동의?
 - Stage 2의 기본 bundle을 hook 없는 thin wrapper로 만들고 hook 포함은 제외하는 데 동의?
-- Stage 3의 `codex plugin marketplace add ./.agents/plugins`는 local config/cache 변경 가능성이 있으므로 실행 전 단계 보고에서 조건부 승인 항목으로 다루는 데 동의?
+- Stage 3의 `codex plugin marketplace add .`는 local config/cache 변경 가능성이 있으므로 실행 전 단계 보고에서 조건부 승인 항목으로 다루는 데 동의?
 - Stage 4에서 public 배포는 smoke 결과와 별도 승인 없이는 실행하지 않는 데 동의?
 - smoke 실패 또는 제한 시 우회 구현 대신 보류 사유와 대체 경로를 최종 보고서에 남기는 데 동의?
