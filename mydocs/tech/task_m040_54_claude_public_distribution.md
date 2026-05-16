@@ -178,3 +178,94 @@ Stage 2에서 하지 않을 항목:
 - GitHub Release asset upload
 - independent marketplace 추가 또는 public 안내 문서 변경
 - hook 추가 또는 core Skill/manual 복제
+
+## Stage 2 — public metadata와 artifact 후보 점검
+
+### Metadata 점검
+
+Stage 2에서는 `plugins/claude/hyper-waterfall/` 후보를 public 제출 또는 release asset 후보로 둘 때 부족한 안내를 점검했다.
+
+| 파일 | 판단 | 변경 |
+|---|---|---|
+| `.claude-plugin/plugin.json` | `name`, `version`, `description`, `author`, `homepage`, `repository`, `license`, `keywords`, `skills`가 이미 존재한다. | 변경 없음 |
+| `README.md` | local/zip smoke와 fallback은 충분하지만 public 제출 전 source review, 포함 파일, no-hook/no-MCP/no-binary, release asset 보류 조건이 더 명확해야 한다. | `Source review and permissions`, public submission/release asset 안내 추가 |
+| `CHANGELOG.md` | #54 public readiness 점검 사실이 별도 기록되어야 한다. | 2026-05-17 public readiness notes 추가 |
+| `skills/hyper-waterfall/SKILL.md` | canonical source, 승인 게이트, fallback, public publish 금지 문구가 이미 있다. | 변경 없음 |
+
+### Artifact 후보
+
+생성한 임시 artifact:
+
+| 항목 | 값 |
+|---|---|
+| zip | `/private/tmp/hyper-waterfall-claude-plugin-task54.zip` |
+| size | `5.3K` |
+| sha256 | `b30fb8080f334b2c2956e020af707b98bc56c4ecec49b31f27b44f060d4e55fc` |
+| checksum file | `/private/tmp/hyper-waterfall-claude-plugin-task54.zip.sha256` |
+
+생성 명령:
+
+```bash
+zip -r /private/tmp/hyper-waterfall-claude-plugin-task54.zip .
+shasum -a 256 /private/tmp/hyper-waterfall-claude-plugin-task54.zip > /private/tmp/hyper-waterfall-claude-plugin-task54.zip.sha256
+```
+
+Zip 포함 파일:
+
+```text
+CHANGELOG.md
+README.md
+.claude-plugin/plugin.json
+skills/hyper-waterfall/SKILL.md
+```
+
+판단:
+
+- zip은 official directory submission form의 upload 후보 또는 GitHub Release asset 후보로 사용할 수 있다.
+- zip과 checksum file은 `/private/tmp`의 임시 산출물이며 Git에 포함하지 않는다.
+- release asset으로 게시하려면 Stage 3에서 게시 대상 release/tag, asset명, checksum 정책, rollback/delete 조건을 별도 승인받아야 한다.
+
+### Stage 2 smoke 결과
+
+`claude plugin validate plugins/claude/hyper-waterfall`:
+
+```text
+Validating plugin manifest: /Users/melee/Documents/projects/hyper-waterfall-task54/plugins/claude/hyper-waterfall/.claude-plugin/plugin.json
+
+✔ Validation passed
+```
+
+`claude --plugin-dir /private/tmp/hyper-waterfall-claude-plugin-task54.zip plugin list`:
+
+```text
+Session-only plugins (--plugin-dir / --plugin-url):
+
+  ❯ hyper-waterfall@inline
+    Version: 0.2.0-candidate.1
+    Path: /tmp/claude-plugin-session-7fad1afe1100dd52/inline-0-hyper-waterfall-claude-plugin-task54
+    Status: ✔ loaded
+```
+
+`claude --plugin-dir /private/tmp/hyper-waterfall-claude-plugin-task54.zip plugin details hyper-waterfall`:
+
+```text
+Component inventory
+  Skills (1)  hyper-waterfall
+  Agents (0)
+  Hooks (0)
+  MCP servers (0)
+  LSP servers (0)
+
+Projected token cost
+  Always-on:   ~63 tok   added to every session
+  hyper-waterfall        ~60       ~470
+```
+
+### Stage 2 결론
+
+- directory validation, zip checksum, zip load/details smoke는 통과했다.
+- public metadata 보강은 README와 CHANGELOG만으로 충분하다.
+- manifest와 wrapper Skill은 변경하지 않았다.
+- hook, MCP server, background monitor, bundled binary, local command runner는 계속 포함하지 않는다.
+- public directory 제출과 GitHub Release asset 게시는 실행하지 않았다.
+- Stage 3에서는 작업지시자 별도 승인 여부에 따라 official directory 제출 또는 release asset 게시를 실행할지, 아니면 NO-GO와 대체 경로로 남길지 판단한다.
