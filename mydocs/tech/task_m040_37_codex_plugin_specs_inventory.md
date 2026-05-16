@@ -137,6 +137,17 @@ Stage 2에서는 이 inventory를 기준으로 `mydocs/tech/task_m040_37_codex_p
 - `templates/manifest.json`, `docs/migrations/`, `docs/agent-entrypoint.md`, npm CLI, `templates/mydocs/manual`은 plugin bundle에 복제하지 않고 참조 또는 fallback 안내로만 다루는 것으로 검증했다.
 - `hooks` manifest field와 `hooks/hooks.json` 구성은 Stage 3 범위로 남기고 Stage 2 base manifest에는 넣지 않는 것으로 정리했다.
 
+## Stage 3 반영
+
+Stage 3에서는 Codex hook guardrail packaging 가능성을 `mydocs/tech/task_m040_37_codex_plugin_packaging_validation.md`에 추가했다. 반영 결과는 다음과 같다.
+
+- #38 1차 bundle 후보는 hook을 포함하지 않는 thin wrapper Skill 전용 구성을 유지한다.
+- hook 포함은 2차 후보로 두며, 사용하려면 `[features].plugin_hooks = true`, plugin enable 상태, non-managed hook trust review가 필요하다고 정리했다.
+- manifest `hooks` field를 생략하면 default `hooks/hooks.json`을 사용할 수 있으므로, 1개 hook config만 둘 때는 default 파일을 우선 후보로 정했다.
+- `PermissionRequest`는 기술적으로 allow를 반환할 수 있지만 Hyper-Waterfall 정책상 자동 allow를 금지하고 deny 또는 no-decision normal approval flow만 후보로 둔다.
+- `PreToolUse`는 위험 명령, publish/merge/close, 승인 전 파일 수정 시도 같은 사전 guardrail 후보로 두되, incomplete interception 한계를 명시했다.
+- `PostToolUse`와 `Stop`은 단계 보고 누락, 검증 미수행 같은 사후 warn/report-only 후보로 두고 side effect 되돌림 수단으로 표현하지 않았다.
+
 ## 참고 링크
 
 - [Build plugins - Codex](https://developers.openai.com/codex/plugins/build)

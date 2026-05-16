@@ -252,6 +252,175 @@ repo marketplace 후보:
 | Hook 제외 | OK | Stage 2 base manifest에는 `hooks`를 넣지 않고 Stage 3에서 별도 검증한다. |
 | Local smoke | 보류 | #38에서 marketplace 생성, Codex restart, install/load 확인이 필요하다. |
 
+## Stage 3 hook packaging validation
+
+Stage 3은 Codex plugin에 hook guardrail을 포함할 수 있는지 검증했다. 결론부터 말하면 #38 1차 bundle 후보에는 hook을 넣지 않고, hook은 2차 opt-in 후보로 분리한다. 이유는 plugin-bundled hook이 `[features].plugin_hooks = true`를 요구하고, non-managed hook trust review가 필요하며, 현재 hook coverage가 완전한 enforcement boundary가 아니기 때문이다.
+
+### Hook config 위치 후보
+
+| 후보 | 구조 | 장점 | 위험 | 판단 |
+|---|---|---|---|---|
+| Default file | `hooks/hooks.json` | manifest `hooks` field를 생략할 수 있고 공식 기본값과 맞는다 | 파일 존재만으로 hook 포함 의도가 보일 수 있다 | hook 포함 시 1차 후보 |
+| Manifest path | `.codex-plugin/plugin.json`의 `"hooks": "./hooks/hooks.json"` | hook entry를 manifest에서 명시한다 | default와 중복하면 혼동된다 | hook 파일을 여러 개로 나눌 때 후보 |
+| Manifest path array | `"hooks": ["./hooks/session.json", "./hooks/tools.json"]` | SessionStart와 tool guardrail 분리 가능 | #38 install-surface 설명이 복잡해진다 | 2개 이상 policy 파일이 필요할 때 후보 |
+| Inline hooks object | manifest `hooks`에 inline object | 파일 수가 줄어든다 | JSON이 커지고 review가 어렵다 | 보류 |
+
+Stage 3 판단:
+
+- #38 1차 bundle에는 `hooks` field와 `hooks/` 디렉터리를 포함하지 않는다.
+- hook 포함 후보는 default `hooks/hooks.json`을 우선한다.
+- manifest `hooks` field는 여러 hook config 파일을 분리해야 할 때만 사용한다.
+- 모든 hook path는 plugin root 내부 `./` 경로여야 한다.
+
+### Hook 활성화 조건
+
+- 일반 Codex hooks의 canonical feature key는 `hooks`이고 기본 활성이다.
+- `codex_hooks`는 deprecated alias이므로 새 문서나 plugin 후보에서 사용하지 않는다.
+- plugin-bundled hooks는 별도 opt-in이며 `[features].plugin_hooks = true`가 필요하다.
+- plugin이 enabled 상태여야 bundled hooks가 로드된다.
+- plugin hooks는 non-managed hooks라서 실행 전 trust review가 필요하다.
+- hook이 꺼져 있거나 실패해도 기본 절차는 `AGENTS.md`, manual, Skill, npm CLI dry-run이다.
+
+### Event별 guardrail 후보
+
+| Event | matcher 지원 | Hyper-Waterfall 후보 | 권장 등급 | 판단 |
+|---|---|---|---|---|
+| `SessionStart` | `startup`, `resume`, `clear` source | `AGENTS.md`, `mydocs/skills`, 현재 branch 확인 안내를 additional context로 주입 | report-only | 시작 맥락 보강용. 차단 목적 아님 |
+| `PreToolUse` | tool name. `Bash`, `apply_patch`, MCP tool names, `Edit`, `Write` alias | 위험 명령, publish/merge/close, 승인 전 파일 수정, canonical source 복제 시도 탐지 | block 또는 warn | 사전 guardrail 핵심 후보지만 incomplete interception 한계 존재 |
+| `PermissionRequest` | tool name. `Bash`, `apply_patch`, MCP tool names | escalated command, managed-network approval 요청에서 destructive/public action deny | deny 또는 no-decision | 자동 allow 금지. 승인 대체 금지 |
+| `PostToolUse` | tool name. `Bash`, `apply_patch`, MCP tool names, `Edit`, `Write` alias | 단계 보고 누락, 검증 미수행, generated output 또는 외부 action 발생 감지 | warn 또는 report-only | 이미 실행된 side effect는 되돌릴 수 없음 |
+| `UserPromptSubmit` | matcher 미지원 | 이슈 없는 구현 요청, 승인 없는 다음 단계 요청, secret paste 같은 prompt-level 경고 | warn 또는 block 후보 | matcher가 없어 과도한 global hook 위험 |
+| `Stop` | matcher 미지원 | stage 종료 전 보고서/검증 누락 경고, 다음 단계 승인 대기 reminder | report-only 또는 제한적 warn | continuation loop 위험. block 남용 금지 |
+
+### Guardrail rule 후보
+
+| 후보 | Event | 확인할 객관 상태 | 권장 등급 | 비고 |
+|---|---|---|---|---|
+| 위험 명령 | `PreToolUse`, `PermissionRequest` | `rm -rf`, `git reset --hard`, `git clean`, force push, destructive checkout | block/deny | 작업지시자 명시 요청 없이는 차단 후보 |
+| publish 시도 | `PreToolUse`, `PermissionRequest` | `npm publish`, `gh release create`, registry upload | block/deny | 외부 공개 action은 별도 승인 필요 |
+| merge/close 시도 | `PreToolUse`, `PermissionRequest` | `gh pr merge`, `gh issue close`, merge/close API tool | block/deny | PR merge 확인 또는 승인 전 금지 |
+| 승인 전 파일 수정 | `PreToolUse` | `apply_patch`, `Edit`, `Write`, 수정 대상 path, 구현계획서/stage 상태 | warn 또는 block 후보 | 승인 맥락은 hook이 확정할 수 없어 보수적으로 warn 우선 |
+| 구현계획서 없는 stage 시작 | `PreToolUse`, `Stop` | `mydocs/plans/task_m{milestone}_{issue}_impl.md` 존재 여부 | block 후보 | 객관 precondition이라 비교적 명확 |
+| 단계 보고 누락 | `PostToolUse`, `Stop` | `mydocs/working/task_m{milestone}_{issue}_stage{N}.md` 존재 여부 | warn/report-only | PostToolUse는 side effect를 되돌릴 수 없음 |
+| canonical source 복제 | `PreToolUse`, `PostToolUse` | plugin bundle 안의 `templates/manifest.json`, migration guide, manual copy 추가 | warn | release snapshot인지 drift 위험인지 사람 검토 필요 |
+| core Skill fork | `PreToolUse`, `PostToolUse` | `skills/*/SKILL.md`가 canonical Skill 본문을 재작성하는지 | warn | thin wrapper 또는 release snapshot 여부 검토 |
+| 비대상 도구 사용 | `Stop` | `WebSearch` 등 hook이 못 본 동작 후 보고서 누락 여부 | report-only | hook intercept 대상이 아니므로 강한 보장 금지 |
+
+### Hook output 정책
+
+- `PreToolUse`에서 명확히 차단할 때는 `permissionDecision: "deny"` 또는 legacy block shape를 후보로 둔다.
+- `PreToolUse`에서 맥락 보강만 필요하면 `additionalContext` 후보로 둔다.
+- `PermissionRequest`에서는 자동 `allow`를 사용하지 않는다. 명확한 위험 요청만 `deny`하고, 나머지는 no-decision으로 normal approval flow를 유지한다.
+- `PostToolUse`의 block은 이미 완료된 tool result를 hook feedback으로 대체할 수 있지만 side effect를 undo하지 않는다. 따라서 되돌림 수단처럼 문서화하지 않는다.
+- `UserPromptSubmit`과 `Stop`은 matcher 미지원이므로 global behavior가 된다. 우선 report-only 또는 제한적 warn 후보로 둔다.
+- `suppressOutput`, `updatedInput`, `updatedMCPToolOutput`처럼 parsed but unsupported 또는 reserved인 필드는 사용하지 않는다.
+
+### Hook 한계
+
+- `PreToolUse`와 `PostToolUse`는 모든 shell call을 intercept하지 않는다.
+- newer `unified_exec` 계열 shell handling은 interception이 incomplete로 문서화되어 있다.
+- `WebSearch` 같은 non-shell, non-MCP 비대상 도구는 hook 대상이 아니다.
+- 같은 event의 여러 matching command hooks는 concurrently 시작될 수 있어 한 hook이 다른 hook 시작을 막을 수 없다.
+- `PostToolUse`는 사후 event라 side effect를 되돌릴 수 없다.
+- 작업지시자 승인 여부, 같은 스레드의 대화 맥락, 사람의 의도를 hook이 안정적으로 판정할 수 없다.
+- hook 실패나 비활성 상태는 승인으로 간주되지 않는다.
+
+### Hook packaging 후보 구조
+
+Hook을 #38 이후에 포함한다면 다음 구조가 1차 후보가 된다.
+
+```text
+plugins/hyper-waterfall-codex/
+  .codex-plugin/
+    plugin.json
+  skills/
+    hyper-waterfall/
+      SKILL.md
+  hooks/
+    hooks.json
+    hyper_waterfall_guardrail.js
+  README.md
+```
+
+`hooks/hooks.json` 후보:
+
+```json
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${PLUGIN_ROOT}/hooks/hyper_waterfall_guardrail.js session-start",
+            "statusMessage": "Checking Hyper-Waterfall context"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${PLUGIN_ROOT}/hooks/hyper_waterfall_guardrail.js pre-tool",
+            "statusMessage": "Checking Hyper-Waterfall guardrails"
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${PLUGIN_ROOT}/hooks/hyper_waterfall_guardrail.js permission-request",
+            "statusMessage": "Checking approval request"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|apply_patch|Edit|Write|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${PLUGIN_ROOT}/hooks/hyper_waterfall_guardrail.js post-tool",
+            "statusMessage": "Recording Hyper-Waterfall guardrail result"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node ${PLUGIN_ROOT}/hooks/hyper_waterfall_guardrail.js stop",
+            "statusMessage": "Checking stage reporting status"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+이 후보는 구현이 아니라 packaging shape 검증용이다. 실제 guardrail script 작성, Node runtime 의존성, test fixture, trust review 안내는 별도 승인 또는 #38 이후 범위다.
+
+### Stage 3 결정
+
+- #38 1차 bundle 후보는 hook 없는 thin wrapper Skill로 유지한다.
+- hook 포함은 #38에서 smoke 전 별도 승인 항목으로 제시한다.
+- hook 포함 시 default `hooks/hooks.json`을 우선하고, manifest `hooks` field는 여러 config 파일을 나눌 때만 사용한다.
+- `PermissionRequest` 자동 allow는 금지한다.
+- `PreToolUse`는 위험 명령과 외부 공개 action 중심의 block/deny 후보로 둔다.
+- `PostToolUse`, `Stop`은 검증/보고 누락의 warn/report-only 후보로 둔다.
+
 ## 결정
 
 - #38의 Codex plugin bundle 1차 후보는 thin wrapper Skill 기반으로 둔다.
@@ -259,23 +428,26 @@ repo marketplace 후보:
 - plugin bundle은 `templates/manifest.json`, migration guide, `docs/agent-entrypoint.md`, manual 본문, core Skill 본문을 canonical source로 복제하지 않는다.
 - release snapshot 방식은 개별 core Skill discoverability가 부족할 때의 2차 후보로만 둔다.
 - 실제 local marketplace와 install/load smoke는 #38로 넘긴다.
+- hook 포함은 opt-in 2차 후보로 분리하고, #38의 1차 smoke는 hook 없는 plugin으로 시작한다.
 
 ## 비결정 / 보류
 
 - #38에서 thin wrapper만으로 Plugin Directory와 skill invocation discoverability가 충분한지 smoke가 필요하다.
 - plugin `version`을 framework release와 같은 `0.2.0`으로 둘지, plugin artifact pre-release로 둘지는 #38에서 배포 후보 이름과 함께 확정한다.
 - plugin assets, icon, legal links, long install-surface copy는 #38에서 최종화한다.
-- hook inclusion은 Stage 3에서 `plugin_hooks` opt-in 조건과 함께 검증한다.
+- 실제 hook guardrail script 구현, fixture test, trust review 문구는 후속 승인 또는 #38 이후 범위다.
 
 ## 적용 영향
 
-- Stage 3은 hook config를 Stage 2 base manifest와 분리해 검증해야 한다.
+- Stage 3 결과에 따라 hook config는 Stage 2 base manifest와 분리한다.
 - Stage 4는 #38로 넘길 local marketplace와 restart/install smoke 전제 조건을 go/no-go에 포함해야 한다.
 - 공통 원칙 문서 변경은 Stage 2에서는 필요하지 않다. 다만 Stage 4에서 #37 전체 결과를 종합해 `docs/plugin-distribution-principles.md`의 `codex_hooks` 계열 표현 보정 여부를 판단한다.
+- Stage 4는 #38 1차 bundle을 hook 없는 thin wrapper로 둘지, hook opt-in candidate까지 같이 만들지 go/no-go로 분리해야 한다.
 
 ## 참고 링크
 
 - [Build plugins - Codex](https://developers.openai.com/codex/plugins/build)
 - [Plugins - Codex](https://developers.openai.com/codex/plugins)
+- [Hooks - Codex](https://developers.openai.com/codex/hooks)
 - [`docs/plugin-distribution-principles.md`](../../docs/plugin-distribution-principles.md)
 - [`mydocs/tech/task_m040_37_codex_plugin_specs_inventory.md`](task_m040_37_codex_plugin_specs_inventory.md)
