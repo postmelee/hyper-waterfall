@@ -167,3 +167,84 @@ plugins/hyper-waterfall-codex/skills/hyper-waterfall/SKILL.md
 - Stage 2 bundle 후보는 공식 Codex plugin path rule과 #37 canonical 원칙을 충족한다.
 - 기본 bundle은 hook 없는 thin wrapper로 유지됐다.
 - Stage 3에서는 repo-local marketplace 파일을 만들고, local config/cache 변경 가능성이 있는 `codex plugin marketplace add .` 실행 여부를 별도 확인해야 한다.
+
+## Stage 3 local marketplace smoke 결과
+
+Stage 3에서는 repo-local marketplace 후보를 만들고 Codex CLI에서 local marketplace root를 받아들이는지 확인했다.
+
+### Marketplace 후보
+
+파일: `.agents/plugins/marketplace.json`
+
+```json
+{
+  "name": "hyper-waterfall-local",
+  "interface": {
+    "displayName": "Hyper-Waterfall Local Plugins"
+  },
+  "plugins": [
+    {
+      "name": "hyper-waterfall",
+      "source": {
+        "source": "local",
+        "path": "./plugins/hyper-waterfall-codex"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
+```
+
+판단:
+
+- `source.path`는 marketplace root 기준 `./plugins/hyper-waterfall-codex`다.
+- repository root를 local marketplace root로 넘기는 `codex plugin marketplace add .` 흐름과 맞는다.
+- 이 파일은 repo-local candidate이며, personal marketplace 파일을 만들지 않았다.
+
+### CLI smoke
+
+실행 위치: `/private/tmp/hyper-waterfall-task38`
+
+| 명령 | 결과 | 판단 |
+|---|---|---|
+| `jq . .agents/plugins/marketplace.json` | 성공 | marketplace JSON syntax OK |
+| `rg -n 'hyper-waterfall|hyper-waterfall-codex|local|source|path|AVAILABLE|Productivity' .agents/plugins/marketplace.json` | 성공 | local marketplace metadata 확인 |
+| `codex plugin marketplace add --help` | 성공 | local marketplace root directory source 지원 재확인 |
+| `codex plugin marketplace add .` | `Added marketplace 'hyper-waterfall-local' from /private/tmp/hyper-waterfall-task38.` / `Installed marketplace root: /private/tmp/hyper-waterfall-task38` | Codex CLI가 repo root local marketplace를 수용함 |
+| `codex plugin marketplace upgrade hyper-waterfall-local` | `Error: marketplace 'hyper-waterfall-local' is not configured as a Git marketplace` | local marketplace는 Git marketplace upgrade 대상이 아님. 실패가 plugin 구조 실패를 의미하지 않음 |
+| `codex plugin marketplace remove hyper-waterfall-local` | `Removed marketplace 'hyper-waterfall-local'.` | smoke 후 local registration cleanup 완료 |
+
+### Install/load/discovery 판단
+
+- CLI add smoke는 성공했다. Codex가 repo root를 local marketplace root로 인식했고 marketplace name을 읽었다.
+- CLI에는 이 환경에서 plugin install/list/load를 직접 확인하는 추가 subcommand가 노출되지 않았다.
+- 공식 문서상 repo marketplace는 Codex restart 후 Plugin Directory 또는 CLI `/plugins`에서 확인하는 흐름이므로, 실제 UI discovery는 자동 검증 대신 수동 확인 항목으로 남긴다.
+- Stage 3에서는 personal marketplace나 plugin cache 파일을 repository에 추가하지 않았다.
+- `codex plugin marketplace remove hyper-waterfall-local`로 등록 부산물을 제거했다.
+
+### Cleanup
+
+변경된 repository 파일:
+
+- `.agents/plugins/marketplace.json`
+
+임시 local registration:
+
+- `codex plugin marketplace add .`로 등록
+- `codex plugin marketplace remove hyper-waterfall-local`로 제거
+
+잔여 config/cache:
+
+- CLI remove 명령은 성공했다.
+- Codex CLI에는 marketplace list 명령이 없어 별도 listing 검증은 하지 못했다.
+
+### Stage 3 결론
+
+- Repo-local marketplace 파일은 공식 구조와 path rule을 충족한다.
+- Codex CLI local marketplace add smoke는 성공했다.
+- 자동 install/load/discovery 전체 검증은 CLI surface 한계와 Codex restart/UI 요구 때문에 제한됐다.
+- Stage 4에서는 public 배포 판단을 "local add smoke 성공, UI discovery 수동 확인 필요"로 정리해야 한다.

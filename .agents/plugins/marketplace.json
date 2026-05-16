@@ -1,0 +1,20 @@
+{
+  "name": "hyper-waterfall-local",
+  "interface": {
+    "displayName": "Hyper-Waterfall Local Plugins"
+  },
+  "plugins": [
+    {
+      "name": "hyper-waterfall",
+      "source": {
+        "source": "local",
+        "path": "./plugins/hyper-waterfall-codex"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
