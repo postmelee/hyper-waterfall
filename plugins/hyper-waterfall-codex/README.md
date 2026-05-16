@@ -39,8 +39,10 @@ repo marketplace는 repository root의 `.agents/plugins/marketplace.json`에 둔
 codex plugin marketplace add .
 ```
 
-이 명령은 local config/cache를 변경할 수 있으므로 Task #38 Stage 3에서 별도 승인 후 실행한다.
+이 명령은 local config/cache를 변경할 수 있으므로 별도 승인 후 실행한다. Task #52 Stage 2에서는 CLI `/plugins`에서 `Hyper-Waterfall Local Plugins`, `Hyper-Waterfall`, bundled Skill `hyper-waterfall:hyper-waterfall` 표시를 확인했고, `codex plugin marketplace remove hyper-waterfall-local`로 cleanup했다.
 
 ## 공개 배포 게이트
 
 Do not execute public distribution from this plugin candidate without explicit maintainer approval. Local smoke 통과는 public 배포 승인이 아니다.
+
+Task #52 기준으로 Codex 공식 self-serve public plugin publishing/management surface는 아직 확인되지 않았다. 따라서 public 배포는 보류하며, 대체 경로는 repo-local marketplace 등록, 현재 저장소의 `AGENTS.md`, `mydocs/skills/{skill-name}/SKILL.md`, `docs/agent-entrypoint.md`, npm CLI dry-run이다.
