@@ -127,6 +127,16 @@ Task #37 Stage 1은 Codex plugin packaging 검증을 시작하기 전에 OpenAI 
 - Stage 3의 hook guardrail 문서는 `PermissionRequest` allow 자동화를 금지하고, incomplete interception과 PostToolUse side effect 한계를 명확히 해야 한다.
 - #38은 local marketplace와 Codex restart가 필요한 install/load smoke를 별도 범위로 받아야 한다.
 
+## Stage 2 반영
+
+Stage 2에서는 이 inventory를 기준으로 `mydocs/tech/task_m040_37_codex_plugin_packaging_validation.md`를 작성했다. 반영 결과는 다음과 같다.
+
+- `.codex-plugin/plugin.json`을 required entry point로 두고, manifest component path는 plugin root 내부 `./` 경로만 허용하는 것으로 검증했다.
+- #38의 1차 bundle 후보는 full core Skill snapshot이 아니라 `skills/hyper-waterfall/SKILL.md` thin wrapper로 두었다.
+- release snapshot 방식은 offline discovery가 필요할 때의 2차 후보로 남기되, snapshot에도 원본 경로와 release/tag를 표시해야 한다고 정리했다.
+- `templates/manifest.json`, `docs/migrations/`, `docs/agent-entrypoint.md`, npm CLI, `templates/mydocs/manual`은 plugin bundle에 복제하지 않고 참조 또는 fallback 안내로만 다루는 것으로 검증했다.
+- `hooks` manifest field와 `hooks/hooks.json` 구성은 Stage 3 범위로 남기고 Stage 2 base manifest에는 넣지 않는 것으로 정리했다.
+
 ## 참고 링크
 
 - [Build plugins - Codex](https://developers.openai.com/codex/plugins/build)
