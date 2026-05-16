@@ -1,0 +1,19 @@
+{
+  "name": "hyper-waterfall",
+  "version": "0.2.0-candidate.1",
+  "description": "Claude Code discovery layer for the Hyper-Waterfall framework.",
+  "author": {
+    "name": "postmelee",
+    "url": "https://github.com/postmelee"
+  },
+  "homepage": "https://github.com/postmelee/hyper-waterfall",
+  "repository": "https://github.com/postmelee/hyper-waterfall",
+  "license": "MIT",
+  "keywords": [
+    "hyper-waterfall",
+    "workflow",
+    "ai-coding",
+    "claude-code"
+  ],
+  "skills": "./skills/"
+}

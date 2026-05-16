@@ -1,6 +1,6 @@
 # 추가 배포 채널 확장 전략
 
-이 문서는 npm CLI MVP 이후 Hyper-Waterfall을 어떤 채널로 확장할지 판단하기 위한 전략 문서다. 실제 Homebrew formula, Docker image, Codex plugin, Claude plugin 구현은 이 문서의 범위가 아니다.
+이 문서는 npm CLI MVP 이후 Hyper-Waterfall을 어떤 채널로 확장할지 판단하기 위한 전략 문서다. 채널별 구현 파일 자체가 아니라 canonical 기준, 현재 배포 상태, 보류 조건을 기록한다.
 
 ## 목적과 원칙
 
@@ -38,7 +38,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 | Homebrew | macOS 개발자가 익숙한 방식으로 CLI를 설치하고 업데이트 | formula 또는 tap | npm CLI나 release asset을 설치하는 wrapper | formula 유지, checksum 갱신, macOS 검증 | P1 - 다음 구현 후보 |
 | Docker | 로컬 Node 설치 없이 격리된 환경에서 CLI 판단 실행 | image, tag, volume mount | container 안에서 npm CLI와 manifest 판단을 실행 | image build, registry, UID/path 검증, multi-arch 검토 | P2 - 제한적 PoC 후보 |
 | Codex plugin | Codex 사용자가 에이전트 UI 안에서 방법론 진입과 Skill 흐름을 발견 | 도구별 plugin bundle | canonical protocol을 호출하거나 설명하는 UI/agent integration | plugin spec 추적, 배포 심사, 호환성 검증 | P3 - 사양 검증 후 보류 |
-| Claude plugin | Claude Code 사용자가 같은 방법론 진입과 명령 흐름을 발견 | 도구별 plugin bundle | canonical protocol을 호출하거나 설명하는 UI/agent integration | plugin spec 추적, 배포 심사, 호환성 검증 | P3 - 사양 검증 후 보류 |
+| Claude plugin | Claude Code 사용자가 같은 방법론 진입과 명령 흐름을 발견 | 도구별 plugin bundle | canonical protocol을 호출하거나 설명하는 UI/agent integration | plugin spec 추적, 배포 심사, 호환성 검증 | P3 - local/zip 후보 검증, public 보류 |
 
 우선순위는 사용자 가치만이 아니라 운영 비용과 canonical 기준 훼손 위험을 함께 본다. 설치 편의성이 높아도 release/manifest/migration 기준과 다른 업데이트 경로를 만들면 보류한다.
 
@@ -192,9 +192,10 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 
 판단:
 
-- Codex plugin과 같은 수준의 후보지만, 둘을 한 번에 구현하면 중복과 drift가 커진다.
-- Codex/Claude 공통 plugin 설계 원칙은 `docs/plugin-distribution-principles.md`를 기준으로 두고, 도구별 구현을 분리한다.
-- 후속 마일스톤 후보: `M030 - Claude plugin packaging 검증`.
+- Claude plugin local/zip 배포 후보는 `plugins/claude/hyper-waterfall/`에 source-managed candidate로 둔다.
+- 후보는 hook 없는 thin wrapper Skill이며, canonical Skill과 manual의 별도 진실 원천이 되지 않는다.
+- Claude Code `2.1.143`에서 directory `--plugin-dir` load, zip `--plugin-dir` load, component inventory smoke가 통과했다.
+- public marketplace 배포와 release asset 게시 여부는 별도 승인과 release 운영 판단이 필요하므로 보류한다.
 
 ## 구현 우선순위
 
@@ -205,7 +206,7 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 | P1 | Homebrew formula/tap | macOS 개발자 설치 경험 개선 효과가 크고 Docker/plugin보다 운영 모델이 단순하다. | public tap smoke 통과. core 제출은 #46에서 보류 판단 |
 | P2 | Docker read-only image | CI와 격리 실행 가치가 있지만 volume/path 검증 비용이 있다. | CLI read-only 보장, image tag/version 정책 확정 |
 | P3 | Codex plugin packaging 검증 | agent UI 통합 가치는 크지만 사양 변화와 lock-in 위험이 있다. | 공통 plugin 원칙 확정, Codex packaging 사양 확인, canonical 문서 참조 방식 검증 |
-| P3 | Claude plugin packaging 검증 | Codex와 같은 가치를 갖지만 중복 구현 위험이 있다. | 공통 plugin 원칙 확정, Claude Code 진입 방식 검증 |
+| P3 | Claude plugin local/zip candidate | Claude Code 진입과 Skill discovery 가치는 확인됐지만 public 배포 운영 판단이 남아 있다. | local/zip smoke 통과. public marketplace와 release asset은 별도 승인 |
 
 권장 순서:
 
@@ -224,7 +225,7 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 | M040 - Homebrew public tap 배포 | `postmelee/tap/hyper-waterfall` 설치, version 확인, `doctor` smoke | 자동 release pipeline, Homebrew core 제출 |
 | M030 - Docker read-only CLI image PoC | `doctor`, `init --dry-run`, `update --dry-run` 실행 image | host 파일 자동 수정 |
 | M030 - Codex plugin packaging 검증 | Codex plugin bundle 구조, canonical 문서 참조 방식, fallback 확인 | 실제 public 배포 |
-| M030 - Claude plugin packaging 검증 | Claude plugin bundle 구조, `.claude/skills`와 canonical 문서 참조 방식 확인 | 실제 public 배포 |
+| M040 - Claude plugin local/zip candidate | `plugins/claude/hyper-waterfall/` 후보, directory/zip `--plugin-dir` smoke, fallback 확인 | 실제 public marketplace 배포, release asset 게시 |
 
 ## 보류 항목과 리스크
 
@@ -232,7 +233,8 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 
 - Homebrew core 제출은 이번 task에서 하지 않는다. `brew install hyper-waterfall` 첫 설치 경로는 #46에서 보류 판단했으며, public tap 경로를 기본 안내로 유지한다.
 - Docker image 구현은 이번 task에서 하지 않는다.
-- Codex plugin과 Claude plugin 실제 packaging과 배포는 이번 task에서 하지 않는다.
+- Codex plugin 실제 packaging과 배포는 이번 task에서 하지 않는다.
+- Claude plugin은 local/zip candidate까지만 만들고, public marketplace 배포와 release asset 게시를 보류한다.
 - 자동 릴리스 파이프라인은 이번 task에서 하지 않는다.
 - 추가 채널에서 파일 자동 적용, 자동 PR 생성, 자동 병합을 구현하지 않는다.
 
