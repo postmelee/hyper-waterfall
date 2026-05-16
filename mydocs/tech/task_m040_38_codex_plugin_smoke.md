@@ -248,3 +248,58 @@ Stage 3에서는 repo-local marketplace 후보를 만들고 Codex CLI에서 loca
 - Codex CLI local marketplace add smoke는 성공했다.
 - 자동 install/load/discovery 전체 검증은 CLI surface 한계와 Codex restart/UI 요구 때문에 제한됐다.
 - Stage 4에서는 public 배포 판단을 "local add smoke 성공, UI discovery 수동 확인 필요"로 정리해야 한다.
+
+## Stage 4 fallback과 배포 판단
+
+Stage 4에서는 fallback 경로, npm CLI help, public 배포 go/no-go를 정리했다.
+
+### Fallback 확인
+
+| fallback | 확인 결과 | 판단 |
+|---|---|---|
+| `AGENTS.md` | repository root에 존재하며 하이퍼-워터폴 운영 규칙과 승인 게이트를 제공한다. | OK |
+| `docs/agent-entrypoint.md` | 신규 적용과 기존 업데이트 판단 결과 형식을 제공한다. | OK |
+| `templates/mydocs/skills/` | `task-start`, `task-stage-report`, `task-final-report`, `pr-merge-cleanup` 등 core Skill 원문이 존재한다. | OK |
+| npm CLI | 빈 임시 디렉터리에서 `npx hyper-waterfall@0.2.0 --help`가 성공하고 `init`, `update`, `doctor`, canonical 기준 안내를 출력했다. | OK |
+
+### npm CLI help 검증
+
+처음에는 task worktree root에서 `npx hyper-waterfall@0.2.0 --help`를 실행했고 `sh: hyper-waterfall: command not found`가 발생했다. `docs/releases/v0.2.0-npm-publish.md`에 기록된 것처럼 같은 package name의 source root에서는 local package 우선 해석 때문에 이 현상이 발생할 수 있다.
+
+사용자 설치 경로에 가까운 빈 임시 디렉터리 `/private/tmp/hyper-waterfall-task38-npx.56eXYW`에서 같은 명령을 재실행했고 성공했다.
+
+출력 요약:
+
+```text
+Hyper-Waterfall CLI
+Commands:
+  init
+  update
+  doctor
+This CLI is a convenience execution channel. GitHub Release/tag,
+templates/manifest.json, and migration guides remain canonical.
+```
+
+판단:
+
+- npm CLI fallback은 사용자 설치 경로 기준으로 정상이다.
+- source root 실패는 #38 plugin 후보 실패가 아니라 검증 위치에 따른 `npx` 해석 차이다.
+- plugin wrapper와 README의 npm CLI 안내는 유지 가능하다.
+
+### Public 배포 go/no-go
+
+| 항목 | 판단 | 근거 |
+|---|---|---|
+| Repo-local candidate 유지 | GO | plugin bundle, repo marketplace, local add smoke가 통과했다. |
+| PR 게시 | GO after approval | 산출물과 검증 결과가 문서화됐고, PR 리뷰로 배포 후보를 고정할 수 있다. |
+| Public 배포 실행 | NO-GO without separate approval | public 배포는 별도 승인 게이트 대상이며, 이번 Stage에서 작업지시자가 public 배포를 명시 승인하지 않았다. |
+| Public 배포 품질 | CONDITIONAL | local add smoke는 성공했지만 Plugin Directory UI discovery와 Skill invocation은 Codex restart/UI 확인이 필요하다. |
+| Hook 포함 배포 | NO-GO | 기본 bundle에 hook을 포함하지 않기로 한 #37/#38 판단을 유지한다. |
+| Release snapshot bundle | 보류 | Thin wrapper 후보가 만들어졌고 local add smoke가 통과했으므로, snapshot은 discoverability 부족이 확인될 때만 후속 후보로 둔다. |
+
+### Stage 4 결론
+
+- #38은 Codex plugin repo-local 배포 후보를 생성했고, local marketplace add smoke까지 통과했다.
+- public 배포 실행은 별도 승인 전 보류한다.
+- 자동 install/load/discovery 전체 검증은 Codex restart/UI 확인이 필요하므로 제한 사항으로 남긴다.
+- 대체 경로는 `AGENTS.md`, `docs/agent-entrypoint.md`, `templates/mydocs/skills/`, npm CLI fallback으로 유지된다.
