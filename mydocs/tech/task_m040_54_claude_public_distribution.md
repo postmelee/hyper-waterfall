@@ -269,3 +269,87 @@ Projected token cost
 - hook, MCP server, background monitor, bundled binary, local command runner는 계속 포함하지 않는다.
 - public directory 제출과 GitHub Release asset 게시는 실행하지 않았다.
 - Stage 3에서는 작업지시자 별도 승인 여부에 따라 official directory 제출 또는 release asset 게시를 실행할지, 아니면 NO-GO와 대체 경로로 남길지 판단한다.
+
+## Stage 3 — 배포 승인 게이트와 실행/보류 판단
+
+### 승인 게이트 해석
+
+작업지시자의 Stage 3 진행 지시는 Stage 3 산출물 작성과 판단 정리 승인으로 해석한다. Stage 2와 구현계획서에서 분리한 다음 외부 공개 action에 대한 별도 명시 승인은 아직 없다.
+
+별도 승인으로 인정할 문구 예:
+
+- "Claude official directory에 제출해줘"
+- "Claude plugin zip을 v0.2.0 release asset으로 게시해줘"
+- "public marketplace 제출을 승인한다"
+- "release asset 게시를 승인한다"
+
+따라서 Stage 3에서는 public directory submission form 제출, GitHub Release asset upload, asset delete/replace, independent marketplace publish를 실행하지 않았다.
+
+### GO/NO-GO 판단
+
+| 항목 | 판단 | 근거 | 다음 조건 |
+|---|---|---|---|
+| 후보 품질 | GO | Stage 2에서 manifest validation, zip checksum, zip `--plugin-dir` list/details smoke 통과 | Stage 4 문서 정합성 반영 |
+| official directory 제출 실행 | NO-GO for execution | Claude.ai/Console submission form은 외부 공개 action이며 별도 승인 없음 | 작업지시자가 제출을 명시 승인하고 제출 계정/경로를 지정 |
+| GitHub Release asset 게시 실행 | NO-GO for execution | `v0.2.0` release는 published이고 asset이 없어 게시 가능 후보지만 별도 승인 없음 | 작업지시자가 release/tag, asset명, checksum 공개 방식을 명시 승인 |
+| independent marketplace 생성 | NO-GO | 이번 task 범위는 official directory/release asset 판단이며 독립 marketplace catalog 작성은 별도 설계 필요 | 별도 이슈 또는 계획 갱신 |
+| hook 포함 | NO-GO | 후보는 hook 없는 thin wrapper로 유지 | 별도 hook guardrail task |
+
+### 대체 설치/사용 경로
+
+별도 공개 action 전 사용 경로:
+
+```bash
+claude plugin validate plugins/claude/hyper-waterfall
+claude --plugin-dir plugins/claude/hyper-waterfall plugin list
+claude --plugin-dir /private/tmp/hyper-waterfall-claude-plugin-task54.zip plugin list
+claude --plugin-dir /private/tmp/hyper-waterfall-claude-plugin-task54.zip plugin details hyper-waterfall
+```
+
+plugin 미사용 fallback:
+
+- `AGENTS.md`
+- `CLAUDE.md`
+- `.claude/skills`
+- `mydocs/skills`
+- `docs/agent-entrypoint.md`
+- `npx hyper-waterfall@0.2.0 --help`
+
+### 재시도 조건
+
+Official directory 제출을 재시도하려면 다음이 필요하다.
+
+- 제출 승인 문구
+- Claude.ai 또는 Console submission form 접근 가능 계정
+- 제출 방식 선택: public GitHub link 또는 zip upload
+- 제출 대상이 현재 `plugins/claude/hyper-waterfall/` candidate인지, 별도 marketplace repository인지 결정
+- 제출 후 결과 URL, 상태, 심사 대기 여부 기록
+
+GitHub Release asset 게시를 재시도하려면 다음이 필요하다.
+
+- release asset 게시 승인 문구
+- 게시 대상 release/tag: 후보 `v0.2.0`
+- asset명 결정: 후보 `hyper-waterfall-claude-plugin-0.2.0-candidate.1.zip`
+- checksum 공개 방식 결정: release body, 별도 `.sha256` asset, 또는 보고서/문서 기록
+- 게시 후 다운로드 smoke와 checksum 검증
+
+### Rollback / 보류 조건
+
+Official directory 제출 후 문제가 생기면 다음 조건을 기록하고 철회 또는 수정 제출을 요청한다.
+
+- 제출 폼에서 draft/cancel/withdraw가 가능한지 확인
+- 제출 완료 후 review queue 상태라면 Console/Claude.ai에서 수정 또는 support route 확인
+- plugin source를 public GitHub link로 제출했다면 offending commit/tag를 수정하고 directory mirror/screening 재반영을 기다린다.
+
+Release asset 게시 후 문제가 생기면 다음 조건을 기록하고 삭제 또는 교체한다.
+
+- 잘못된 asset명, checksum 불일치, zip load 실패, canonical drift 확인 시 asset 삭제
+- 교체가 필요하면 같은 asset명 overwrite보다 삭제 후 새 checksum 기록을 우선한다.
+- 삭제/교체도 외부 공개 action이므로 작업지시자 승인 후 실행한다.
+
+### Stage 3 결론
+
+- Candidate readiness는 GO다.
+- Public marketplace 제출 실행은 별도 승인 부재로 NO-GO다.
+- GitHub Release asset 게시 실행은 별도 승인 부재로 NO-GO다.
+- Stage 4에서는 이 보류 판단, 대체 설치 경로, rollback 조건을 `docs/distribution-channels.md`와 최종 보고서에 반영한다.
