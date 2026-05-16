@@ -154,6 +154,120 @@ Stage 2는 이 inventory를 근거로 다음 항목을 검토한다.
 - `claude --plugin-dir ./my-plugin` directory smoke 후보와 현재 local version 한계
 - #40 배포 후보 생성 전에 필요한 manifest validation, `/plugin validate`, `claude --debug`, `claude plugin details` 후보
 
+## Stage 2 반영 결과
+
+Stage 2에서는 Claude plugin 후보 구조와 canonical drift 방지 기준을 정리했다. 이번 단계에서는 실제 plugin bundle, scratch skeleton, `hooks/hooks.json`, hook script를 만들지 않았다. #40에서 배포 후보 생성과 설치 smoke를 수행하기 전에 어떤 구조가 원칙에 맞는지 확인하는 데 집중했다.
+
+### 공식 사양에서 고정한 packaging 제약
+
+| 항목 | Stage 2 기준 | 영향 |
+|---|---|---|
+| manifest 위치 | `.claude-plugin/plugin.json` | Codex의 `.codex-plugin/plugin.json`과 공유하지 않고 Claude 전용 manifest를 둔다. |
+| component 위치 | `skills/`, `commands/`, `agents/`, `hooks/`, `scripts/` 등은 plugin root level | `.claude-plugin/` 안에 Skill이나 hook을 넣지 않는다. |
+| Skill 구조 | `skills/<name>/SKILL.md` | Claude plugin Skill은 namespaced 호출을 전제로 하며, frontmatter `name`과 directory name을 충돌 없이 맞춘다. |
+| hook 위치 | `hooks/hooks.json` | hook은 packaging 가능하지만 Stage 3에서 guardrail 등급과 자동 승인 금지를 확정하기 전에는 기본 후보에 포함하지 않는다. |
+| plugin root `CLAUDE.md` | project context로 자동 로드되지 않음 | plugin 안내를 `CLAUDE.md`에 넣는 방식은 후보에서 제외하고 Skill로 제공한다. |
+| path traversal | 설치된 plugin은 plugin root 밖 파일을 참조할 수 없음 | `../templates/mydocs/skills` symlink 또는 runtime external path reference는 후보에서 제외한다. |
+| local test | `claude --plugin-dir ./my-plugin`은 가능, zip local test는 v2.1.128 이상 필요 | 현재 `2.1.111`에서는 directory smoke를 우선하고 zip smoke는 #40에서 업그레이드 또는 보류 판단한다. |
+| local CLI surface | `claude plugin validate <path>`가 현재 로컬 help에 존재 | #40 smoke 후보에 manifest/schema validation을 포함할 수 있다. |
+
+### 후보 구조
+
+#40의 최소 Claude plugin 후보는 다음 구조를 우선 검토한다.
+
+```text
+hyper-waterfall-claude-plugin/
+├── .claude-plugin/
+│   └── plugin.json
+├── skills/
+│   └── hyper-waterfall/
+│       └── SKILL.md
+├── README.md
+└── CHANGELOG.md
+```
+
+최소 후보의 역할:
+
+- `plugin.json`: plugin 이름, 설명, version, author, repository 또는 homepage metadata를 둔다.
+- `skills/hyper-waterfall/SKILL.md`: Hyper-Waterfall 진입 wrapper다. `AGENTS.md`, `CLAUDE.md`, `.claude/skills`, `docs/agent-entrypoint.md`, npm CLI dry-run 경로로 사용자를 안내한다.
+- `README.md`: 설치, local smoke, canonical source 경계, hook 미포함 상태를 설명한다.
+- `CHANGELOG.md`: plugin candidate version과 기준 Hyper-Waterfall release/tag를 적는다.
+
+Stage 2 기준으로 `hooks/hooks.json`은 최소 후보에 포함하지 않는다. Claude hook guardrail은 Stage 3에서 event별 decision control과 자동 승인 금지 기준을 분류한 뒤, #40에서 포함 여부를 다시 판단한다.
+
+### Skill 제공 방식 비교
+
+| 방식 | 후보 등급 | 장점 | 위험 | Stage 2 판단 |
+|---|---|---|---|---|
+| thin wrapper Skill | 기본 후보 | plugin 본문이 작고 canonical source 경계가 명확하다. | 사용자가 core Skill 본문을 보려면 대상 저장소 또는 release 문서로 이동해야 한다. | #40 최소 후보로 적합하다. |
+| release snapshot | 확장 후보 | plugin cache 안에서 self-contained하게 core workflow를 보여줄 수 있다. | snapshot 갱신 절차를 놓치면 `templates/mydocs/skills`와 drift가 생긴다. | snapshot 생성/검증 절차가 있을 때만 #40 확장 후보로 둔다. |
+| runtime reference | 보류 | 최신 canonical path를 직접 가리키는 것처럼 보인다. | plugin cache/path traversal 제한, 네트워크 실패, 임의 branch HEAD drift 위험이 크다. | 기본 후보에서 제외한다. |
+| root 밖 symlink | 금지 후보 | 현재 standalone 구조와 유사하다. | 설치된 plugin에서 root 밖 symlink가 skipped 또는 dereference될 수 있고 host file 접근 위험이 있다. | plugin packaging 후보로 사용하지 않는다. |
+
+### thin wrapper Skill 기준
+
+thin wrapper Skill은 절차 본문을 재작성하지 않는다. wrapper가 해야 할 일은 다음으로 제한한다.
+
+- 현재 저장소 또는 대상 저장소의 `AGENTS.md`와 `CLAUDE.md`를 먼저 읽게 한다.
+- 신규 적용 또는 업데이트 판단은 `docs/agent-entrypoint.md`, `templates/manifest.json`, migration guide, npm CLI dry-run 기준으로 진행하게 한다.
+- 이미 Hyper-Waterfall이 적용된 저장소에서는 `.claude/skills`의 canonical Skill을 우선 사용하게 한다.
+- plugin이 설치되지 않은 환경에서도 같은 절차를 수행할 수 있음을 명시한다.
+- 파일 적용, 이슈 close, publish, merge 같은 민감 작업은 기존 하이퍼-워터폴 승인 게이트를 따르게 한다.
+
+thin wrapper Skill이 하지 말아야 할 일:
+
+- `task-start`, `task-stage-report`, `task-final-report` 본문을 요약해서 새 절차처럼 제공하지 않는다.
+- `templates/manifest.json`이나 migration guide 내용을 plugin 안에 재정의하지 않는다.
+- npm CLI 출력만으로 파일을 자동 적용하지 않는다.
+- hook을 활성화하거나 승인된 것으로 간주하지 않는다.
+
+### release snapshot 확장 후보 기준
+
+core Skill 전체를 plugin에 포함해야 하는 요구가 #40에서 유지되면 다음 조건을 충족해야 한다.
+
+- snapshot 대상은 `templates/mydocs/skills/*/SKILL.md` 7개로 제한한다.
+- 각 snapshot에는 원본 경로와 기준 release/tag를 기록한다.
+- snapshot 생성은 수동 복사가 아니라 후속 packaging 절차에서 source path 목록을 기준으로 검증 가능해야 한다.
+- snapshot에 Claude 전용 절차를 덧붙이지 않는다. 기존 Skill의 `호출 방법` 섹션은 release source와 동일하게 유지한다.
+- snapshot drift 검증 후보를 #40 smoke에 포함한다. 예: source 파일 목록, frontmatter `name`, line count 또는 checksum 비교.
+
+Stage 2에서는 release snapshot 파일을 만들지 않았다.
+
+### canonical source별 취급
+
+| canonical source | Claude plugin 취급 | 금지 기준 |
+|---|---|---|
+| `templates/mydocs/skills` | wrapper가 원본 위치와 release/tag 기준을 안내한다. snapshot은 확장 후보로만 둔다. | plugin 전용 Skill fork를 편집 원천으로 만들지 않는다. |
+| `templates/mydocs/manual` | 원문 링크 또는 대상 저장소의 `mydocs/manual` 확인을 안내한다. | manual 본문을 plugin README나 Skill에 재작성하지 않는다. |
+| `templates/manifest.json` | 신규 적용/업데이트 판단 기준으로 참조한다. | manifest를 plugin bundle 안에 독자 사본으로 넣지 않는다. |
+| `docs/migrations/` | 기존 적용 저장소 업데이트 판단 기준으로 안내한다. | migration guide를 plugin 전용으로 요약해 판단 기준으로 쓰지 않는다. |
+| `docs/agent-entrypoint.md` | wrapper Skill의 핵심 진입 기준으로 안내한다. | entrypoint 판단 결과 형식을 plugin 전용으로 바꾸지 않는다. |
+| npm CLI | `init/update/doctor --dry-run` 안내 또는 호출 후보로 둔다. | CLI 결과만으로 파일 적용을 자동 진행하지 않는다. |
+| `CLAUDE.md`/`.claude/skills` | 적용 저장소의 fallback/standalone 경로로 안내한다. | plugin root `CLAUDE.md` 로드를 기대하지 않는다. |
+
+### #40으로 넘길 결정 항목
+
+#40에서 실제 배포 후보를 만들기 전에 다음을 결정해야 한다.
+
+| 항목 | Stage 2 권장 | #40 확인 |
+|---|---|---|
+| plugin name | `hyper-waterfall` 후보 | namespaced Skill 호출이 `/hyper-waterfall:hyper-waterfall`처럼 중복되는지 확인 |
+| version | 기준 Hyper-Waterfall release와 맞춘 explicit version | `plugin.json` version과 release/tag 기록 방식 확정 |
+| Skill 구성 | 최소 후보는 thin wrapper 1개 | core Skill snapshot이 필요한지 별도 승인 |
+| hook 포함 | Stage 2에서는 미포함 | Stage 3 결과를 보고 report-only 또는 미포함 판단 |
+| local smoke | directory 기반 `claude --plugin-dir ./...` | 현재 `2.1.111`에서 가능한 범위 확인 |
+| zip smoke | 보류 | v2.1.128 이상으로 업그레이드할지 판단 |
+| validation | `claude plugin validate <path>` | `plugin.json`, Skill frontmatter, `hooks/hooks.json` 후보 schema 확인 |
+| docs link | README와 Skill에서 canonical source를 링크 | 링크가 release/tag 또는 대상 저장소 path 기준인지 확인 |
+
+### Stage 2에서 하지 않은 일
+
+- Claude plugin bundle 또는 scratch skeleton을 만들지 않았다.
+- `hooks/hooks.json` 또는 hook script를 작성하지 않았다.
+- `templates/mydocs/skills` snapshot을 만들지 않았다.
+- `docs/`, README, `docs/agent-entrypoint.md`, core Skill, manual 본문을 수정하지 않았다.
+- #37 병렬 worktree의 산출물에 의존하지 않았다.
+
 ## Stage 3 재확인 항목
 
 Stage 3은 다음 hook/lifecycle 후보를 공식 event와 decision control 기준으로 다시 분류한다.
