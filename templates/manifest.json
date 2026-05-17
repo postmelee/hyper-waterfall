@@ -7,6 +7,17 @@
     "baselineTag": "v0.1.0",
     "status": "planned"
   },
+  "applicationMode": "adoption-only",
+  "strictManifest": true,
+  "forbiddenTargetsOnAdoption": [
+    "docs/**",
+    "src/**",
+    "examples/**",
+    "schemas/**",
+    "package.json",
+    "tsconfig.json"
+  ],
+  "outOfScopeArtifactPolicy": "During adoption, record project-specific code, docs, architecture, roadmap, API contracts, examples, and schemas as deferred task candidates instead of creating or modifying files.",
   "versionState": {
     "targetPath": ".hyper-waterfall/version.json",
     "format": {
