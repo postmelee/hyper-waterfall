@@ -13,6 +13,7 @@
 - 사용자 수정 가능성이 있는 파일은 manifest의 update policy가 `overwrite`여도 checksum 또는 diff를 확인하기 전에는 덮어쓰지 않는다.
 - 신규 적용은 adoption-only strict manifest 모드로 수행한다. manifest가 정의하지 않은 파일이나 디렉터리는 생성하거나 수정하지 않는다.
 - 제품 코드, 제품 문서, 아키텍처 문서, 로드맵, API 계약, 예제, 스키마처럼 대상 프로젝트 고유 산출물은 신규 적용 범위 밖으로 보고 보류 또는 별도 task 후보로만 기록한다.
+- 신규 적용 중에는 대상 프로젝트의 공식 문서 루트 이름을 선택하거나 생성하지 않는다. `docs/`, `specs/`, `site/`, `website/`, `adr/` 등은 별도 task에서 문서 위치 판단을 거쳐 선택한다.
 
 ## 신규 적용 절차
 
@@ -41,7 +42,9 @@
 - `package.json`
 - `tsconfig.json`
 
-이 목록은 신규 적용 중 건드리지 않을 manifest 외 경로의 예시이며, 대상 저장소의 일반 문서 구조나 제품 문서 위치를 정의하지 않는다. 제품 코드, 제품 문서, 아키텍처 문서, 로드맵, API 계약, 예제, 스키마가 필요해 보여도 신규 적용 중 파일을 만들지 않고 판단 결과의 보류 항목 또는 별도 task 후보로만 기록한다.
+이 목록은 신규 적용 중 건드리지 않을 manifest 외 경로의 예시이며, 대상 저장소의 일반 문서 구조, 공식 문서 루트 이름, 제품 문서 위치를 정의하지 않는다. 제품 코드, 제품 문서, 아키텍처 문서, 로드맵, API 계약, 예제, 스키마가 필요해 보여도 신규 적용 중 파일을 만들지 않고 판단 결과의 보류 항목 또는 별도 task 후보로만 기록한다.
+
+공식 문서 루트가 필요해 보이면 신규 적용 판단 결과에서는 위치를 확정하지 않는다. 별도 task 후보에 "공식 문서 루트 선택과 문서 위치 판단 필요"를 남기고, 이후 수행계획서에서 대상 독자, 공식화 수준, 선택 경로, 대안 경로, 선택 이유를 승인받는다.
 
 ## 신규 적용 판단 결과 형식
 
@@ -51,6 +54,7 @@
 - 목표 release/tag: 적용할 Hyper-Waterfall GitHub Release 또는 tag
 - manifest 기준 적용 후보: `templates/manifest.json` 기준으로 복사, preserve, symlink 처리할 파일과 디렉터리
 - manifest 외 보류 후보: 신규 적용 중 만들지 않을 대상 프로젝트 고유 산출물과 별도 task 분리 필요성
+- 공식 문서 루트 보류: `docs/`, `specs/`, `site/`, `website/`, `adr/` 등 후보를 확정하지 않고 별도 task에서 문서 위치 판단이 필요하다는 점
 - 기존 파일 충돌 가능성: 대상 저장소에 이미 존재하는 파일, 사용자 수정 가능 파일, 덮어쓰기 금지 항목
 - `.hyper-waterfall/version.json` 생성 계획: 기록할 version, release, appliedAt, source 정보
 - placeholder 체크리스트: `{REPO_SLUG}`, `{REPO_NAME}`, `{BASE_BRANCH}`, `{RELEASE_BRANCH}`, `{PR_TEMPLATE_PATH}` 등 치환 대상과 보류 대상
@@ -143,3 +147,4 @@ Hyper-Waterfall 버전 업데이트 PR 본문은 기존 `.github/pull_request_te
 - 절차를 간소화하거나 자동화 도구 중심으로 바꾸지 않는다.
 - manifest, migration guide, 작업지시자 승인 없이 새 workflow, CLI, 설정 파일을 임의로 추가하지 않는다.
 - 신규 적용 중 manifest 외 제품 코드, 제품 문서, 아키텍처 문서, 로드맵, API 계약, 예제, 스키마를 생성하지 않는다.
+- 신규 적용 중 `docs/`, `specs/`, `site/`, `website/`, `adr/` 같은 공식 문서 루트를 임의로 선택하거나 생성하지 않는다.
