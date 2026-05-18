@@ -239,6 +239,102 @@
       }
     },
     {
+      "source": "templates/mydocs/orders/README.md",
+      "target": "mydocs/orders/README.md",
+      "kind": "file",
+      "role": "artifact-folder-guide",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "ready",
+        "value": "b44190fc6359e4c73d42721cb8ad6521d7df8039f152edf963b9a68e1c32b015"
+      }
+    },
+    {
+      "source": "templates/mydocs/plans/README.md",
+      "target": "mydocs/plans/README.md",
+      "kind": "file",
+      "role": "artifact-folder-guide",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "ready",
+        "value": "688f017243c30a09e0eed446809a6578730110ff30659e768695ec9a4d664379"
+      }
+    },
+    {
+      "source": "templates/mydocs/working/README.md",
+      "target": "mydocs/working/README.md",
+      "kind": "file",
+      "role": "artifact-folder-guide",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "ready",
+        "value": "71ee44e027dd984110ce2b6c5a8beff07671e978c8c464d226758cb55605a86b"
+      }
+    },
+    {
+      "source": "templates/mydocs/report/README.md",
+      "target": "mydocs/report/README.md",
+      "kind": "file",
+      "role": "artifact-folder-guide",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "ready",
+        "value": "9045e38f99ea23288f81e6c86139e47ba06b0faf338c647a1bdcd0c925d37263"
+      }
+    },
+    {
+      "source": "templates/mydocs/feedback/README.md",
+      "target": "mydocs/feedback/README.md",
+      "kind": "file",
+      "role": "artifact-folder-guide",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "ready",
+        "value": "387f06893a0e99ffe96d03ca75adcea5c8d750315fbef4db72419aee1e2538ff"
+      }
+    },
+    {
+      "source": "templates/mydocs/tech/README.md",
+      "target": "mydocs/tech/README.md",
+      "kind": "file",
+      "role": "artifact-folder-guide",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "ready",
+        "value": "b4fd58c77674d367b1127e1ba61a5e790d8a179dc5a11c349eb303d1541dbab9"
+      }
+    },
+    {
+      "source": "templates/mydocs/troubleshootings/README.md",
+      "target": "mydocs/troubleshootings/README.md",
+      "kind": "file",
+      "role": "artifact-folder-guide",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "ready",
+        "value": "98e355a9a2eabd5e2f09ffc51dc1ed6e1f347c532ded435316b8c5b102db8910"
+      }
+    },
+    {
+      "source": "templates/mydocs/pr/README.md",
+      "target": "mydocs/pr/README.md",
+      "kind": "file",
+      "role": "artifact-folder-guide",
+      "updatePolicy": "overwrite",
+      "checksum": {
+        "algorithm": "sha256",
+        "status": "ready",
+        "value": "5d7c549321294df4ffb50d0b5e7b520a1f4ca27fd96d65b38f00118f9e4347e4"
+      }
+    },
+    {
       "source": "mydocs/skills",
       "target": ".agents/skills",
       "kind": "symlink",

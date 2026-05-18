@@ -21,6 +21,11 @@
 - `task_workflow_guide.md`
 - `git_workflow_guide.md`
 - `pr_process_guide.md`
+- `internal_pr_guide.md`
+- `external_pr_review_guide.md`
+- `pr_command_guide.md`
+- `framework_lifecycle_guide.md`
+- `release_update_protocol.md`
 - `agent_code_hyperfall_rule_conflict.md`
 
 ## 사용 템플릿
