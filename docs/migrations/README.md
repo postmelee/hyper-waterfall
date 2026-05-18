@@ -55,7 +55,7 @@ git diff --check
 
 ## lifecycle 판단과 Hyper-Waterfall 버전 업데이트 PR의 관계
 
-기존 적용 저장소 업데이트는 `docs/agent-entrypoint.md`의 "기존 업데이트 판단 결과 형식"을 따른다. Migration guide는 그 판단 결과와 Hyper-Waterfall 버전 업데이트 PR 후보를 만들 때 다음 항목의 근거로 사용한다.
+기존 적용 저장소 업데이트는 `docs/agent-entrypoint.md`를 진입점으로 삼고, 세부 판단 결과 형식은 `docs/lifecycle/update.md`를 따른다. Migration guide는 그 판단 결과와 Hyper-Waterfall 버전 업데이트 PR 후보를 만들 때 다음 항목의 근거로 사용한다.
 
 - 현재 version과 목표 version
 - manifest diff 요약
@@ -64,7 +64,7 @@ git diff --check
 - 충돌 가능성이 있는 파일
 - maintainer가 승인해야 할 항목
 
-Hyper-Waterfall 버전 업데이트 PR 본문에서는 migration guide의 각 섹션을 다음처럼 옮긴다.
+Hyper-Waterfall 버전 업데이트 PR 본문에서는 `docs/lifecycle/update_pr.md` 기준에 따라 migration guide의 각 섹션을 다음처럼 옮긴다.
 
 | migration guide 섹션 | PR 본문 반영 위치 |
 |---|---|

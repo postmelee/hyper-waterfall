@@ -22,8 +22,8 @@ plugin은 새로운 방법론 본문이나 release 기준을 만들지 않는다
 |---|---|---|
 | GitHub Release/tag | Hyper-Waterfall version을 고정하는 canonical 배포 단위 | plugin version과 산출물의 기준 version을 대조한다. |
 | `templates/manifest.json` | 적용 대상 파일, target 경로, update policy, checksum 상태를 정의하는 manifest | plugin bundle 안에서 복제하거나 수정하지 않는다. 필요 시 읽기 기준으로 참조한다. |
-| `docs/migrations/` | 기존 적용 저장소가 version을 올릴 때 읽는 migration 기준 | plugin이 migration guide를 재작성하지 않는다. 업데이트 판단은 migration guide 링크와 `docs/agent-entrypoint.md` 형식을 따른다. |
-| `docs/agent-entrypoint.md` | 신규 적용과 기존 업데이트 판단 결과 형식 | plugin의 agent-friendly 진입 문구가 따라야 할 출력 계약이다. |
+| `docs/migrations/` | 기존 적용 저장소가 version을 올릴 때 읽는 migration 기준 | plugin이 migration guide를 재작성하지 않는다. 업데이트 판단은 migration guide 링크와 `docs/lifecycle/update.md` 형식을 따른다. |
+| `docs/agent-entrypoint.md`, `docs/lifecycle/` | lifecycle 진입점과 신규 적용, 기존 업데이트, 업데이트 PR 판단 결과 형식 | plugin의 agent-friendly 진입 문구가 따라야 할 출력 계약이다. |
 | npm CLI | `init`, `update`, `doctor` 판단을 실행하는 편의 실행 채널 | plugin이 CLI를 호출할 수는 있지만, CLI 출력만으로 파일을 자동 적용하지 않는다. |
 | `templates/mydocs/skills` | Codex와 Claude Code가 함께 읽는 core Skill 진실 원천 | plugin에 포함되더라도 release snapshot 또는 packaging artifact로만 둔다. |
 | `templates/mydocs/manual` | 하이퍼-워터폴 운영 규칙과 절차 설명의 진실 원천 | plugin에 별도 manual 본문을 만들지 않는다. 필요한 설명은 원문 링크 또는 release snapshot 참조로 둔다. |
@@ -33,8 +33,8 @@ plugin은 새로운 방법론 본문이나 release 기준을 만들지 않는다
 | 영역 | 담당 | 책임 경계 |
 |---|---|---|
 | 작업 승인 | 작업지시자와 하이퍼-워터폴 절차 | plugin과 hook은 승인 여부를 자동 판정하지 않는다. |
-| 신규 적용 판단 | `docs/agent-entrypoint.md`, `templates/manifest.json`, npm CLI dry-run | plugin은 판단 결과 형식을 안내하거나 CLI 실행을 돕는다. |
-| 기존 업데이트 판단 | `.hyper-waterfall/version.json`, 목표 release manifest, migration guide | plugin은 update 후보를 직접 적용하지 않고 판단 결과와 승인 요청을 노출한다. |
+| 신규 적용 판단 | `docs/agent-entrypoint.md`, `docs/lifecycle/adoption.md`, `templates/manifest.json`, npm CLI dry-run | plugin은 판단 결과 형식을 안내하거나 CLI 실행을 돕는다. |
+| 기존 업데이트 판단 | `docs/lifecycle/update.md`, `.hyper-waterfall/version.json`, 목표 release manifest, migration guide | plugin은 update 후보를 직접 적용하지 않고 판단 결과와 승인 요청을 노출한다. |
 | 정형 task 절차 | `templates/mydocs/skills`의 core Skill | plugin은 Skill을 발견하고 호출하기 쉽게 한다. Skill 본문을 갈라서 관리하지 않는다. |
 | 운영 규칙 설명 | `AGENTS.md`, `CLAUDE.md`, `templates/mydocs/manual` | plugin은 요약 안내와 링크를 제공할 수 있지만, 규칙의 새 원천이 아니다. |
 | CLI 실행 | npm CLI | plugin이 npm CLI를 호출할 경우 CLI version과 release 기준을 대조하고 read-only/dry-run 기본값을 유지한다. |
@@ -47,10 +47,10 @@ plugin bundle에 어떤 파일을 넣을지는 "포함", "참조", "fallback"을
 | 분류 | 의미 | 허용 대상 | 금지 |
 |---|---|---|---|
 | 포함 | plugin package 안에 파일을 둔다. | 도구별 `plugin.json`, plugin README, starter prompt, thin wrapper Skill, release snapshot으로 고정한 core Skill copy, hook adapter 후보 | 편집 원천으로 쓰는 manual/Skill fork, 독자 manifest, 독자 migration guide |
-| 참조 | plugin이 저장소나 release의 canonical 파일을 가리킨다. | GitHub Release/tag, `templates/manifest.json`, migration guide, `docs/agent-entrypoint.md`, npm CLI package | runtime에 임의 branch HEAD를 canonical 기준처럼 참조 |
+| 참조 | plugin이 저장소나 release의 canonical 파일을 가리킨다. | GitHub Release/tag, `templates/manifest.json`, migration guide, `docs/agent-entrypoint.md`, `docs/lifecycle/`, npm CLI package | runtime에 임의 branch HEAD를 canonical 기준처럼 참조 |
 | fallback | canonical 파일을 읽을 수 없거나 plugin 환경 제약이 있을 때만 제한적으로 사용한다. | 최소 안내 문구, "저장소의 AGENTS/CLAUDE/manual을 읽으라"는 복구 지시, CLI 설치/실행 실패 시 수동 진입 안내 | fallback 본문으로 절차를 재정의하거나 최신 원칙처럼 취급 |
 
-포함 파일은 release artifact다. 포함된 Skill이나 문서 조각이 있더라도 편집은 `templates/mydocs/skills`, `templates/mydocs/manual`, `docs/agent-entrypoint.md`에서 먼저 이뤄져야 하고, plugin은 후속 packaging task에서 그 결과를 다시 가져간다.
+포함 파일은 release artifact다. 포함된 Skill이나 문서 조각이 있더라도 편집은 `templates/mydocs/skills`, `templates/mydocs/manual`, `docs/agent-entrypoint.md`, `docs/lifecycle/`에서 먼저 이뤄져야 하고, plugin은 후속 packaging task에서 그 결과를 다시 가져간다.
 
 ## 공통 bundle 원칙
 
@@ -78,8 +78,8 @@ plugin bundle에 어떤 파일을 넣을지는 "포함", "참조", "fallback"을
 
 | 상황 | 권장 처리 | 이유 |
 |---|---|---|
-| 사용자가 신규 적용을 요청 | plugin이 `docs/agent-entrypoint.md`의 신규 적용 판단 결과 형식을 안내하고, 필요 시 npm CLI `init --dry-run`을 제안한다. | 승인 전 파일 변경 금지와 manifest 기준을 유지한다. |
-| 사용자가 기존 적용 저장소 update를 요청 | `.hyper-waterfall/version.json`, 목표 release manifest, migration guide 확인을 안내한다. | update protocol을 plugin 전용으로 재정의하지 않는다. |
+| 사용자가 신규 적용을 요청 | plugin이 `docs/agent-entrypoint.md`와 `docs/lifecycle/adoption.md`의 신규 적용 판단 결과 형식을 안내하고, 필요 시 npm CLI `init --dry-run`을 제안한다. | 승인 전 파일 변경 금지와 manifest 기준을 유지한다. |
+| 사용자가 기존 적용 저장소 update를 요청 | `docs/lifecycle/update.md`, `.hyper-waterfall/version.json`, 목표 release manifest, migration guide 확인을 안내한다. | update protocol을 plugin 전용으로 재정의하지 않는다. |
 | core Skill을 plugin UI에서 노출 | wrapper 또는 snapshot에 원본 경로와 release 기준을 명시한다. | Skill 별도 진실 원천 생성을 피한다. |
 | canonical 문서를 읽을 수 없음 | "저장소의 AGENTS/CLAUDE/manual과 release manifest를 먼저 확인하라"는 최소 fallback만 제공한다. | fallback이 절차 본문을 대체하지 않게 한다. |
 | npm CLI 실행 실패 | 실패 사유와 수동 진입 경로를 보여주고 파일 적용을 중단한다. | CLI 실패 상태에서 무승인 적용을 막는다. |
