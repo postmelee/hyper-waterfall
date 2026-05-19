@@ -170,6 +170,13 @@ Docker image 구현과 registry 배포는 M040 범위에서 제외된 상태다.
 - `docs/migrations/v0.1.0-to-v0.2.0.md`는 release 전 문맥을 release 후 기준 문서로 갱신하고, 완료된 GitHub Release/tag와 npm publish를 보류 항목에서 제거했다.
 - `docs/releases/v0.2.0.md`와 `docs/distribution-channels.md`는 완료 항목, 이번 task의 상태 정리 항목, 후속 승인 필요 항목을 분리했다.
 
+## Stage 4 적용 메모
+
+- `mydocs/report/task_m040_41_report.md`는 #41 수용 기준 5개를 모두 대응하고, 완료 채널과 후속 승인 필요 항목을 최종 분리했다.
+- `mydocs/working/task_m040_41_stage4.md`는 최종 검증 명령과 PR 전 남은 `task-final-report` 절차를 기록했다.
+- Stage 4에서는 사용자-facing 문서, manifest, migration guide를 추가 수정하지 않았다.
+- 오늘할일 완료 처리는 Stage 4 승인 후 `task-final-report` 절차에서 수행한다.
+
 ## 참고 링크
 
 - [Issue #41](https://github.com/postmelee/hyper-waterfall/issues/41)
