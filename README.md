@@ -1,5 +1,7 @@
 # Hyper-Waterfall
 
+![Hyper-Waterfall overview](docs/assets/hyper-waterfall.png)
+
 ### AI 페어 프로그래밍을 추적 가능하고 승인 가능한 개발 프로세스로 바꾸는 방법론 하네스
 
 Hyper-Waterfall은 AI가 마법처럼 못 하던 일을 하게 해주는 도구가 아닙니다.  
