@@ -29,16 +29,36 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 따라서 추가 채널은 release asset, manifest, migration guide, npm CLI 중 무엇을 어떻게 실행할지 결정하는 얇은 계층이어야 한다. 채널별 package나 image 자체가 새 canonical 원천이 되면 안 된다.
 
+## 현재 채널 상태 (2026-05-19)
+
+| 채널 | 현재 상태 | 사용자-facing 경로 | 보류 또는 후속 조건 |
+|---|---|---|---|
+| GitHub Release/tag | `v0.2.0` 공개 완료, manifest `released` | `https://github.com/postmelee/hyper-waterfall/releases/tag/v0.2.0` | root/directory checksum 산식은 별도 확정 필요 |
+| npm CLI | `hyper-waterfall@0.2.0` 공개 완료 | `npx hyper-waterfall@0.2.0 --help` | publish 자동화는 후속 후보 |
+| Homebrew public tap | `postmelee/tap/hyper-waterfall` 공개 완료 | `brew install postmelee/tap/hyper-waterfall` | release마다 formula 갱신 절차 필요 |
+| Homebrew core | 보류 | 없음 | #46 기준 notability, non-author usage, 플랫폼 검증, formula test 근거 필요 |
+| Docker | M040 제외 | 없음 | read-only image PoC는 후속 후보 |
+| Codex plugin | repo-local 후보와 CLI discovery 확인 | repo-local marketplace, `AGENTS.md`, core Skill, npm CLI fallback | official public publishing surface와 별도 승인 필요 |
+| Claude plugin | source-managed local/zip 후보 검증 | `--plugin-dir` directory/zip, `CLAUDE.md`, core Skill, npm CLI fallback | Official directory 제출과 release asset 게시 별도 승인 필요 |
+
+## 완료와 후속 분리
+
+| 구분 | 항목 |
+|---|---|
+| M040 완료 | `v0.2.0` GitHub Release/tag, npm `hyper-waterfall@0.2.0`, Homebrew public tap, Codex repo-local 후보와 discovery, Claude local/zip 후보 |
+| 이번 task에서 상태만 정리 | `templates/manifest.json` release status, migration guide 보류 항목, distribution 문서의 채널별 현재 상태 |
+| 후속 승인 필요 | Homebrew core 제출, Docker read-only image, Codex official public 배포, Claude Official directory 제출, Claude release asset 게시, release automation, root/directory checksum 산식 확정 |
+
 ## 채널별 비교
 
 | 채널 | 사용자 문제 | 배포 단위 | canonical protocol과의 관계 | 운영 비용 | 우선순위 |
 |---|---|---|---|---|---|
 | GitHub Release/tag | version 고정, 적용 기준 검토, 업데이트 근거 확보 | tag, release asset, manifest, migration guide | canonical 기준 자체 | release notes, checksum, migration guide 유지 | P0 - 계속 유지 |
 | npm CLI | Node.js 환경에서 `init/update/doctor` 판단을 빠르게 실행 | npm package, `npx hyper-waterfall` | manifest/version/migration을 읽는 편의 실행 채널 | npm package metadata, test, publish 승인 | P0 - 기존 MVP 유지 |
-| Homebrew | macOS 개발자가 익숙한 방식으로 CLI를 설치하고 업데이트 | formula 또는 tap | npm CLI나 release asset을 설치하는 wrapper | formula 유지, checksum 갱신, macOS 검증 | P1 - 다음 구현 후보 |
-| Docker | 로컬 Node 설치 없이 격리된 환경에서 CLI 판단 실행 | image, tag, volume mount | container 안에서 npm CLI와 manifest 판단을 실행 | image build, registry, UID/path 검증, multi-arch 검토 | P2 - 제한적 PoC 후보 |
-| Codex plugin | Codex 사용자가 에이전트 UI 안에서 방법론 진입과 Skill 흐름을 발견 | 도구별 plugin bundle | canonical protocol을 호출하거나 설명하는 UI/agent integration | plugin spec 추적, 배포 심사, 호환성 검증 | P3 - 사양 검증 후 보류 |
-| Claude plugin | Claude Code 사용자가 같은 방법론 진입과 명령 흐름을 발견 | 도구별 plugin bundle | canonical protocol을 호출하거나 설명하는 UI/agent integration | plugin spec 추적, 배포 심사, 호환성 검증 | P3 - local/zip 후보 검증, public 보류 |
+| Homebrew | macOS 개발자가 익숙한 방식으로 CLI를 설치하고 업데이트 | formula 또는 tap | npm CLI나 release asset을 설치하는 wrapper | formula 유지, checksum 갱신, macOS 검증 | P1 - public tap 완료, core 보류 |
+| Docker | 로컬 Node 설치 없이 격리된 환경에서 CLI 판단 실행 | image, tag, volume mount | container 안에서 npm CLI와 manifest 판단을 실행 | image build, registry, UID/path 검증, multi-arch 검토 | P2 - M040 제외, 후속 PoC 후보 |
+| Codex plugin | Codex 사용자가 에이전트 UI 안에서 방법론 진입과 Skill 흐름을 발견 | 도구별 plugin bundle | canonical protocol을 호출하거나 설명하는 UI/agent integration | plugin spec 추적, 배포 심사, 호환성 검증 | P3 - repo-local 후보 검증, official public 보류 |
+| Claude plugin | Claude Code 사용자가 같은 방법론 진입과 명령 흐름을 발견 | 도구별 plugin bundle | canonical protocol을 호출하거나 설명하는 UI/agent integration | plugin spec 추적, 배포 심사, 호환성 검증 | P3 - local/zip 후보 검증, public/asset 보류 |
 
 우선순위는 사용자 가치만이 아니라 운영 비용과 canonical 기준 훼손 위험을 함께 본다. 설치 편의성이 높아도 release/manifest/migration 기준과 다른 업데이트 경로를 만들면 보류한다.
 
@@ -59,9 +79,11 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 판단:
 
+- `v0.2.0` GitHub Release/tag는 공개 완료 상태다.
 - 계속 P0로 유지한다.
 - 다른 모든 채널은 GitHub Release/tag를 기준으로 동작해야 한다.
-- `planned` 상태의 release는 전략 문서나 CLI가 "실제 배포 완료"로 표현하면 안 된다.
+- `templates/manifest.json`의 release status는 actual Release/tag에 맞춰 `released`로 둔다.
+- root/directory checksum 보류 상태는 release 완료와 별도로 정합성 감사를 계속해야 한다.
 
 ### npm CLI
 
@@ -166,9 +188,10 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 
 판단:
 
-- 사용자 경험 가치는 크지만 tool-specific lock-in과 사양 변화 위험이 크다.
-- 구현보다 먼저 공통 원칙과 plugin packaging 검증 task를 분리한다.
-- 후속 마일스톤 후보: `M030 - Codex plugin packaging 검증`.
+- #37에서 packaging 구조를 검증했고, #38에서 repo-local 배포 후보와 설치 smoke를 만들었다.
+- #52에서 CLI `/plugins` discovery와 cleanup을 확인했다.
+- Codex official self-serve public plugin publishing/management surface는 확인되지 않았으므로 official public 배포는 별도 승인 전 보류한다.
+- 대체 경로는 repo-local marketplace 등록, 현재 저장소의 `AGENTS.md`, core Skill, `docs/agent-entrypoint.md`, npm CLI dry-run이다.
 
 ### Claude plugin
 
@@ -196,7 +219,7 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 - 후보는 hook 없는 thin wrapper Skill이며, canonical Skill과 manual의 별도 진실 원천이 되지 않는다.
 - Claude Code `2.1.143`에서 directory `--plugin-dir` load, zip `--plugin-dir` load, component inventory smoke가 통과했다.
 - #54에서 public 제출 전 README/CHANGELOG 안내, source review, no-hook/no-MCP/no-binary 설명, zip artifact 후보와 checksum을 점검했다.
-- Official Claude plugin directory 제출은 #41 최종 배포 채널 정합성 감사에서 Codex plugin public 상태와 함께 재결정한다.
+- Official Claude plugin directory 제출은 별도 public action 승인 전 보류한다.
 - GitHub Release asset 게시도 실행하지 않았다. `v0.2.0` release에 `0.2.0-candidate.1` zip 후보를 올릴지는 별도 승인과 asset명/checksum 공개 방식 확정이 필요하다.
 
 ## 구현 우선순위
@@ -206,16 +229,16 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 | P0 | GitHub Release/tag + manifest + migration guide 유지 | canonical 기준이 흔들리면 모든 채널이 갈라진다. | release checklist, checksum, migration guide 유지 |
 | P0 | npm CLI 안정화 | 다른 실행 채널이 재사용할 최소 실행 계층이다. | `init/update/doctor` 출력 계약 유지, test 유지 |
 | P1 | Homebrew formula/tap | macOS 개발자 설치 경험 개선 효과가 크고 Docker/plugin보다 운영 모델이 단순하다. | public tap smoke 통과. core 제출은 #46에서 보류 판단 |
-| P2 | Docker read-only image | CI와 격리 실행 가치가 있지만 volume/path 검증 비용이 있다. | CLI read-only 보장, image tag/version 정책 확정 |
-| P3 | Codex plugin packaging 검증 | agent UI 통합 가치는 크지만 사양 변화와 lock-in 위험이 있다. | 공통 plugin 원칙 확정, Codex packaging 사양 확인, canonical 문서 참조 방식 검증 |
-| P3 | Claude plugin local/zip candidate | Claude Code 진입과 Skill discovery 가치는 확인됐지만 public 배포 운영 판단이 남아 있다. | local/zip smoke와 #54 public-readiness smoke 통과. Official directory 제출은 #41에서 재결정. release asset은 별도 승인 |
+| P2 | Docker read-only image | CI와 격리 실행 가치가 있지만 volume/path 검증 비용이 있다. | M040 제외. CLI read-only 보장과 image tag/version 정책 확정 후 후속 검토 |
+| P3 | Codex plugin repo-local candidate | agent UI 통합 가치는 크지만 사양 변화와 lock-in 위험이 있다. | repo-local discovery 통과. official public 배포는 surface와 별도 승인 필요 |
+| P3 | Claude plugin local/zip candidate | Claude Code 진입과 Skill discovery 가치는 확인됐지만 public 배포 운영 판단이 남아 있다. | local/zip smoke와 #54 public-readiness smoke 통과. Official directory와 release asset은 별도 승인 필요 |
 
 권장 순서:
 
-1. P0: `v0.2.0` GitHub Release/tag와 npm CLI publish 준비를 안정화한다.
+1. P0: `v0.2.0` GitHub Release/tag, manifest, migration guide, npm CLI를 안정 운영한다.
 2. P1: Homebrew public tap은 `postmelee/tap/hyper-waterfall` 경로로 유지하고, core 제출은 #46 보류 판단에 따라 조건 충족 후 재검토한다.
 3. P2: Docker는 `doctor`와 `update --dry-run` read-only image부터 검증한다.
-4. P3: Codex plugin과 Claude plugin은 packaging 검증 task를 먼저 만들고, 실제 배포는 그 결과를 보고 분리한다.
+4. P3: Codex plugin과 Claude plugin은 local/repo-local 후보를 유지하고, official public 배포와 release asset은 별도 승인 task로 분리한다.
 
 ## 구현 후보
 
@@ -226,8 +249,8 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 | M020 - npm publish 준비 | npm package publish checklist, tag/release 정합성, publish 전 검증 | Homebrew, Docker, plugin 구현, 승인 없는 publish |
 | M040 - Homebrew public tap 배포 | `postmelee/tap/hyper-waterfall` 설치, version 확인, `doctor` smoke | 자동 release pipeline, Homebrew core 제출 |
 | M030 - Docker read-only CLI image PoC | `doctor`, `init --dry-run`, `update --dry-run` 실행 image | host 파일 자동 수정 |
-| M030 - Codex plugin packaging 검증 | Codex plugin bundle 구조, canonical 문서 참조 방식, fallback 확인 | 실제 public 배포 |
-| M040 - Claude plugin local/zip candidate | `plugins/claude/hyper-waterfall/` 후보, directory/zip `--plugin-dir` smoke, fallback 확인 | 실제 public marketplace 배포, release asset 게시 |
+| M040 - Codex plugin official public 검토 | official publishing surface, metadata/legal/asset 조건, public install smoke | 승인 없는 public 배포 |
+| M040 - Claude plugin Official directory/release asset 검토 | Official directory 제출 조건, zip asset명/checksum, public install smoke | 승인 없는 public marketplace 배포, release asset 게시 |
 
 ## 보류 항목과 리스크
 
@@ -235,8 +258,8 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 
 - Homebrew core 제출은 이번 task에서 하지 않는다. `brew install hyper-waterfall` 첫 설치 경로는 #46에서 보류 판단했으며, public tap 경로를 기본 안내로 유지한다.
 - Docker image 구현은 이번 task에서 하지 않는다.
-- Codex plugin 실제 packaging과 배포는 이번 task에서 하지 않는다.
-- Claude plugin은 local/zip candidate와 #54 public-readiness smoke까지만 완료했다. Official directory 제출 여부는 #41에서 재결정하고, release asset 게시는 별도 승인 전 보류한다.
+- Codex plugin official public 배포는 official publishing surface와 별도 승인 전 보류한다.
+- Claude plugin은 local/zip candidate와 #54 public-readiness smoke까지만 완료했다. Official directory 제출과 release asset 게시는 별도 승인 전 보류한다.
 - 자동 릴리스 파이프라인은 이번 task에서 하지 않는다.
 - 추가 채널에서 파일 자동 적용, 자동 PR 생성, 자동 병합을 구현하지 않는다.
 
@@ -245,7 +268,7 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 | 리스크 | 영향 | 대응 |
 |---|---|---|
 | canonical 기준 혼선 | 채널마다 다른 manifest나 migration 기준을 쓰면 적용 저장소 업데이트가 재현 불가능해진다. | GitHub Release/tag + manifest + migration guide만 기준으로 둔다. |
-| checksum 미확정 상태 배포 | root/directory `pending-release` 상태를 전체 checksum 확정처럼 보이게 할 수 있다. | release/tag 확정 전 채널은 PoC 또는 planned 상태로만 표현하고, file checksum `ready`와 root/directory `pending-release`를 구분한다. |
+| checksum 미확정 상태 배포 | root/directory `pending-release` 상태를 전체 checksum 확정처럼 보이게 할 수 있다. | release/tag 공개 후에도 file checksum `ready`와 root/directory `pending-release`를 구분한다. |
 | 사용자 파일 자동 덮어쓰기 | Hyper-Waterfall 승인 게이트를 우회한다. | 모든 채널은 판단 결과와 승인 요청만 출력한다. |
 | channel drift | npm, Homebrew, Docker, plugin 설명과 동작이 서로 달라진다. | npm CLI 출력 계약과 agent entrypoint 판단 결과 형식을 공통 기준으로 둔다. |
 | tool-specific lock-in | Codex/Claude plugin이 특정 도구에만 맞는 절차를 만들 수 있다. | `AGENTS.md`, `CLAUDE.md`, `mydocs/skills` canonical 구조를 유지하고 plugin은 발견/실행 계층으로 제한한다. |
