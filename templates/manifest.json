@@ -5,7 +5,7 @@
     "canonicalSource": "github-release",
     "plannedTag": "v0.2.0",
     "baselineTag": "v0.1.0",
-    "status": "planned"
+    "status": "released"
   },
   "applicationMode": "adoption-only",
   "strictManifest": true,

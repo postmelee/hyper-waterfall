@@ -41,9 +41,9 @@
 
 수정 후보:
 
-- `templates/manifest.json`은 `release.status: "planned"`를 유지한다. 실제 Release/tag가 존재하므로 Stage 3에서 `planned` 유지 여부와 `released` 전환 여부를 판단해야 한다.
-- `docs/releases/v0.2.0.md`는 "준비 문서", "실제 Git tag와 GitHub Release는 아직 생성하지 않았음", release 생성 명령 후보, release 전 체크리스트를 유지한다. 실제 release 상태와 충돌한다.
-- `docs/migrations/v0.1.0-to-v0.2.0.md`는 "실제 GitHub Release/tag는 아직 생성하지 않았음"과 "release/tag 생성 보류" 표현을 유지한다.
+- `templates/manifest.json`은 Stage 3에서 `release.status: "released"`로 전환했다. `release.plannedTag` 필드명은 schema 호환을 위해 유지한다.
+- `docs/releases/v0.2.0.md`는 Stage 2에서 상태 문서로 전환했고, Stage 3에서 `release.status`와 migration 보류 항목 기준을 보강했다.
+- `docs/migrations/v0.1.0-to-v0.2.0.md`는 Stage 3에서 release 후 update protocol 기준 문서로 갱신했다.
 
 ### npm actual status
 
@@ -60,8 +60,8 @@
 수정 후보:
 
 - `README.md`와 `docs/releases/v0.2.0-npm-publish.md`는 npm publish 완료 상태와 일치한다.
-- `docs/releases/v0.2.0.md`의 release notes 초안과 보류 항목은 아직 "npm publish 별도 승인 후 진행"으로 남아 있어 actual status와 충돌한다.
-- `docs/migrations/v0.1.0-to-v0.2.0.md`의 보류 항목도 npm publish를 보류로 남긴다.
+- `docs/releases/v0.2.0.md`의 release notes 기준과 보류 항목은 Stage 2에서 npm publish 완료 상태와 후속 보류 항목을 분리했다.
+- `docs/migrations/v0.1.0-to-v0.2.0.md`의 보류 항목은 Stage 3에서 npm publish를 제거하고 후속 승인 필요 항목으로 교체했다.
 
 ### Homebrew actual status
 
@@ -91,7 +91,7 @@
 수정 후보:
 
 - `plugins/hyper-waterfall-codex/README.md`는 #52 결과와 일치한다.
-- `docs/distribution-channels.md`는 Codex plugin 섹션 일부가 #36 전후의 "packaging 검증 후보" 관점으로 남아 있다. #37/#38/#52 완료 상태와 public 보류 상태를 한곳에서 정리할 필요가 있다.
+- `docs/distribution-channels.md`는 Stage 2에서 #37/#38/#52 완료 상태와 official public 보류 상태를 한곳에 정리했다.
 
 ### Claude plugin actual status
 
@@ -105,7 +105,7 @@
 수정 후보:
 
 - `plugins/claude/hyper-waterfall/README.md`는 public distribution을 별도 승인 후 판단한다고 설명하며 #54 결과와 일치한다.
-- `docs/distribution-channels.md`는 "Official directory 제출은 #41에서 재결정"이라고 되어 있다. Stage 2/3에서 #41의 최종 문서 상태로 "별도 후속 승인 전 보류"를 명확히 해야 한다.
+- `docs/distribution-channels.md`는 Stage 2에서 Official directory 제출과 release asset 게시를 별도 public action 승인 전 보류로 정리했다.
 
 ### Docker actual status
 
@@ -114,7 +114,7 @@ Docker image 구현과 registry 배포는 M040 범위에서 제외된 상태다.
 수정 후보:
 
 - `README.md`는 Docker를 추가 배포 채널 후보로만 언급하므로 충돌이 작다.
-- `docs/distribution-channels.md`는 Docker read-only image PoC를 후속 후보로 유지한다. #41에서는 Docker 제외 결정을 M040 완료 조건에 맞춰 더 분명히 둘 수 있다.
+- `docs/distribution-channels.md`는 Stage 2-3에서 Docker를 M040 제외와 후속 read-only image PoC 후보로 분리했다.
 
 ### 선행 이슈 상태
 
@@ -138,7 +138,7 @@ Docker image 구현과 registry 배포는 M040 범위에서 제외된 상태다.
 ## 결정
 
 - Stage 2에서는 사용자-facing 문서의 배포 상태 표현을 실제 사용 가능 경로와 보류 경로에 맞춘다.
-- Stage 3에서는 `templates/manifest.json`, migration guide, release 준비 문서의 `planned`/release 전 표현을 actual Release/tag 상태와 맞출지 판단한다.
+- Stage 3에서는 `templates/manifest.json`, migration guide, release 문서의 `planned`/release 전 표현을 actual Release/tag 상태와 맞췄다.
 - #41에서는 신규 public 배포, release asset 게시, Homebrew core 제출, Docker publish를 실행하지 않는다.
 
 ## 비결정 / 보류
@@ -154,7 +154,7 @@ Docker image 구현과 registry 배포는 M040 범위에서 제외된 상태다.
 
 - Stage 2의 주요 수정 후보는 `docs/releases/v0.2.0.md`, `docs/distribution-channels.md`, `docs/migrations/v0.1.0-to-v0.2.0.md`다.
 - `README.md`, `docs/agent-entrypoint.md`, plugin README들은 큰 충돌은 없지만 Stage 2 검색 검증 대상에 포함한다.
-- `templates/manifest.json`은 actual Release/tag와 `release.status: planned` 충돌 가능성이 있어 Stage 3에서 조건부 수정 대상으로 둔다.
+- `templates/manifest.json`은 actual Release/tag와 맞춰 Stage 3에서 `release.status: released`로 전환했다.
 
 ## Stage 2 적용 메모
 
@@ -162,6 +162,13 @@ Docker image 구현과 registry 배포는 M040 범위에서 제외된 상태다.
 - `docs/distribution-channels.md`는 현재 채널 상태 표를 추가하고, Codex/Claude plugin을 packaging 후보가 아니라 검증 완료 local/repo-local 후보와 official public 보류 상태로 정리했다.
 - `README.md`, `docs/agent-entrypoint.md`, plugin README는 최신 main 기준으로 actual status와 직접 충돌하는 문구가 없어 Stage 2에서 수정하지 않았다.
 - `docs/migrations/v0.1.0-to-v0.2.0.md`와 `templates/manifest.json`은 release status와 migration 출력 기준이 연결되어 있어 Stage 3에서 함께 판단한다.
+
+## Stage 3 적용 메모
+
+- `templates/manifest.json`의 `release.status`는 actual `v0.2.0` Release/tag 공개 완료 상태와 맞도록 `released`로 전환했다. 기존 `release.plannedTag` 필드는 schema 호환을 위해 유지하고 실제 tag 값 `v0.2.0`을 계속 가리킨다.
+- root checksum과 directory checksum은 산식이 확정되지 않았으므로 `pending-release`와 `null` 값을 유지했다.
+- `docs/migrations/v0.1.0-to-v0.2.0.md`는 release 전 문맥을 release 후 기준 문서로 갱신하고, 완료된 GitHub Release/tag와 npm publish를 보류 항목에서 제거했다.
+- `docs/releases/v0.2.0.md`와 `docs/distribution-channels.md`는 완료 항목, 이번 task의 상태 정리 항목, 후속 승인 필요 항목을 분리했다.
 
 ## 참고 링크
 

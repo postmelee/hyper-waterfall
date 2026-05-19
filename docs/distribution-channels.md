@@ -33,13 +33,21 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 | 채널 | 현재 상태 | 사용자-facing 경로 | 보류 또는 후속 조건 |
 |---|---|---|---|
-| GitHub Release/tag | `v0.2.0` 공개 완료 | `https://github.com/postmelee/hyper-waterfall/releases/tag/v0.2.0` | root/directory checksum 산식은 별도 확정 필요 |
+| GitHub Release/tag | `v0.2.0` 공개 완료, manifest `released` | `https://github.com/postmelee/hyper-waterfall/releases/tag/v0.2.0` | root/directory checksum 산식은 별도 확정 필요 |
 | npm CLI | `hyper-waterfall@0.2.0` 공개 완료 | `npx hyper-waterfall@0.2.0 --help` | publish 자동화는 후속 후보 |
 | Homebrew public tap | `postmelee/tap/hyper-waterfall` 공개 완료 | `brew install postmelee/tap/hyper-waterfall` | release마다 formula 갱신 절차 필요 |
 | Homebrew core | 보류 | 없음 | #46 기준 notability, non-author usage, 플랫폼 검증, formula test 근거 필요 |
 | Docker | M040 제외 | 없음 | read-only image PoC는 후속 후보 |
 | Codex plugin | repo-local 후보와 CLI discovery 확인 | repo-local marketplace, `AGENTS.md`, core Skill, npm CLI fallback | official public publishing surface와 별도 승인 필요 |
 | Claude plugin | source-managed local/zip 후보 검증 | `--plugin-dir` directory/zip, `CLAUDE.md`, core Skill, npm CLI fallback | Official directory 제출과 release asset 게시 별도 승인 필요 |
+
+## 완료와 후속 분리
+
+| 구분 | 항목 |
+|---|---|
+| M040 완료 | `v0.2.0` GitHub Release/tag, npm `hyper-waterfall@0.2.0`, Homebrew public tap, Codex repo-local 후보와 discovery, Claude local/zip 후보 |
+| 이번 task에서 상태만 정리 | `templates/manifest.json` release status, migration guide 보류 항목, distribution 문서의 채널별 현재 상태 |
+| 후속 승인 필요 | Homebrew core 제출, Docker read-only image, Codex official public 배포, Claude Official directory 제출, Claude release asset 게시, release automation, root/directory checksum 산식 확정 |
 
 ## 채널별 비교
 
@@ -74,7 +82,8 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 - `v0.2.0` GitHub Release/tag는 공개 완료 상태다.
 - 계속 P0로 유지한다.
 - 다른 모든 채널은 GitHub Release/tag를 기준으로 동작해야 한다.
-- `templates/manifest.json`의 release status와 root/directory checksum 보류 상태는 release 완료와 별도로 정합성 감사를 계속해야 한다.
+- `templates/manifest.json`의 release status는 actual Release/tag에 맞춰 `released`로 둔다.
+- root/directory checksum 보류 상태는 release 완료와 별도로 정합성 감사를 계속해야 한다.
 
 ### npm CLI
 
@@ -226,7 +235,7 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 
 권장 순서:
 
-1. P0: `v0.2.0` GitHub Release/tag와 npm CLI publish 준비를 안정화한다.
+1. P0: `v0.2.0` GitHub Release/tag, manifest, migration guide, npm CLI를 안정 운영한다.
 2. P1: Homebrew public tap은 `postmelee/tap/hyper-waterfall` 경로로 유지하고, core 제출은 #46 보류 판단에 따라 조건 충족 후 재검토한다.
 3. P2: Docker는 `doctor`와 `update --dry-run` read-only image부터 검증한다.
 4. P3: Codex plugin과 Claude plugin은 local/repo-local 후보를 유지하고, official public 배포와 release asset은 별도 승인 task로 분리한다.
