@@ -156,6 +156,13 @@ Docker image 구현과 registry 배포는 M040 범위에서 제외된 상태다.
 - `README.md`, `docs/agent-entrypoint.md`, plugin README들은 큰 충돌은 없지만 Stage 2 검색 검증 대상에 포함한다.
 - `templates/manifest.json`은 actual Release/tag와 `release.status: planned` 충돌 가능성이 있어 Stage 3에서 조건부 수정 대상으로 둔다.
 
+## Stage 2 적용 메모
+
+- `docs/releases/v0.2.0.md`는 release 전 준비 문서 표현을 상태 문서로 바꾸고, GitHub Release/npm/Homebrew 완료와 Docker/Codex/Claude 보류 상태를 반영했다.
+- `docs/distribution-channels.md`는 현재 채널 상태 표를 추가하고, Codex/Claude plugin을 packaging 후보가 아니라 검증 완료 local/repo-local 후보와 official public 보류 상태로 정리했다.
+- `README.md`, `docs/agent-entrypoint.md`, plugin README는 최신 main 기준으로 actual status와 직접 충돌하는 문구가 없어 Stage 2에서 수정하지 않았다.
+- `docs/migrations/v0.1.0-to-v0.2.0.md`와 `templates/manifest.json`은 release status와 migration 출력 기준이 연결되어 있어 Stage 3에서 함께 판단한다.
+
 ## 참고 링크
 
 - [Issue #41](https://github.com/postmelee/hyper-waterfall/issues/41)
