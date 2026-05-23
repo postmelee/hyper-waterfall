@@ -94,3 +94,13 @@ Stage 2의 `docs/localization.md`는 아래 판단을 명시해야 한다.
 - placeholder, 브랜치명, 파일명 패턴, GitHub Issue/PR 번호, 명령어, 코드 블록은 locale 대상이 아니라 보존 대상이다.
 - `작성 언어: 한국어`와 `모든 문서는 한국어 작성`은 선택 locale 기반 정책으로 대체해야 한다.
 - fallback은 누락된 locale을 조용히 숨기는 기능이 아니라, 영어 기준으로 판단하되 누락을 적용/업데이트 보고에 드러내는 safety net이어야 한다.
+
+## Stage 2 정책 반영
+
+Stage 2에서 `docs/localization.md`를 새로 작성해 다음 정책을 확정했다.
+
+- 기본 locale은 `en`, 기존 한국어 원문 보존 locale은 `ko`, 중국어 간체 초기 지원 locale은 `zh-CN`이다.
+- `작성 언어: 한국어`와 `모든 문서는 한국어 작성`은 "적용 시 선택한 Hyper-Waterfall locale을 따른다"는 의미의 선택 locale 기반 정책으로 대체한다.
+- placeholder, branch, filename pattern, command, code block은 locale 대상이 아니라 구조적 계약으로 보존한다.
+- fallback은 silent downgrade가 아니라 누락을 보고하고 `en` canonical 기준으로 판단하는 safety net이다.
+- README, AGENTS, GitHub Issue/PR template, `mydocs/_templates`, manifest, Skill, adoption/update workflow는 #66-#71에서 각자 책임 범위에 따라 처리한다.
