@@ -106,3 +106,17 @@ locale별 문서는 같은 절차 의미를 유지해야 한다.
 | #71 | locale별 smoke 검증과 기존 한국어-only 적용 저장소 migration guide를 작성한다. |
 
 #65는 이 정책을 고정하는 작업이며, 실제 README 번역, locale pack 파일 배치, manifest 구현, workflow 구현은 후속 이슈 범위다.
+
+## 수용 기준 대응
+
+#65의 정책 산출물은 후속 이슈가 참조할 기준을 고정하는 데 한정한다. 수용 기준별 대응은 다음과 같다.
+
+| #65 수용 기준 | 정책 기준 | 후속 구현 범위 |
+|---|---|---|
+| 기본 언어와 초기 지원 locale 정의 | 기본 언어는 `en`, 기존 한국어 보존 locale은 `ko`, 중국어 간체는 `zh-CN`으로 둔다. | README 진입 문서는 #66, locale pack 배치는 #67-#69에서 반영한다. |
+| 한국어 고정 정책 대체 방향 | `작성 언어: 한국어`와 `모든 문서는 한국어 작성`은 선택한 Hyper-Waterfall locale을 따르는 정책으로 대체한다. | 실제 template/Skill/manual 문구 교체는 #67-#70에서 수행한다. |
+| placeholder와 canonical 용어 보존 | placeholder, branch, filename pattern, command, code block은 구조적 계약으로 보존한다. | locale pack 작성과 smoke 검증은 #68, #69, #71에서 확인한다. |
+| fallback 기준 | 누락 locale은 조용히 영어로 대체하지 않고 적용/update 보고에 명시한다. 판단 기준은 `en` canonical 문서다. | fallback 처리 위치와 사용자-facing 메시지는 #67, #70에서 확정한다. |
+| 후속 이슈 경계 | #66-#71의 책임을 분리하고 #65가 README 번역, locale pack, workflow 구현을 대체하지 않는다. | 각 이슈의 수행계획서에서 이 문서를 선행 기준으로 참조한다. |
+
+Stage 3에서 #65-#71 이슈 본문과 M050 milestone 설명을 확인한 결과, 후속 이슈의 목표와 수용 기준은 위 정책과 충돌하지 않는다. #66은 사용자 진입 문서, #67은 구조와 manifest, #68-#69는 locale pack 본문, #70은 적용/update 선택 절차, #71은 smoke와 migration으로 분리되어 있다.

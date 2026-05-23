@@ -104,3 +104,23 @@ Stage 2에서 `docs/localization.md`를 새로 작성해 다음 정책을 확정
 - placeholder, branch, filename pattern, command, code block은 locale 대상이 아니라 구조적 계약으로 보존한다.
 - fallback은 silent downgrade가 아니라 누락을 보고하고 `en` canonical 기준으로 판단하는 safety net이다.
 - README, AGENTS, GitHub Issue/PR template, `mydocs/_templates`, manifest, Skill, adoption/update workflow는 #66-#71에서 각자 책임 범위에 따라 처리한다.
+
+## Stage 3 후속 이슈 정합성 확인
+
+Stage 3에서 GitHub Issue #65-#71 본문과 M050 milestone 설명을 다시 확인했다. 확인 결과 `docs/localization.md`의 정책은 후속 이슈의 목표와 충돌하지 않으며, #65가 후속 구현을 선점하지 않는 경계도 유지된다.
+
+| 이슈 | 확인한 수용 기준 | 정책 연결 | 판단 |
+|---|---|---|---|
+| #65 | 기본 언어, 초기 locale, fallback, canonical, placeholder, approval gate 기준 | `docs/localization.md` 전체 | 정책 문서와 일치 |
+| #66 | README 기본 영어, 한국어/중국어 링크, 적용 진입 프롬프트 다국어화 | README와 사용자 진입 프롬프트는 locale 대상 | #65 범위 밖 구현으로 유지 |
+| #67 | `templates/manifest.json`, locale pack 구조, fallback/update 기준 | locale pack 구조와 fallback 처리 위치는 #67에서 확정 | #65 정책과 충돌 없음 |
+| #68 | 영어 locale pack 작성, 한국어 원문 `ko` 보존 | `en` 기본, `ko` 보존 정책 | #65 정책과 일치 |
+| #69 | `zh-CN` locale pack 작성, 중국어 간체 용어 의미 보존 | `zh-CN` 초기 지원 locale, 구조적 계약 보존 | #65 정책과 일치 |
+| #70 | 신규 적용/update의 locale 선택과 보존 절차 | 실제 선택 저장 위치와 update 판단은 #70 범위 | #65 범위 밖 구현으로 유지 |
+| #71 | locale별 smoke, migration guide, milestone 종료 체크 | placeholder와 승인 게이트 의미 보존 검증 | #65 이후 최종 검증으로 정렬 |
+
+Stage 3 결론:
+
+- README 번역, locale pack 파일 배치, manifest 구현, workflow 구현은 이번 #65에서 수행하지 않는다.
+- README 또는 lifecycle 문서에 `docs/localization.md` 링크를 즉시 추가할 필요는 없다. #66과 #70에서 각각 진입 문서와 적용/update 흐름을 개편할 때 링크를 포함하는 편이 범위 경계에 맞다.
+- #67의 세부 검증 명령 문구는 해당 이슈 착수 시 다시 확인하면 충분하며, 현재 정책 충돌은 아니다.
