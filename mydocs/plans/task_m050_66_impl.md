@@ -9,6 +9,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | Stage | 제목 | 주요 산출 | 검증 |
 |---|---|---|---|
 | 1 | 한국어 README 구조 재정렬 | `README.ko.md`, `mydocs/working/task_m050_66_stage1.md` | 기존 한국어 핵심 내용 보존, 중복 축소, appendix 구조 확인 |
+| 1.1 | 한국어 README 설득력 보강 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_1.md` | 원문 방법론 표현, 저장소 가치 제안, 10개 체감 효과 보강 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -85,6 +86,49 @@ git diff --check
 
 ```text
 Task #66 Stage 1: 한국어 README 구조 재정렬
+```
+
+## Stage 1.1 — 한국어 README 설득력 보강
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_1.md`
+
+수정:
+
+- `README.ko.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- Stage 1 검토 피드백에 따라 기존 한국어 README의 설득력 있는 원문 표현을 보강한다.
+- 상단 소개에 "거시적 워터폴 + 미시적 애자일" 메시지를 복원한다.
+- `왜 이 저장소를 써야 하는가`를 별도 섹션으로 되살려 지식 자산화, 방향 오류 조기 발견, 자동화된 역할 분담, 세션 경량화를 설명한다.
+- `무엇이 바뀌나` 표는 유지하고, 그 아래 `적용하면 바로 달라지는 것` 10개 리스트를 짧게 복원한다.
+- 부록의 방법론 설명에는 원저자 표현에 가까운 `Hyper-Waterfall이란?`, 핵심 원칙, 바이브 코딩 비교, "AI 없이는 닿을 수 없는 지점"을 보강한다.
+
+### 검증
+
+```bash
+rg -n "왜 이 저장소를 써야 하는가|작업 이력이 다음 작업의 프롬프트|AI가 잘할 수밖에|적용하면 바로 달라지는 것|사람은 절대 생각을 멈추지 않는다|같은 규율, 100배 빠른 속도|AI는 배율기" README.ko.md
+rg -n "English|한국어|简体中文|빠른 시작|언제 쓰면 좋은가|왜 이 저장소를 써야 하는가|무엇이 바뀌나|적용 후 구조|유지보수자|부록" README.ko.md
+git diff --check
+```
+
+수동 확인:
+
+- `무엇이 바뀌나` 표가 유지됐는지 확인한다.
+- 10개 체감 효과가 원본 의미를 유지하되 README 상단 흐름을 과도하게 늘리지 않는지 확인한다.
+- `왜 이 저장소를 써야 하는가`가 사용자 관점의 도입 이유를 충분히 설명하는지 확인한다.
+- 원저자 방법론 표현이 부록에서 충분히 보존됐는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.1]: 한국어 README 설득력 보강
 ```
 
 ## Stage 2 — 영어 기본 README 전환
