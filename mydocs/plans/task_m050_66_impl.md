@@ -11,6 +11,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1 | 한국어 README 구조 재정렬 | `README.ko.md`, `mydocs/working/task_m050_66_stage1.md` | 기존 한국어 핵심 내용 보존, 중복 축소, appendix 구조 확인 |
 | 1.1 | 한국어 README 설득력 보강 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_1.md` | 원문 방법론 표현, 저장소 가치 제안, 10개 체감 효과 보강 확인 |
 | 1.2 | 한국어 README Markdown 가독성 개선 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_2.md` | GitHub alert, table, details, list 가독성 확인 |
+| 1.3 | 한국어 README 원본 기반 재정렬 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_3.md` | 상단 흐름 유지, 하네스 설명 상향, task 절차·SKILL·cycle 보존 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -36,11 +37,13 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 3. Quick Start: 적용 프롬프트 1개와 AI가 먼저 보고할 항목 3개
 4. When to Use: 적합한 경우와 과한 경우
 5. Why This Repo: 지식 자산화, 리스크 제어, 역할 분담, 컨텍스트 경량화
-6. What Changes: Issue, plan, Stage report, final report, PR 흐름 요약
-7. Generated Structure: 적용 후 대상 저장소에 생기는 핵심 파일 축약 tree
-8. Maintainer Details: lifecycle, update, CLI, Homebrew, plugin 관련 상세 링크와 접힘 섹션
-9. Appendix: Philosophy, Prompt Guide, Dogfooding
-10. License
+6. What This Repo Provides: 템플릿, 운영 규칙, mydocs, GitHub workflow, SKILL, lifecycle, CLI
+7. What Changes: Issue, plan, Stage report, final report, PR 흐름 요약
+8. Workflow: 타스크 진행 절차, 핵심 SKILL 상세, 타스크 사이클, 문서 구조
+9. Generated Structure: 적용 후 대상 저장소에 생기는 핵심 파일 축약 tree
+10. Maintainer Details: lifecycle, update, CLI, Homebrew, plugin 관련 상세 링크와 접힘 섹션
+11. Appendix: Philosophy, Prompt Guide, Dogfooding
+12. License
 
 위 목록은 정보 구조 이름이다. 실제 heading은 각 README의 언어에 맞게 자연스럽게 번역하되, 세 문서가 같은 순서와 의미를 유지해야 한다.
 
@@ -174,6 +177,51 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.2]: 한국어 README Markdown 가독성 개선
+```
+
+## Stage 1.3 — 한국어 README 원본 기반 재정렬
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_3.md`
+
+수정:
+
+- `README.ko.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- Stage 1.2 결과가 원본 README의 실전 운영감을 충분히 살리지 못했다는 피드백을 반영한다.
+- `빠른 시작`, `언제 쓰면 좋은가`, `왜 이 저장소를 써야 하는가`의 상단 흐름은 유지한다.
+- `postmelee/hyper-waterfall`이 제공하는 하네스 구성 요소를 상단으로 올린다.
+- 특정 원 저장소를 직접 확장했다는 표현은 제거하고, 여러 저장소에 적용 가능한 일반 하네스 관점으로 설명한다.
+- 원본 README의 중복을 줄이되 `타스크 진행 절차`, `핵심 SKILL 상세`, `타스크 사이클`, `문서 구조`를 보존한다.
+- inline code가 과도하게 이어지는 부분은 표나 code block으로 재배치한다.
+
+### 검증
+
+```bash
+rg -n "빠른 시작|언제 쓰면 좋은가|왜 이 저장소를 써야 하는가|이 저장소가 제공하는 것|도입 후 작업 흐름|타스크 진행 절차|핵심 SKILL 상세|타스크 사이클|문서 구조|부록" README.ko.md
+rg -n "rhwp에서 처음 도입|다음과 같이 확장" README.ko.md
+rg -n "task-register|task-start|task-stage-report|task-final-report|pr-merge-cleanup|external-pr-review|todo" README.ko.md
+git diff --check
+```
+
+수동 확인:
+
+- `README.ko.md` 상단 흐름이 사용자가 승인한 순서를 유지하는지 확인한다.
+- 하네스 구성 설명이 방법론 부록보다 앞에 있는지 확인한다.
+- 원본 README의 task 절차, 핵심 SKILL 상세, 타스크 사이클이 삭제되지 않았는지 확인한다.
+- 반복되던 lifecycle, CLI, prompt guide 상세가 상단 흐름을 방해하지 않는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.3]: 한국어 README 원본 기반 재정렬
 ```
 
 ## Stage 2 — 영어 기본 README 전환
