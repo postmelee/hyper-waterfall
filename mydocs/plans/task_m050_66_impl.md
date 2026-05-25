@@ -10,6 +10,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 |---|---|---|---|
 | 1 | 한국어 README 구조 재정렬 | `README.ko.md`, `mydocs/working/task_m050_66_stage1.md` | 기존 한국어 핵심 내용 보존, 중복 축소, appendix 구조 확인 |
 | 1.1 | 한국어 README 설득력 보강 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_1.md` | 원문 방법론 표현, 저장소 가치 제안, 10개 체감 효과 보강 확인 |
+| 1.2 | 한국어 README Markdown 가독성 개선 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_2.md` | GitHub alert, table, details, list 가독성 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -34,11 +35,12 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 2. What: Hyper-Waterfall이 무엇인지 짧은 설명
 3. Quick Start: 적용 프롬프트 1개와 AI가 먼저 보고할 항목 3개
 4. When to Use: 적합한 경우와 과한 경우
-5. What Changes: Issue, plan, Stage report, final report, PR 흐름 요약
-6. Generated Structure: 적용 후 대상 저장소에 생기는 핵심 파일 축약 tree
-7. Maintainer Details: lifecycle, update, CLI, Homebrew, plugin 관련 상세 링크와 접힘 섹션
-8. Appendix: Philosophy, Prompt Guide, Dogfooding
-9. License
+5. Why This Repo: 지식 자산화, 리스크 제어, 역할 분담, 컨텍스트 경량화
+6. What Changes: Issue, plan, Stage report, final report, PR 흐름 요약
+7. Generated Structure: 적용 후 대상 저장소에 생기는 핵심 파일 축약 tree
+8. Maintainer Details: lifecycle, update, CLI, Homebrew, plugin 관련 상세 링크와 접힘 섹션
+9. Appendix: Philosophy, Prompt Guide, Dogfooding
+10. License
 
 위 목록은 정보 구조 이름이다. 실제 heading은 각 README의 언어에 맞게 자연스럽게 번역하되, 세 문서가 같은 순서와 의미를 유지해야 한다.
 
@@ -129,6 +131,49 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.1]: 한국어 README 설득력 보강
+```
+
+## Stage 1.2 — 한국어 README Markdown 가독성 개선
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_2.md`
+
+수정:
+
+- `README.ko.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- GitHub README에서 지원하는 Markdown 요소를 활용해 Stage 1.1 본문을 더 쉽게 훑어볼 수 있게 한다.
+- 상단 핵심 메시지와 Quick Start 승인 조건에 GitHub alert를 추가한다.
+- `왜 이 저장소를 써야 하는가`는 핵심 네 축을 표로 먼저 보여주고, 긴 설명은 `<details>`로 접는다.
+- `적용하면 바로 달라지는 것` 10개 항목은 의미를 유지하되 줄바꿈과 들여쓰기로 밀도를 낮춘다.
+- 부록의 핵심 원칙과 "왜 강력한가" 설명은 표로 재배치해 스캔 가능성을 높인다.
+
+### 검증
+
+```bash
+rg -n "\\[!NOTE\\]|\\[!IMPORTANT\\]|<details>|</details>|\\| 축 \\||\\| 원칙 \\||\\| 지점 \\|" README.ko.md
+rg -n "English|한국어|简体中文|빠른 시작|언제 쓰면 좋은가|왜 이 저장소를 써야 하는가|무엇이 바뀌나|적용 후 구조|유지보수자|부록" README.ko.md
+git diff --check
+```
+
+수동 확인:
+
+- GitHub alert가 적용 흐름을 방해하지 않고 핵심 조건을 강조하는지 확인한다.
+- `왜 이 저장소를 써야 하는가`가 표만 읽어도 가치 제안을 이해할 수 있는지 확인한다.
+- `<details>` 안의 상세 설명이 기존 의미를 잃지 않았는지 확인한다.
+- 10개 체감 효과가 번호 목록으로 유지됐는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.2]: 한국어 README Markdown 가독성 개선
 ```
 
 ## Stage 2 — 영어 기본 README 전환
