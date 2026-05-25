@@ -243,9 +243,17 @@ mydocs/
 └── pr/                                 외부 PR 검토 기록
 ```
 
-`mydocs/`는 작업 기억, 운영 매뉴얼, 조사 근거를 보관하는 구조이며 대상 프로젝트의 공식 제품 문서 루트가 아닙니다. 제품/사용자/기여자/API/아키텍처/로드맵 문서를 생성·이동·수정하는 task는 수행계획서에서 대상 독자, 공식화 수준, 선택 경로, 대안 경로, 선택 이유를 먼저 승인받습니다.
+폴더별 역할은 [문서 구조 매뉴얼의 폴더 역할](templates/mydocs/manual/document_structure_guide.md#폴더-역할-엄격-준수)에서 확인하고, 각 폴더의 상세 작성 규칙은 해당 폴더의 `README.md`를 기준으로 확인합니다. 문서 파일명은 [문서 파일명 규칙](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙)을 따릅니다. 산출물 출력 형식은 [중앙 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책)에 정리되어 있습니다.
 
-폴더별 역할은 [문서 구조 매뉴얼의 폴더 역할](templates/mydocs/manual/document_structure_guide.md#폴더-역할-엄격-준수)에서 확인하고, 문서 파일명은 [문서 파일명 규칙](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙)을 따릅니다.
+`mydocs/`는 작업 기억, 운영 매뉴얼, 조사 근거를 보관하는 구조이며 대상 프로젝트의 공식 제품 문서 루트가 아닙니다. 공식 문서 루트 이름은 Hyper-Waterfall이 고정하지 않습니다. 대상 프로젝트가 `docs/`, `specs/`, `site/`, `website/`, `adr/`, GitHub Wiki 등을 선택할 수 있지만, 제품/사용자/기여자/API/아키텍처/로드맵 문서를 생성·이동·수정하는 task는 수행계획서의 문서 위치 판단에서 대상 독자, 공식화 수준, 선택 경로, 대안 경로, 선택 이유를 먼저 승인받습니다.
+
+`manual/` 문서는 반복 적용되는 운영 기준과 절차를 담고, 특정 이슈·PR·릴리즈 검증·장애 기록은 해당 산출물 문서로 분리합니다. 세부 경계는 [manual 문서 중립성 정책](templates/mydocs/manual/document_structure_guide.md#manual-문서-중립성-정책)을 따릅니다.
+
+`tech/` 문서는 기술 조사, 대안 비교, 설계 판단 근거, 아직 공식화되지 않은 초안을 담습니다. 사용자나 외부 통합자가 따라야 하는 공식 계약 문서로 승격하려면 별도 task에서 공식 문서 루트를 선택하고 승인받습니다.
+
+`_templates/`는 실제 task 산출물이 아니라 출력 형식의 진실 원천입니다. 각 Skill은 산출물을 만들 때 먼저 `mydocs/_templates/`의 해당 템플릿을 참조하고, 템플릿을 읽을 수 없는 상황에서만 Skill 안의 최소 섹션 요약을 fallback으로 사용합니다.
+
+GitHub Issue와 Pull Request는 GitHub 플랫폼 산출물입니다. 이슈 본문은 `.github/ISSUE_TEMPLATE/task.yml`, PR 본문은 `.github/pull_request_template.md`를 기준으로 구조화하고, 저장소 안에 남는 작업 문서는 `mydocs/_templates/`를 기준으로 작성합니다. 세부 경계는 [GitHub 플랫폼 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#github-플랫폼-템플릿-정책)을 따릅니다.
 
 ## 적용 후 대상 저장소 구조
 

@@ -13,6 +13,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1.2 | 한국어 README Markdown 가독성 개선 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_2.md` | GitHub alert, table, details, list 가독성 확인 |
 | 1.3 | 한국어 README 원본 기반 재정렬 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_3.md` | 상단 흐름 유지, 하네스 설명 상향, task 절차·SKILL·cycle 보존 확인 |
 | 1.4 | 한국어 README upstream 하네스 설명 원문 보존 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_4.md` | 부록 유지, upstream `이 저장소가 한 일` 내용 상단 보존, 중복 Quick Start 제거 확인 |
+| 1.5 | 한국어 README 문서 구조 정책 복원 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_5.md` | 폴더별 규칙, 공식 문서 루트, manual/tech/_templates, GitHub 플랫폼 경계 복원 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -266,6 +267,48 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.4]: 한국어 README upstream 하네스 설명 보존
+```
+
+## Stage 1.5 — 한국어 README 문서 구조 정책 복원
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_5.md`
+
+수정:
+
+- `README.ko.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- Stage 1.4까지 축약되며 유실된 `문서 구조` 정책 문단을 원본 README 수준으로 복원한다.
+- 폴더별 상세 작성 규칙, 문서 파일명 규칙, 중앙 템플릿 정책 링크를 복원한다.
+- `mydocs/`가 공식 제품 문서 루트가 아니며 공식 문서 루트 이름을 고정하지 않는다는 설명을 복원한다.
+- `manual/`, `tech/`, `_templates/`의 역할과 경계 설명을 복원한다.
+- GitHub Issue/PR은 GitHub 플랫폼 산출물이고, 저장소 작업 문서는 `mydocs/_templates/`를 기준으로 작성한다는 경계를 복원한다.
+
+### 검증
+
+```bash
+rg -n "각 폴더의 상세 작성 규칙|중앙 템플릿 정책|공식 문서 루트 이름|GitHub Wiki|manual 문서 중립성 정책|tech/.*공식 계약 문서|_templates/.*진실 원천|GitHub Issue와 Pull Request는 GitHub 플랫폼 산출물|GitHub 플랫폼 템플릿 정책" README.ko.md
+rg -n "문서 구조|적용 후 대상 저장소 구조|부록" README.ko.md
+git diff --check
+```
+
+수동 확인:
+
+- 복원 문단이 `도입 후 작업 흐름 > 문서 구조` 아래에 위치하는지 확인한다.
+- 원본 README의 정책 의미가 축약되지 않았는지 확인한다.
+- `적용 후 대상 저장소 구조`와 부록은 위치를 유지하는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.5]: 한국어 README 문서 구조 정책 복원
 ```
 
 ## Stage 2 — 영어 기본 README 전환
