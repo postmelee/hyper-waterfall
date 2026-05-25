@@ -70,32 +70,42 @@ AI 코딩 도구는 두 가지 구조적 약점을 가집니다.
 
 > AI 세션은 길수록 똑똑해지는 것이 아니라, 종종 흐려집니다. Hyper-Waterfall은 세션을 짧게 유지하고 기억은 저장소에 남깁니다.
 
-## 이 저장소가 제공하는 것
+## 이 하네스가 하는 일
 
-`postmelee/hyper-waterfall`은 방법론 설명 문서만이 아니라, 실제 대상 저장소에 복사해 적용할 수 있는 하네스입니다.
+### 1. 프롬프트 한 줄로 어떤 저장소에든 적용 — 모듈화 + placeholder 치환
 
-| 구성 | 위치 | 역할 |
-|---|---|---|
-| 적용 진입점 | [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md) | AI가 신규 적용과 기존 업데이트를 판단하는 첫 문서 |
-| 적용 템플릿 | [`templates/`](templates/) | 대상 저장소에 복사되는 운영 파일의 진실 원천 |
-| 운영 규칙 | [`templates/AGENTS.md`](templates/AGENTS.md), [`templates/CLAUDE.md`](templates/CLAUDE.md) | Codex, Claude Code 등 에이전트가 매 턴 지켜야 할 규칙 |
-| 작업 기억 구조 | [`templates/mydocs/`](templates/mydocs/) | 계획서, 보고서, 피드백, 기술 조사, 트러블슈팅 저장소 |
-| GitHub workflow | [`templates/.github/`](templates/.github/) | Issue Form과 PR template |
-| Agent Skills | [`templates/mydocs/skills/`](templates/mydocs/skills/) | 정형 작업 시점에 호출되는 절차 단위 |
-| Lifecycle 문서 | [`docs/lifecycle/`](docs/lifecycle/) | 신규 적용, 업데이트, 업데이트 PR 판단 기준 |
-| CLI | [`packages/`](packages/) | init, update, doctor dry-run 실행 채널 |
+Hyper-Waterfall 운영 방식이 특정 저장소의 문서·관습과 강하게 결합되어 있으면, 다른 프로젝트에 그대로 가져다 쓰기 어렵습니다. 본 저장소는 운영 규칙·매뉴얼·SKILL을 `templates/`로 분리하고 진입 절차를 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)로 정형화했습니다. 결과적으로 **AI 코딩 도구에 한 줄 프롬프트만 보내면** 어떤 저장소에든 적용됩니다. AI가 진입 절차를 따라 `REPO_SLUG`·`BASE_BRANCH` 같은 placeholder까지 자동으로 치환합니다.
 
-### 프롬프트 한 줄로 적용
+기존 적용 저장소 업데이트를 위한 lifecycle 기준도 별도 문서로 정리하고 있습니다. GitHub Release/tag, manifest, migration guide, `.hyper-waterfall/version.json`을 읽어 현재 version, 목표 release/tag, manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 판단하는 구조입니다. 세부 기준은 [`docs/lifecycle/update.md`](docs/lifecycle/update.md)와 [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md)에 둡니다. 본 저장소 자체가 자기 자신에 적용한 dogfooding 첫 사례입니다 (Issue #1, PR #2).
 
-운영 규칙, 매뉴얼, SKILL, GitHub 템플릿을 `templates/`로 분리하고 진입 절차를 정형화했습니다. AI 코딩 도구에 한 줄 프롬프트만 보내면 적용 후보를 계산하고, `REPO_SLUG`, `BASE_BRANCH` 같은 placeholder 치환이 필요한 지점을 먼저 보고합니다.
+### 2. 공식 프롬프팅 가이드와의 정합
 
-### Multi-agent 호환
+작업 문서 포맷이 OpenAI와 Anthropic의 공식 프롬프팅 가이드 핵심을 자연스럽게 만족하도록 설계했습니다. 특히 GitHub Issue/PR 템플릿은 GitHub 플랫폼 산출물의 본문 구조를 잡고, `templates/mydocs/_templates/`는 계획서·보고서·피드백·외부 PR 검토 문서의 출력 형식을 명시합니다.
 
-`AGENTS.md`를 단일 진실 원천으로 두고 `CLAUDE.md`는 `AGENTS.md`를 참조합니다. SKILL은 적용 저장소에서 `.agents/skills`와 `.claude/skills`가 같은 `mydocs/skills` 본문을 가리키도록 구성합니다.
+> AI가 문서를 작성하고 다시 참조 및 레퍼런스로 사용하는 재귀적 과정에서 응답 품질 저하를 최소화할 수 있습니다.
 
-### 운영 규칙, SKILL, 매뉴얼 분리
+- 명확성(Clarity): 작업 목표가 명확하게 정의됨
+- 일관성(Consistency): 모든 작업 문서가 동일한 구조를 가짐
+- 단계적 접근(Step-by-step thinking): 작업을 작은 단계로 분할하여 진행
+- 맥락 제공(Context): 작업에 필요한 모든 정보가 문서에 포함됨
+- 출력 포맷 제약(Output format): 작업 결과물이 중앙 템플릿의 특정 포맷으로 출력됨
 
-매 턴 시스템 프롬프트로 들어갈 내용은 `AGENTS.md`에 압축하고, 절차 상세는 `mydocs/manual/`, `mydocs/skills/`, `mydocs/_templates/`로 나눕니다. 모델은 필요한 시점에 필요한 절차만 읽고, 반복 산출물은 중앙 템플릿을 따릅니다.
+상세 매핑은 아래 [프롬프트 가이드 준수](#프롬프트-가이드-준수) 섹션에서 펼쳐 확인할 수 있습니다.
+
+### 3. Multi-agent 호환 + 운영 규칙·SKILL·매뉴얼 분리로 토큰·컨텍스트 효율
+
+운영 규칙·문서 구조·폴더 정책·명명 규칙·PR 처리를 하나의 도구 전용 파일에 모두 인라인하면 특정 에이전트에 강하게 결합되고, 매 턴 컨텍스트도 불필요하게 커집니다. 본 저장소는 두 축으로 분리·확장했습니다.
+
+**(1) Multi-agent 호환**: `AGENTS.md`를 단일 진실 원천으로 두고 `CLAUDE.md`는 `@AGENTS.md` 한 줄로 참조합니다. SKILL은 `.agents/skills`(Codex) + `.claude/skills`(Claude Code) 심볼릭 링크로 같은 본문이 양쪽 도구에서 인식됩니다. 새로 추가되는 SKILL 인식 도구도 같은 패턴으로 확장됩니다.
+
+**(2) 운영 규칙·SKILL·매뉴얼·템플릿 분리**: `AGENTS.md`에는 매 턴 시스템 프롬프트로 적재될 정책·제약·인덱스만 두고, 절차 상세는 [`mydocs/manual/`](templates/mydocs/manual/)의 주제별 매뉴얼(문서 구조, 타스크 진행, Git, PR, lifecycle, release/update, 충돌 규칙), 각 `mydocs/` 폴더의 `README.md`, [`.github/`](templates/.github/)의 GitHub Issue/PR 템플릿, [`mydocs/_templates/`](templates/mydocs/_templates/)의 문서 출력 형식, [`mydocs/skills/`](templates/mydocs/skills/)의 7개 SKILL로 분리했습니다.
+
+효과:
+
+- **토큰 효율**: 매 턴 시스템 프롬프트로 적재되는 분량을 축소. 매뉴얼·SKILL 본문은 호출 시점에만 컨텍스트로 들어옵니다.
+- **컨텍스트 효율**: 모델은 필요한 시점에 필요한 절차만 읽습니다. 무관한 절차로 컨텍스트가 오염되지 않습니다.
+- **의도 전달 명확성**: GitHub 템플릿과 중앙 템플릿이 반복 산출물의 구조를 고정하고, 단계별 SKILL이 절차의 어느 시점에 호출되는지 명시해 AI가 추론으로 절차나 출력 형식을 재구성하지 않습니다.
+- **모델 간 이식성**: SKILL은 표준 형식이라 다른 SKILL 인식 도구로 옮기기 쉽습니다.
 
 ## 무엇이 바뀌나
 

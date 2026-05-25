@@ -12,6 +12,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1.1 | 한국어 README 설득력 보강 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_1.md` | 원문 방법론 표현, 저장소 가치 제안, 10개 체감 효과 보강 확인 |
 | 1.2 | 한국어 README Markdown 가독성 개선 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_2.md` | GitHub alert, table, details, list 가독성 확인 |
 | 1.3 | 한국어 README 원본 기반 재정렬 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_3.md` | 상단 흐름 유지, 하네스 설명 상향, task 절차·SKILL·cycle 보존 확인 |
+| 1.4 | 한국어 README upstream 하네스 설명 원문 보존 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_4.md` | 부록 유지, upstream `이 저장소가 한 일` 내용 상단 보존, 중복 Quick Start 제거 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -222,6 +223,49 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.3]: 한국어 README 원본 기반 재정렬
+```
+
+## Stage 1.4 — 한국어 README upstream 하네스 설명 원문 보존
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_4.md`
+
+수정:
+
+- `README.ko.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- 현재 부록으로 이동한 방법론 설명은 유지한다.
+- upstream README의 `postmelee/hyper-waterfall` 블록 중 `이 저장소가 한 일` 내용을 상단으로 최대한 그대로 옮긴다.
+- `이 저장소가 한 일` heading과 일부 비교 표현은 일반 하네스 관점으로 바꾸되, 세 하위 섹션의 핵심 문장과 효과 목록은 보존한다.
+- `새 저장소에 빠르게 적용하기`는 상단 `빠른 시작`과 중복되므로 다시 추가하지 않는다.
+- Stage 1.3의 요약 표 중심 `이 저장소가 제공하는 것` 섹션은 제거하고 원본 서술 중심 섹션으로 대체한다.
+
+### 검증
+
+```bash
+rg -n "이 하네스가 하는 일|프롬프트 한 줄로 어떤 저장소에든 적용|공식 프롬프팅 가이드와의 정합|Multi-agent 호환|토큰 효율|컨텍스트 효율|의도 전달 명확성|모델 간 이식성" README.ko.md
+rg -n "새 저장소에 빠르게 적용하기|rhwp에서 처음 도입|다음과 같이 확장|원본 방법론\\(rhwp\\)|rhwp는" README.ko.md
+rg -n "부록|Hyper-Waterfall이란\\?|핵심 구조|핵심 원칙|바이브 코딩 vs Hyper-Waterfall|프롬프트 가이드 준수" README.ko.md
+git diff --check
+```
+
+수동 확인:
+
+- 부록 내용이 삭제되거나 상단으로 다시 올라오지 않았는지 확인한다.
+- `이 하네스가 하는 일`의 세 하위 섹션이 upstream `이 저장소가 한 일`의 의미와 문장 흐름을 최대한 유지하는지 확인한다.
+- `새 저장소에 빠르게 적용하기` heading이 재도입되지 않았는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.4]: 한국어 README upstream 하네스 설명 보존
 ```
 
 ## Stage 2 — 영어 기본 README 전환
