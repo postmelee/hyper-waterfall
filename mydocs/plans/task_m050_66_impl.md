@@ -14,6 +14,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1.3 | 한국어 README 원본 기반 재정렬 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_3.md` | 상단 흐름 유지, 하네스 설명 상향, task 절차·SKILL·cycle 보존 확인 |
 | 1.4 | 한국어 README upstream 하네스 설명 원문 보존 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_4.md` | 부록 유지, upstream `이 저장소가 한 일` 내용 상단 보존, 중복 Quick Start 제거 확인 |
 | 1.5 | 한국어 README 문서 구조 정책 복원 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_5.md` | 폴더별 규칙, 공식 문서 루트, manual/tech/_templates, GitHub 플랫폼 경계 복원 확인 |
+| 1.6 | 한국어 README draft 기반 전체 재작성 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_6.md` | 바로 설치 상단 배치, 후킹 요약에 공식 프롬프팅 가이드 정합 추가, 부록 구조 유지 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -36,13 +37,13 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 
 1. 언어 링크
 2. What: Hyper-Waterfall이 무엇인지 짧은 설명
-3. Quick Start: 적용 프롬프트 1개와 AI가 먼저 보고할 항목 3개
-4. When to Use: 적합한 경우와 과한 경우
-5. Why This Repo: 지식 자산화, 리스크 제어, 역할 분담, 컨텍스트 경량화
-6. What This Repo Provides: 템플릿, 운영 규칙, mydocs, GitHub workflow, SKILL, lifecycle, CLI
-7. What Changes: Issue, plan, Stage report, final report, PR 흐름 요약
+3. Hook Summary: 한 줄 적용, 작업 산출물 구조화, 공식 프롬프팅 가이드 정합, Multi-agent 운영
+4. Quick Install: 적용 프롬프트 1개와 AI가 먼저 보고할 항목 3개
+5. What Changes: 기존 AI 코딩 방식과 적용 후 변화
+6. Why This Repo: 지식 자산화, 리스크 제어, 역할 분담, 컨텍스트 경량화
+7. What This Repo Did: 모듈화, 프롬프팅 가이드 정합, Multi-agent 호환
 8. Workflow: 타스크 진행 절차, 핵심 SKILL 상세, 타스크 사이클, 문서 구조
-9. Generated Structure: 적용 후 대상 저장소에 생기는 핵심 파일 축약 tree
+9. Generated Structure: 적용 후 대상 저장소에 생기는 핵심 파일 tree
 10. Maintainer Details: lifecycle, update, CLI, Homebrew, plugin 관련 상세 링크와 접힘 섹션
 11. Appendix: Philosophy, Prompt Guide, Dogfooding
 12. License
@@ -309,6 +310,51 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.5]: 한국어 README 문서 구조 정책 복원
+```
+
+## Stage 1.6 — 한국어 README draft 기반 전체 재작성
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_6.md`
+
+수정:
+
+- `README.ko.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- 사용자가 작성한 `readme_draft.md`의 흐름을 기준으로 `README.ko.md`를 전체 재작성한다.
+- 맨 상단에 `이 저장소가 한 일`의 핵심을 짧게 요약한 후킹 표를 둔다.
+- 후킹 표에는 한 줄 적용, 작업 산출물 구조화, 공식 프롬프팅 가이드 정합, Multi-agent 운영을 포함한다.
+- `새 저장소에 빠르게 적용하기`는 `바로 설치`로 이름을 바꾸고 상단 후킹 요약 바로 아래에 배치한다.
+- 기존 `Hyper-Waterfall이란?`, 핵심 구조, 핵심 원칙, 역할 분담, 바이브 코딩 비교, 왜 강력한가, 살아있는 예시, 설계 원칙, 프롬프트 가이드 준수는 `부록` 아래로 묶는다.
+- 문서 구조 정책, 핵심 SKILL 상세, 타스크 사이클, 적용 후 대상 저장소 구조는 본문에 유지한다.
+
+### 검증
+
+```bash
+rg -n "바로 설치|공식 프롬프팅 가이드 정합|한 줄 적용|작업 산출물 구조화|Multi-agent 운영|이 저장소가 한 일|도입 후 작업 흐름|문서 구조|부록|프롬프트 가이드 준수" README.ko.md
+rg -n "^# |^## |^### |^#### " README.ko.md
+rg -n "각 폴더의 상세 작성 규칙|중앙 템플릿 정책|공식 문서 루트 이름|GitHub Wiki|manual 문서 중립성 정책|_templates/.*진실 원천|GitHub Issue와 Pull Request는 GitHub 플랫폼 산출물|GitHub 플랫폼 템플릿 정책" README.ko.md
+git diff --check
+```
+
+수동 확인:
+
+- `바로 설치`가 상단 후킹 요약 바로 아래에 있는지 확인한다.
+- 상단 후킹 요약에 공식 프롬프팅 가이드 정합이 포함됐는지 확인한다.
+- `새 저장소에 빠르게 적용하기`가 별도 heading으로 남지 않았는지 확인한다.
+- 부록 경계가 명확하게 유지되는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.6]: 한국어 README draft 기반 전체 재작성
 ```
 
 ## Stage 2 — 영어 기본 README 전환
