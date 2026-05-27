@@ -317,6 +317,18 @@ fallback은 자동 성공이 아니다.
 
 Stage 2에서는 manifest가 위 판단을 가능하게 하는 필드만 제공한다. 실제 `.hyper-waterfall/version.json`의 locale 저장 위치와 update workflow 연결은 #70 범위다.
 
+## Stage 3 lifecycle 연결 결과
+
+Stage 3에서는 Stage 2의 manifest 계약을 adoption/update 판단 문서에 연결했다.
+
+| 문서 | 연결한 판단 기준 |
+|---|---|
+| `docs/agent-entrypoint.md` | locale source 선택 계약의 원천을 `templates/manifest.json`으로 명시하고, 신규 적용은 adoption 문서, 기존 update는 update 문서로 연결 |
+| `docs/lifecycle/adoption.md` | 선택 locale, 기본 locale, 선택 locale source 누락, fallback 후보, locale 비대상 source, #70 선택 저장 위치 보류를 판단 결과 형식에 추가 |
+| `docs/lifecycle/update.md` | 현재 locale, 목표 release locale 지원, 기존 locale 보존, locale 전환 요청, locale별 manifest diff, #70 workflow 보류를 판단 결과 형식과 CLI 출력 계약에 추가 |
+
+Stage 3에서도 실제 locale pack 본문, locale checksum 산출, `.hyper-waterfall/version.json`의 선택 저장 위치, workflow 실행 구현은 만들지 않는다. 이 범위는 #68, #69, #70, #71에 남긴다.
+
 ## 후속 이슈 입력
 
 | 이슈 | 이 문서에서 넘기는 입력 |
