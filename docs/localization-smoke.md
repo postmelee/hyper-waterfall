@@ -115,4 +115,4 @@ Stage 3 결과다. `docs/migrations/v0.2.0-to-v0.3.0.md`에 기존 한국어-onl
 
 - Stage 2: unsupported locale, 기존 update 보존/전환, placeholder와 승인 게이트 검증 결과를 채웠다.
 - Stage 3: migration guide 연결 결과를 채웠다.
-- Stage 4: M050 종료 판단과 잔여 위험을 최종 정리한다.
+- Stage 4: M050 종료 판단과 잔여 위험을 최종 정리했다. 실제 write mode, release/tag 생성, npm publish, 배포 채널 검증은 별도 task 범위로 남긴다.

@@ -82,11 +82,11 @@ entry-level `localization` 계약:
 
 `files[].source`는 release checksum, locale 비대상 파일, locale source 누락 보고의 기준이다. `localization.enabled: true`인 entry에서 선택 locale source가 없을 때 `files[].source`를 조용히 선택 locale 대체물처럼 적용하지 않는다. 누락과 fallback 후보를 먼저 보고하고 작업지시자 승인을 받는다.
 
-`templates/mydocs/manual`과 `templates/mydocs/skills`는 locale 대상이지만 절차 의미가 바뀌면 안 되므로 `requiresSemanticReview: true`를 둔다. 번역본 작성과 의미 보존 검증은 #68, #69, #71에서 확인한다.
+`templates/mydocs/manual`과 `templates/mydocs/skills`는 locale 대상이지만 절차 의미가 바뀌면 안 되므로 `requiresSemanticReview: true`를 둔다. 번역본 작성과 의미 보존 검증은 #68, #69, #71에서 확인했다.
 
 `versionState.format.locale`은 적용 저장소에 저장할 선택 locale 기록이다. 신규 적용은 승인된 locale을 `.hyper-waterfall/version.json`의 top-level `locale`에 기록한다. 기존 update는 이 값을 읽어 보존을 기본값으로 삼고, 없는 경우 `unknown`으로 보고한다. 호환 읽기가 필요한 기존 저장소에서는 `selectedLocale`, `localization.locale`, `localization.selectedLocale` 같은 과거 후보 필드를 참고할 수 있지만, 새 기록 계약은 top-level `locale`이다.
 
-현재 manifest의 locale pack availability는 source 준비 완료 상태다. `en`과 `ko` pack source는 #68에서 채웠고, `zh-CN` pack 본문은 #69에서 채웠다. `availability.status`는 `complete`이며, locale 선택 저장 계약은 #70에서 `.hyper-waterfall/version.json`의 `locale` 필드로 확정했다. smoke 검증과 migration guide는 #71에서 이어진다.
+현재 manifest의 locale pack availability는 source 준비 완료 상태다. `en`과 `ko` pack source는 #68에서 채웠고, `zh-CN` pack 본문은 #69에서 채웠다. `availability.status`는 `complete`이며, locale 선택 저장 계약은 #70에서 `.hyper-waterfall/version.json`의 `locale` 필드로 확정했다. smoke 검증과 `v0.2.0 -> v0.3.0` migration guide는 #71에서 정리했다.
 
 ## 구조적 계약
 
@@ -155,7 +155,7 @@ locale 판단은 다음 문서가 같은 책임 경계를 공유한다.
 | `docs/lifecycle/update.md` | 현재 locale, 목표 release locale 지원, 기존 locale 보존, locale 전환 요청, locale manifest diff를 보고한다. |
 | `templates/manifest.json` | 위 판단에 필요한 기계 판독 계약과 `versionState.format.locale` 저장 계약을 제공한다. |
 
-#67은 위 구조와 판단 결과 형식을 고정했다. #68은 `en`/`ko` locale pack 본문을 작성했고, #69는 `zh-CN` locale pack 본문을 작성했다. #70은 locale 선택 저장 계약과 적용/update workflow 연결을 확정했고, smoke 검증과 migration guide는 #71에서 처리한다.
+#67은 위 구조와 판단 결과 형식을 고정했다. #68은 `en`/`ko` locale pack 본문을 작성했고, #69는 `zh-CN` locale pack 본문을 작성했다. #70은 locale 선택 저장 계약과 적용/update workflow 연결을 확정했고, #71은 smoke 검증과 migration guide를 정리했다.
 
 ## 번역 동기화
 
@@ -193,4 +193,4 @@ locale별 문서는 같은 절차 의미를 유지해야 한다.
 
 Stage 3에서 #65-#71 이슈 본문과 M050 milestone 설명을 확인한 결과, 후속 이슈의 목표와 수용 기준은 위 정책과 충돌하지 않는다. #66은 사용자 진입 문서, #67은 구조와 manifest, #68-#69는 locale pack 본문, #70은 적용/update 선택 절차, #71은 smoke와 migration으로 분리되어 있다.
 
-#69 Stage 4에서 `templates/manifest.json`, adoption/update lifecycle 문서, 이 정책 문서의 정합성을 확인한 결과, 초기 locale은 `en`, `ko`, `zh-CN`으로 일치한다. 세 locale source는 manifest의 localized entry 15개에 모두 존재한다. manifest의 locale pack `availability.status`는 `complete`이며, #70에서 선택 locale 저장 계약을 `.hyper-waterfall/version.json`의 `locale` 필드로 확정했다. smoke 검증과 migration guide는 #71에서 이어진다.
+#71 Stage 4에서 `templates/manifest.json`, adoption/update lifecycle 문서, smoke 문서, migration guide, README 언어 링크의 정합성을 확인한 결과, 초기 locale은 `en`, `ko`, `zh-CN`으로 일치한다. 세 locale source는 manifest의 localized entry 15개에 모두 존재한다. manifest의 locale pack `availability.status`는 `complete`이며, #70에서 선택 locale 저장 계약을 `.hyper-waterfall/version.json`의 `locale` 필드로 확정했다. #71에서 dry-run 기반 smoke 검증과 `v0.2.0 -> v0.3.0` migration guide까지 정리했다.
