@@ -15,7 +15,7 @@ Release 前确认：
 - `templates/manifest.json` 中的 `frameworkVersion`、`plannedTag` 和 `baselineTag` 与 release 意图一致。
 - checksums 可以在 release packaging 期间从 `pending-release` 最终确定。
 - `docs/migrations/v{from}-to-v{to}.md` 包含 added files、modified files、manual review、conflict risk 和 verification criteria。
-- 已采用仓库中的 `.hyper-waterfall/version.json` 可以更新到目标版本。
+- 已采用仓库中的 `.hyper-waterfall/version.json` 可以记录或保留目标版本和所选 locale。
 
 ## PR 类型分离
 
@@ -56,7 +56,7 @@ grep -nE 'target version|added files|modified files|manual review|conflict risk|
 - 目标 GitHub Release/tag 中的 `templates/manifest.json`
 - 从当前版本到目标版本的 `docs/migrations/v{from}-to-v{to}.md`
 - 目标仓库中的用户修改 diff
-- 如果 manifest 提供 `localization`，还包括 current locale record、target release locale support、locale manifest diff 和 locale preserve/switch judgment
+- 如果 manifest 提供 `localization`，还包括 `.hyper-waterfall/version.json` 中的 current locale record、requested locale 或 switch request、target release locale support、locale manifest diff 和 locale preserve/switch judgment
 
 先使用 `docs/lifecycle/update.md` 报告判断。批准前不要把 manifest diff 中的文件应用到目标仓库。
 
@@ -64,7 +64,7 @@ grep -nE 'target version|added files|modified files|manual review|conflict risk|
 
 Hyper-Waterfall version update PR 使用与普通 task PR 相同的 branch flow。输入和 PR body 不同。
 
-- Input: existing update judgment result, manifest diff, locale manifest diff, migration guide
+- Input: existing update judgment result, manifest diff, locale manifest diff, locale preserve/switch judgment, migration guide
 - Body: 将 `docs/lifecycle/update_pr.md` 反映到 `.github/pull_request_template.md`
 - Tracking: GitHub Issue, task plan, implementation plan, stage reports, final report
 

@@ -33,8 +33,8 @@ plugin은 새로운 방법론 본문이나 release 기준을 만들지 않는다
 | 영역 | 담당 | 책임 경계 |
 |---|---|---|
 | 작업 승인 | 작업지시자와 하이퍼-워터폴 절차 | plugin과 hook은 승인 여부를 자동 판정하지 않는다. |
-| 신규 적용 판단 | `docs/agent-entrypoint.md`, `docs/lifecycle/adoption.md`, `templates/manifest.json`, npm CLI dry-run | plugin은 판단 결과 형식을 안내하거나 CLI 실행을 돕는다. |
-| 기존 업데이트 판단 | `docs/lifecycle/update.md`, `.hyper-waterfall/version.json`, 목표 release manifest, migration guide | plugin은 update 후보를 직접 적용하지 않고 판단 결과와 승인 요청을 노출한다. |
+| 신규 적용 판단 | `docs/agent-entrypoint.md`, `docs/lifecycle/adoption.md`, `templates/manifest.json`, npm CLI dry-run | plugin은 선택 locale, fallback 후보, `.hyper-waterfall/version.json`의 `locale` 기록 계획을 포함한 판단 결과 형식을 안내하거나 CLI 실행을 돕는다. |
+| 기존 업데이트 판단 | `docs/lifecycle/update.md`, `.hyper-waterfall/version.json`, 목표 release manifest, migration guide | plugin은 현재 locale, 요청 locale 또는 전환 요청, locale 보존/전환 판단을 포함한 update 후보를 직접 적용하지 않고 판단 결과와 승인 요청을 노출한다. |
 | 정형 task 절차 | `templates/mydocs/skills`의 core Skill | plugin은 Skill을 발견하고 호출하기 쉽게 한다. Skill 본문을 갈라서 관리하지 않는다. |
 | 운영 규칙 설명 | `AGENTS.md`, `CLAUDE.md`, `templates/mydocs/manual` | plugin은 요약 안내와 링크를 제공할 수 있지만, 규칙의 새 원천이 아니다. |
 | CLI 실행 | npm CLI | plugin이 npm CLI를 호출할 경우 CLI version과 release 기준을 대조하고 read-only/dry-run 기본값을 유지한다. |
@@ -78,8 +78,8 @@ plugin bundle에 어떤 파일을 넣을지는 "포함", "참조", "fallback"을
 
 | 상황 | 권장 처리 | 이유 |
 |---|---|---|
-| 사용자가 신규 적용을 요청 | plugin이 `docs/agent-entrypoint.md`와 `docs/lifecycle/adoption.md`의 신규 적용 판단 결과 형식을 안내하고, 필요 시 npm CLI `init --dry-run`을 제안한다. | 승인 전 파일 변경 금지와 manifest 기준을 유지한다. |
-| 사용자가 기존 적용 저장소 update를 요청 | `docs/lifecycle/update.md`, `.hyper-waterfall/version.json`, 목표 release manifest, migration guide 확인을 안내한다. | update protocol을 plugin 전용으로 재정의하지 않는다. |
+| 사용자가 신규 적용을 요청 | plugin이 `docs/agent-entrypoint.md`와 `docs/lifecycle/adoption.md`의 신규 적용 판단 결과 형식을 안내하고, 필요 시 npm CLI `init --locale <locale> --dry-run`을 제안한다. | 승인 전 파일 변경 금지와 manifest 기준을 유지한다. |
+| 사용자가 기존 적용 저장소 update를 요청 | `docs/lifecycle/update.md`, `.hyper-waterfall/version.json`의 `locale`, 목표 release manifest, migration guide 확인을 안내하고, 전환 검토가 필요하면 `update --locale <locale> --dry-run`을 제안한다. | update protocol을 plugin 전용으로 재정의하지 않는다. |
 | core Skill을 plugin UI에서 노출 | wrapper 또는 snapshot에 원본 경로와 release 기준을 명시한다. | Skill 별도 진실 원천 생성을 피한다. |
 | canonical 문서를 읽을 수 없음 | "저장소의 AGENTS/CLAUDE/manual과 release manifest를 먼저 확인하라"는 최소 fallback만 제공한다. | fallback이 절차 본문을 대체하지 않게 한다. |
 | npm CLI 실행 실패 | 실패 사유와 수동 진입 경로를 보여주고 파일 적용을 중단한다. | CLI 실패 상태에서 무승인 적용을 막는다. |

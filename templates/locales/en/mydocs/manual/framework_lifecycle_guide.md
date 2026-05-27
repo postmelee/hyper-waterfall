@@ -32,6 +32,7 @@ Lifecycle judgment results are reports before file changes. For both new adoptio
 - Target release/tag
 - Current version for existing updates
 - Current locale for existing updates
+- Requested locale or locale switch request
 - Target release locale support
 - Manifest diff
 - Locale manifest diff
@@ -69,7 +70,7 @@ Hyper-Waterfall version update PRs use the same approval gates, task plans, stag
 
 README should contain only short entry guidance users can copy, such as a new adoption prompt or confirmed update prompt/CLI command. Detailed lifecycle judgment criteria belong in `docs/agent-entrypoint.md`, `docs/lifecycle/`, and `docs/migrations/`.
 
-Even when the CLI prints `update` or `doctor` results, the result is a pre-change judgment report. CLI output must include current version, current locale, target release/tag, target release locale support, migration guide, manifest diff, locale manifest diff, automatically applicable items, items requiring manual review, conflicts, deferred items, verification, and approval request. Do not apply files to the target repository before approval.
+Even when the CLI prints `init`, `update`, or `doctor` results, the result is a pre-change judgment report. CLI output must include selected locale, the `.hyper-waterfall/version.json` `locale` record plan, current version, current locale, requested locale or locale switch request, target release/tag, target release locale support, migration guide, manifest diff, locale manifest diff, automatically applicable items, items requiring manual review, conflicts, deferred items, verification, and approval request. Do not apply files to the target repository before approval.
 
 ## Related Documents
 

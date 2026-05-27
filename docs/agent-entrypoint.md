@@ -31,8 +31,9 @@
 - 다국어 적용 정책은 [`docs/localization.md`](localization.md)를 따른다.
 - `templates/manifest.json`의 top-level `localization`과 각 `files[].localization`은 신규 적용과 기존 update에서 사용할 locale source 선택 계약이다.
 - 신규 적용의 선택 locale, 기본 locale, fallback 후보, 누락 보고는 [`docs/lifecycle/adoption.md`](lifecycle/adoption.md)의 판단 결과 형식을 따른다.
-- 기존 적용 저장소 update의 현재 locale, 기존 locale 보존, locale 전환 요청, locale별 manifest diff 판단은 [`docs/lifecycle/update.md`](lifecycle/update.md)를 따른다.
-- 이 진입점은 locale 선택 저장 위치나 workflow 실행 방식을 정의하지 않는다. 해당 workflow 구현은 후속 #70 범위다.
+- 신규 적용에서 승인된 선택 locale은 `.hyper-waterfall/version.json`의 top-level `locale` 필드에 기록한다.
+- 기존 적용 저장소 update의 현재 locale, 기존 locale 보존, 명시적 locale 전환 요청, locale별 manifest diff 판단은 [`docs/lifecycle/update.md`](lifecycle/update.md)를 따른다.
+- CLI를 사용하는 경우 신규 적용은 `hyper-waterfall init --locale <locale> --dry-run`, 기존 update의 locale 전환 검토는 `hyper-waterfall update --locale <locale> --dry-run`으로 판단 결과만 출력한다. 승인 전에는 파일을 적용하지 않는다.
 
 ## 공통 진행 순서
 

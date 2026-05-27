@@ -11,7 +11,7 @@
 - **GitHub platform template**：`.github/ISSUE_TEMPLATE/` 和 `.github/pull_request_template.md`，定义 GitHub Issues 和 Pull Requests 的输入/body 格式。
 - **Official documentation root**：目标项目面向用户、贡献者、外部集成者或分发渠道的官方文档位置。示例包括 `docs/`、`specs/`、`site/`、`website/`、`adr/`、`book/` 和 GitHub Wiki。Hyper-Waterfall 不固定这个名称。
 - **Release manifest**：`templates/manifest.json`，定义 release files、target paths、update policies 和 checksum status。
-- **Applied version record**：`.hyper-waterfall/version.json`，记录应用了 Hyper-Waterfall 的仓库使用的 framework version。
+- **Applied version/locale record**：`.hyper-waterfall/version.json`，记录应用了 Hyper-Waterfall 的仓库使用的 framework version 和 selected locale。
 - **Actual artifact document**：为特定日期、Issue、PR 或研究主题编写的文档，例如 `orders/20260506.md` 或 `plans/task_m010_3.md`。
 - **Internal task**：由 GitHub Issue 跟踪，并用任务计划书、实施计划书、Stage reports 和最终报告记录的仓库内部工作。
 - **External contributor PR**：针对外部贡献者提交的 Pull Request 的 review 工作。它使用与内部 task 不同的文件夹和流程。
@@ -169,7 +169,7 @@ GitHub Issues 和 Pull Requests 是 GitHub 平台产出物，不是 `mydocs/` ar
 Hyper-Waterfall 的规范分发单位是 GitHub Release/tag。Prompts 只是启动 installation 或 update 的用户界面。实际文件应用基于 release `templates/manifest.json`、version record 和 migration guide。
 
 - Manifest source of truth: `templates/manifest.json`
-- Applied repository version record: `.hyper-waterfall/version.json`
+- Applied repository version/locale record: `.hyper-waterfall/version.json`
 - Migration guide location: `docs/migrations/`
 
 Lifecycle judgment details 由以下文档覆盖：
@@ -196,7 +196,7 @@ Update policy 含义：
 - `preserve`：缺失时创建，但没有明确批准不得更改现有内容。
 - `symlink`：验证 `.agents/skills -> ../mydocs/skills` 和 `.claude/skills -> ../mydocs/skills` 等链接。
 
-`.hyper-waterfall/version.json` 不是 work artifact。不要把它放在 `mydocs/` 下。它记录目标仓库安装了哪个 Hyper-Waterfall release，以及最后何时更新。Lifecycle judgment 读取此文件，并将当前版本与目标 release manifest 和 migration guide 比较。
+`.hyper-waterfall/version.json` 不是 work artifact。不要把它放在 `mydocs/` 下。它记录目标仓库安装了哪个 Hyper-Waterfall release 和 locale，以及最后何时更新。Lifecycle judgment 读取此文件，并将当前版本、当前 locale、目标 release manifest 和 migration guide 比较。
 
 New adoption 使用 strict manifest mode。允许的 targets 是 manifest `files[]` targets、`.hyper-waterfall/version.json` 和 manifest-defined symlinks。Adoption 期间不要创建或修改 manifest 外文件。Target-project-specific artifacts，例如 product code、product docs、architecture docs、roadmap、API contracts、examples 和 schemas，是 deferred task candidates，不是 adoption side effects。
 
