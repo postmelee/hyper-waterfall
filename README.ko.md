@@ -13,7 +13,7 @@ AI가 바로 파일을 고치게 두지 않고, 작업 목적과 범위, 검증 
 그 결과 모든 작업은 문서화되고, 결정과 검증 결과는 저장소에 남습니다. 채팅 컨텍스트가 사라져도 작업 의도와 진행 상태를 다시 추적할 수 있고, 다른 AI 세션이나 다른 작업자가 같은 맥락에서 이어받을 수 있습니다.
 
 > [!IMPORTANT]
-> Hyper-Waterfall은 AI가 마법처럼 못 하던 일을 하게 해주는 도구가 아닙니다. AI에게 "그냥 만들어줘"라고 맡기는 대신, 계획·승인·구현·검증·보고·PR까지 이어지는 작업 레일을 저장소 안에 설치합니다.
+> Hyper-Waterfall은 AI가 마법처럼 못 하던 일을 하게 해주는 도구가 아닙니다. AI에게 "그냥 만들어줘"라고 맡기는 대신, 계획·승인·구현·검증·보고·PR까지 이어지는 작업 레일을 저장소 안에 설치합니다. **AI에게 코드를 맡기되, 결정권은 넘기지 않습니다.**
 
 이 하네스를 적용하면 저장소에는 다음 운영 레일이 설치됩니다.
 
@@ -43,6 +43,18 @@ AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용
 
 도입 후에는 AI가 Hyper-Waterfall 방식을 지키며 작업을 진행합니다. 처음 시작하는 사용자는 AI에게 `"이거 구현해줘"`와 같은 자연어 명령을 내리면 됩니다.
 
+## 언제 쓰면 좋은가
+
+Hyper-Waterfall은 AI가 빠르게 코드를 바꾸는 상황에서 사람이 통제권과 추적 가능성을 잃지 않게 만드는 데 초점이 있습니다.
+
+| 잘 맞는 경우 | 과한 경우 |
+|---|---|
+| AI 코딩 도구에 실제 소스 수정을 맡기지만, 변경 범위와 품질 기준은 사람이 승인하고 싶을 때 | 한두 줄 수정처럼 계획서와 보고서 비용이 변경 자체보다 큰 작업 |
+| 여러 날, 여러 세션, 여러 에이전트에 걸쳐 작업을 이어가야 할 때 | 버리는 프로토타입처럼 추적 가능성보다 즉시 실험이 중요한 작업 |
+| PR 리뷰에서 무엇을 왜 바꿨고 어떻게 검증했는지가 바로 보여야 할 때 | GitHub Issue, branch, PR 흐름을 쓰지 않는 저장소 |
+| 큰 작업을 Issue, branch, Stage 단위로 나눠 방향 오류를 일찍 잡고 싶을 때 | 사람이 결과를 검토하지 않고 AI 출력만 그대로 수락하려는 작업 |
+| 새 기여자나 새 AI 세션이 저장소 문서만 읽고 같은 맥락에서 다시 시작해야 할 때 | 개인 실험처럼 인수인계나 재개 가능성이 중요하지 않은 작업 |
+
 ## 적용하면 작업 방식이 이렇게 바뀝니다
 
 | 기존 AI 코딩 방식 | Hyper-Waterfall 적용 후 |
@@ -56,17 +68,14 @@ AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용
 
 Hyper-Waterfall의 핵심은 AI에게 결정권을 넘기는 것이 아니라, AI의 실행 속도를 사람의 승인·검토·문서화 규율 안에 넣는 것입니다. 사람은 방향과 품질을 결정하고, AI는 분석·구현·검증·문서화를 빠르게 수행합니다.
 
-> [!IMPORTANT]
-> **AI에게 코드를 맡기되, 결정권은 넘기지 않습니다.**
-
-## 왜 이 저장소를 써야 하는가
+## 왜 Hyper-Waterfall인가
 
 AI는 두 가지 구조적 약점을 가집니다.
 
 - 세션이 길어지거나 도구가 바뀌면 맥락을 잃습니다.
 - 방향이 틀렸는데도 자신 있게 계속 실행할 수 있습니다.
 
-본 저장소는 이 약점을 작업 제약으로 바꾸고, 다음 네 축에서 사용자가 즉시 체감할 수 있는 이점을 만들어냅니다.
+Hyper-Waterfall은 이 약점을 작업 제약으로 바꾸고, 다음 네 축에서 사용자가 즉시 체감할 수 있는 이점을 만들어냅니다.
 
 ### 1. 모든 작업이 문서가 되고, 문서가 다음 작업의 프롬프트가 된다 — 지식 자산화
 
@@ -260,17 +269,16 @@ mydocs/
 └── pr/                                 외부 PR 검토 기록
 ```
 
-폴더별 역할은 [문서 구조 매뉴얼의 폴더 역할](templates/mydocs/manual/document_structure_guide.md#폴더-역할-엄격-준수)에서 확인하고, 각 폴더의 상세 작성 규칙은 해당 폴더의 `README.md`를 기준으로 확인합니다. 문서 파일명은 [문서 파일명 규칙](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙)을 따릅니다. 산출물 출력 형식은 [중앙 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책)에 정리되어 있습니다.
+폴더별 상세 작성 규칙은 각 폴더의 `README.md`와 [문서 구조 매뉴얼](templates/mydocs/manual/document_structure_guide.md)을 기준으로 확인합니다. README에서는 아래 경계만 빠르게 확인하면 됩니다.
 
-`mydocs/`는 작업 기억, 운영 매뉴얼, 조사 근거를 보관하는 구조이며 대상 프로젝트의 공식 제품 문서 루트가 아닙니다. 공식 문서 루트 이름은 Hyper-Waterfall이 고정하지 않습니다. 대상 프로젝트가 `docs/`, `specs/`, `site/`, `website/`, `adr/`, GitHub Wiki 등을 선택할 수 있지만, 제품/사용자/기여자/API/아키텍처/로드맵 문서를 생성·이동·수정하는 task는 수행계획서의 문서 위치 판단에서 대상 독자, 공식화 수준, 선택 경로, 대안 경로, 선택 이유를 먼저 승인받습니다.
-
-`manual/` 문서는 반복 적용되는 운영 기준과 절차를 담고, 특정 이슈·PR·릴리즈 검증·장애 기록은 해당 산출물 문서로 분리합니다. 세부 경계는 [manual 문서 중립성 정책](templates/mydocs/manual/document_structure_guide.md#manual-문서-중립성-정책)을 따릅니다.
-
-`tech/` 문서는 기술 조사, 대안 비교, 설계 판단 근거, 아직 공식화되지 않은 초안을 담습니다. 사용자나 외부 통합자가 따라야 하는 공식 계약 문서로 승격하려면 별도 task에서 공식 문서 루트를 선택하고 승인받습니다.
-
-`_templates/`는 실제 task 산출물이 아니라 출력 형식의 진실 원천입니다. 각 Skill은 산출물을 만들 때 먼저 `mydocs/_templates/`의 해당 템플릿을 참조하고, 템플릿을 읽을 수 없는 상황에서만 Skill 안의 최소 섹션 요약을 fallback으로 사용합니다.
-
-GitHub Issue와 Pull Request는 GitHub 플랫폼 산출물입니다. 이슈 본문은 `.github/ISSUE_TEMPLATE/task.yml`, PR 본문은 `.github/pull_request_template.md`를 기준으로 구조화하고, 저장소 안에 남는 작업 문서는 `mydocs/_templates/`를 기준으로 작성합니다. 세부 경계는 [GitHub 플랫폼 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#github-플랫폼-템플릿-정책)을 따릅니다.
+| 영역 | README에서 알아야 할 기준 | 상세 기준 |
+|---|---|---|
+| 공통 작성 기준 | 폴더별 역할, 문서 파일명, 산출물 출력 형식은 중앙 규칙을 따릅니다. | [폴더 역할](templates/mydocs/manual/document_structure_guide.md#폴더-역할-엄격-준수), [문서 파일명 규칙](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙), [중앙 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책) |
+| `mydocs/` | 작업 기억, 운영 매뉴얼, 조사 근거를 보관하는 구조입니다. 대상 프로젝트의 공식 제품 문서 루트가 아닙니다. | 공식 문서 루트는 Hyper-Waterfall이 고정하지 않습니다. `docs/`, `specs/`, `site/`, `website/`, `adr/`, GitHub Wiki 등을 선택할 수 있지만, 제품/사용자/기여자/API/아키텍처/로드맵 문서 task는 수행계획서에서 대상 독자, 공식화 수준, 선택 경로, 대안 경로, 선택 이유를 먼저 승인받습니다. |
+| `manual/` | 반복 적용되는 운영 기준과 절차를 둡니다. | 특정 이슈·PR·릴리즈 검증·장애 기록은 해당 산출물 문서로 분리합니다. 세부 경계는 [manual 문서 중립성 정책](templates/mydocs/manual/document_structure_guide.md#manual-문서-중립성-정책)을 따릅니다. |
+| `tech/` | 기술 조사, 대안 비교, 설계 판단 근거, 아직 공식화되지 않은 초안을 둡니다. | 외부 사용자가 따라야 하는 공식 계약 문서로 승격하려면 별도 task에서 공식 문서 루트를 선택하고 승인받습니다. |
+| `_templates/` | 실제 task 산출물이 아니라 출력 형식의 진실 원천입니다. | 각 Skill은 산출물을 만들 때 먼저 `mydocs/_templates/`의 해당 템플릿을 참조하고, 템플릿을 읽을 수 없을 때만 Skill 안의 최소 섹션 요약을 fallback으로 사용합니다. |
+| GitHub Issue / PR | GitHub 플랫폼 산출물입니다. | 이슈 본문은 `.github/ISSUE_TEMPLATE/task.yml`, PR 본문은 `.github/pull_request_template.md`, 저장소 안의 작업 문서는 `mydocs/_templates/`를 기준으로 작성합니다. 세부 경계는 [GitHub 플랫폼 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#github-플랫폼-템플릿-정책)을 따릅니다. |
 
 ## 적용 후 대상 저장소 구조
 
@@ -306,9 +314,20 @@ your-repo/
         └── archives/
 ```
 
-적용 저장소의 `.agents/skills`와 `.claude/skills` 심볼릭 링크 구조는 [Agent Skills 위치 정책](templates/mydocs/manual/document_structure_guide.md#agent-skills-위치-정책)을 따릅니다. `.hyper-waterfall/version.json`과 manifest 기준 업데이트 흐름은 [배포 manifest와 버전 기록 정책](templates/mydocs/manual/document_structure_guide.md#배포-manifest와-버전-기록-정책), [`docs/lifecycle/update.md`](docs/lifecycle/update.md), [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md)에 정리되어 있습니다.
+적용 후 생성되는 주요 항목의 기준은 아래와 같습니다.
 
-프레임워크의 문서 템플릿, GitHub Issue Form, SKILL 진실 원천은 각각 `templates/mydocs/_templates/`, `templates/.github/ISSUE_TEMPLATE/task.yml`, `templates/mydocs/skills/`입니다. 적용 저장소에서는 `.agents/skills`와 `.claude/skills` 심볼릭 링크가 같은 `mydocs/skills` 본문을 가리킵니다.
+| 항목 | 역할 | 기준 문서 |
+|---|---|---|
+| `AGENTS.md` | 운영 규칙 단일 진실 원천 | [`templates/AGENTS.md`](templates/AGENTS.md) |
+| `CLAUDE.md` | Claude Code용 진입 파일. `AGENTS.md`를 참조 | [`templates/CLAUDE.md`](templates/CLAUDE.md) |
+| `.hyper-waterfall/version.json` | 적용된 Hyper-Waterfall version 기록 | [배포 manifest와 버전 기록 정책](templates/mydocs/manual/document_structure_guide.md#배포-manifest와-버전-기록-정책), [`docs/lifecycle/update.md`](docs/lifecycle/update.md), [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md) |
+| `.github/ISSUE_TEMPLATE/task.yml` | GitHub Issue Form | [GitHub 플랫폼 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#github-플랫폼-템플릿-정책) |
+| `.github/pull_request_template.md` | Pull Request 본문 구조 | [내부 task PR 작성 가이드](templates/mydocs/manual/internal_pr_guide.md) |
+| `.agents/skills` | Codex가 인식하는 SKILL 경로 | [Agent Skills 위치 정책](templates/mydocs/manual/document_structure_guide.md#agent-skills-위치-정책) |
+| `.claude/skills` | Claude Code가 인식하는 SKILL 경로 | [Agent Skills 위치 정책](templates/mydocs/manual/document_structure_guide.md#agent-skills-위치-정책) |
+| `mydocs/_templates/` | 계획서·보고서 등 산출물 출력 형식 | [중앙 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책) |
+| `mydocs/manual/` | 반복 운영 기준과 절차 | [문서 구조 매뉴얼](templates/mydocs/manual/document_structure_guide.md) |
+| `mydocs/skills/` | Codex/Claude Code 공용 SKILL 진실 원천 | [Agent Skills 위치 정책](templates/mydocs/manual/document_structure_guide.md#agent-skills-위치-정책) |
 
 ## 유지보수자 세부 정보
 

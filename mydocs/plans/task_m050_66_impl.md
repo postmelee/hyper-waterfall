@@ -16,6 +16,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1.5 | 한국어 README 문서 구조 정책 복원 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_5.md` | 폴더별 규칙, 공식 문서 루트, manual/tech/_templates, GitHub 플랫폼 경계 복원 확인 |
 | 1.6 | 한국어 README draft 기반 전체 재작성 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_6.md` | 바로 설치 상단 배치, 후킹 요약에 공식 프롬프팅 가이드 정합 추가, 부록 구조 유지 확인 |
 | 1.7 | 한국어 README 상단 후킹 관점 보정 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_7.md` | 상단 후킹을 사용자 적용 관점으로 보정, 구현 확장 제목 변경 확인 |
+| 1.8 | 한국어 README 적용 적합성·표 구조 보강 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_8.md` | When to Use 복원, 문서 구조/적용 후 구조 표 전환, 모델 중립 표현 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -40,14 +41,15 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 2. What: Hyper-Waterfall이 무엇인지 짧은 설명
 3. Hook Summary: 한 줄 적용, 승인 게이트, 작업 기억 외부화, 공식 프롬프팅 가이드 정합, Multi-agent 운영
 4. Quick Install: 적용 프롬프트 1개와 AI가 먼저 보고할 항목 3개
-5. What Changes: 기존 AI 코딩 방식과 적용 후 변화
-6. Why This Repo: 지식 자산화, 리스크 제어, 역할 분담, 컨텍스트 경량화
-7. Implementation Extension: 방법론을 하네스로 만든 방식, 모듈화, 프롬프팅 가이드 정합, Multi-agent 호환
-8. Workflow: 타스크 진행 절차, 핵심 SKILL 상세, 타스크 사이클, 문서 구조
-9. Generated Structure: 적용 후 대상 저장소에 생기는 핵심 파일 tree
-10. Maintainer Details: lifecycle, update, CLI, Homebrew, plugin 관련 상세 링크와 접힘 섹션
-11. Appendix: Philosophy, Prompt Guide, Dogfooding
-12. License
+5. When to Use: 잘 맞는 경우와 과한 경우
+6. What Changes: 기존 AI 코딩 방식과 적용 후 변화
+7. Why Hyper-Waterfall: 지식 자산화, 리스크 제어, 역할 분담, 컨텍스트 경량화
+8. Implementation Extension: 방법론을 하네스로 만든 방식, 모듈화, 프롬프팅 가이드 정합, Multi-agent 호환
+9. Workflow: 타스크 진행 절차, 핵심 SKILL 상세, 타스크 사이클, 문서 구조
+10. Generated Structure: 적용 후 대상 저장소에 생기는 핵심 파일 tree
+11. Maintainer Details: lifecycle, update, CLI, Homebrew, plugin 관련 상세 링크와 접힘 섹션
+12. Appendix: Philosophy, Prompt Guide, Dogfooding
+13. License
 
 위 목록은 정보 구조 이름이다. 실제 heading은 각 README의 언어에 맞게 자연스럽게 번역하되, 세 문서가 같은 순서와 의미를 유지해야 한다.
 
@@ -398,6 +400,52 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.7]: 한국어 README 상단 후킹 관점 보정
+```
+
+## Stage 1.8 — 한국어 README 적용 적합성·표 구조 보강
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_8.md`
+
+수정:
+
+- `README.ko.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- 이전 버전의 `언제 쓰면 좋은가` 섹션을 복원하고, `잘 맞는 경우`와 `과한 경우`를 표로 정리한다.
+- 상단의 중복 중요 문구를 하나의 `[!IMPORTANT]` alert로 합친다.
+- `왜 이 저장소를 써야 하는가` heading을 `왜 Hyper-Waterfall인가`로 변경한다.
+- `적용하면 바로 달라지는 것` 10개 리스트는 유지한다.
+- `문서 구조`의 장문 정책 문단을 경계 규칙 표로 바꾼다.
+- `적용 후 대상 저장소 구조` tree 아래의 정책 설명을 주요 항목 기준 표로 바꾼다.
+- `# 부록`이 아닌 `## 부록` outline을 유지하고, 모델명 중심 표현이 남지 않았는지 확인한다.
+
+### 검증
+
+```bash
+rg -n "언제 쓰면 좋은가|잘 맞는 경우|과한 경우|왜 Hyper-Waterfall인가|^## 부록" README.ko.md
+rg -n "README에서는 아래 경계|^\\| 영역 \\| README에서 알아야 할 기준 \\| 상세 기준 \\||적용 후 생성되는 주요 항목|^\\| 항목 \\| 역할 \\| 기준 문서 \\|" README.ko.md
+rg -n "OpenAI GPT|Claude Opus|GPT-5|Opus 4|^# 부록|왜 이 저장소를 써야 하는가|Why Hyper-waterfall" README.ko.md
+git diff --check
+```
+
+수동 확인:
+
+- `언제 쓰면 좋은가`가 `바로 설치` 다음에 위치해 적용 판단 흐름을 돕는지 확인한다.
+- 문서 구조 정책 표가 원문 경계 의미를 잃지 않는지 확인한다.
+- 적용 후 대상 저장소 구조의 tree와 기준 표가 중복되지 않고 서로 보완하는지 확인한다.
+- `적용하면 바로 달라지는 것` 10개 리스트가 유지됐는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.8]: 한국어 README 적용 적합성·표 구조 보강
 ```
 
 ## Stage 2 — 영어 기본 README 전환
