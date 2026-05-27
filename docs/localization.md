@@ -86,7 +86,7 @@ entry-level `localization` 계약:
 
 `versionState.format.locale`은 적용 저장소에 저장할 선택 locale 기록이다. 신규 적용은 승인된 locale을 `.hyper-waterfall/version.json`의 top-level `locale`에 기록한다. 기존 update는 이 값을 읽어 보존을 기본값으로 삼고, 없는 경우 `unknown`으로 보고한다. 호환 읽기가 필요한 기존 저장소에서는 `selectedLocale`, `localization.locale`, `localization.selectedLocale` 같은 과거 후보 필드를 참고할 수 있지만, 새 기록 계약은 top-level `locale`이다.
 
-현재 manifest의 locale pack availability는 source 준비 완료 상태다. `en`과 `ko` pack source는 #68에서 채웠고, `zh-CN` pack 본문은 #69에서 채웠다. `availability.status`는 `complete`이며, locale 선택 저장 계약은 #70에서 `.hyper-waterfall/version.json`의 `locale` 필드로 확정한다. smoke 검증과 migration guide는 #71에서 이어진다.
+현재 manifest의 locale pack availability는 source 준비 완료 상태다. `en`과 `ko` pack source는 #68에서 채웠고, `zh-CN` pack 본문은 #69에서 채웠다. `availability.status`는 `complete`이며, locale 선택 저장 계약은 #70에서 `.hyper-waterfall/version.json`의 `locale` 필드로 확정했다. smoke 검증과 migration guide는 #71에서 이어진다.
 
 ## 구조적 계약
 
@@ -115,7 +115,7 @@ entry-level `localization` 계약:
 Writing language: use the selected Hyper-Waterfall locale for this repository.
 ```
 
-중국어 간체 기준 표현은 #69에서 확정하되, 의미는 "이 저장소에 선택된 Hyper-Waterfall locale을 따른다"여야 한다. 이 문구는 실제 파일 배치와 locale pack 구조가 정해지는 #67, #68, #69에서 각 문서에 반영한다.
+중국어 간체 기준 표현은 #69에서 확정했으며, 의미는 "이 저장소에 선택된 Hyper-Waterfall locale을 따른다"여야 한다. 이 문구는 실제 파일 배치와 locale pack 구조가 정해진 #67, #68, #69에서 각 문서에 반영했다.
 
 ## fallback
 
@@ -155,7 +155,7 @@ locale 판단은 다음 문서가 같은 책임 경계를 공유한다.
 | `docs/lifecycle/update.md` | 현재 locale, 목표 release locale 지원, 기존 locale 보존, locale 전환 요청, locale manifest diff를 보고한다. |
 | `templates/manifest.json` | 위 판단에 필요한 기계 판독 계약과 `versionState.format.locale` 저장 계약을 제공한다. |
 
-#67은 위 구조와 판단 결과 형식을 고정한다. #68은 `en`/`ko` locale pack 본문을 작성하고, #69는 `zh-CN` locale pack 본문을 작성한다. #70은 locale 선택 저장 계약과 적용/update workflow 연결을 확정하고, smoke 검증과 migration guide는 #71에서 처리한다.
+#67은 위 구조와 판단 결과 형식을 고정했다. #68은 `en`/`ko` locale pack 본문을 작성했고, #69는 `zh-CN` locale pack 본문을 작성했다. #70은 locale 선택 저장 계약과 적용/update workflow 연결을 확정했고, smoke 검증과 migration guide는 #71에서 처리한다.
 
 ## 번역 동기화
 
@@ -177,7 +177,7 @@ locale별 문서는 같은 절차 의미를 유지해야 한다.
 | #70 | 신규 적용과 기존 update workflow에 locale 선택과 보존 절차를 연결한다. |
 | #71 | locale별 smoke 검증과 기존 한국어-only 적용 저장소 migration guide를 작성한다. |
 
-#65는 이 정책을 고정하는 작업이며, 실제 README 번역, locale pack 파일 배치, manifest 구현, workflow 구현은 후속 이슈 범위다. 이 중 manifest 계약과 lifecycle 판단 형식은 #67에서 정렬하고, locale pack 본문은 #68과 #69에서 처리했으며, locale 선택 저장 계약과 workflow 연결은 #70에서 처리한다.
+#65는 이 정책을 고정하는 작업이며, 실제 README 번역, locale pack 파일 배치, manifest 구현, workflow 구현은 후속 이슈 범위다. 이 중 manifest 계약과 lifecycle 판단 형식은 #67에서 정렬했고, locale pack 본문은 #68과 #69에서 처리했으며, locale 선택 저장 계약과 workflow 연결은 #70에서 처리했다.
 
 ## 수용 기준 대응
 
@@ -186,11 +186,11 @@ locale별 문서는 같은 절차 의미를 유지해야 한다.
 | #65 수용 기준 | 정책 기준 | 후속 구현 범위 |
 |---|---|---|
 | 기본 언어와 초기 지원 locale 정의 | 기본 언어는 `en`, 기존 한국어 보존 locale은 `ko`, 중국어 간체는 `zh-CN`으로 둔다. | README 진입 문서는 #66, locale pack 배치는 #67-#69에서 반영한다. |
-| 한국어 고정 정책 대체 방향 | `작성 언어: 한국어`와 `모든 문서는 한국어 작성`은 선택한 Hyper-Waterfall locale을 따르는 정책으로 대체한다. | 실제 template/Skill/manual 문구 교체는 #67-#70에서 수행한다. |
+| 한국어 고정 정책 대체 방향 | `작성 언어: 한국어`와 `모든 문서는 한국어 작성`은 선택한 Hyper-Waterfall locale을 따르는 정책으로 대체한다. | 실제 template/Skill/manual 문구 교체는 #67-#70에서 수행했다. |
 | placeholder와 canonical 용어 보존 | placeholder, branch, filename pattern, command, code block은 구조적 계약으로 보존한다. | locale pack 작성과 smoke 검증은 #68, #69, #71에서 확인한다. |
-| fallback 기준 | 누락 locale은 조용히 영어로 대체하지 않고 적용/update 보고에 명시한다. 판단 기준은 `en` canonical 문서다. | fallback 처리 위치와 사용자-facing 메시지는 #67, #70에서 확정한다. |
+| fallback 기준 | 누락 locale은 조용히 영어로 대체하지 않고 적용/update 보고에 명시한다. 판단 기준은 `en` canonical 문서다. | fallback 처리 위치와 사용자-facing 메시지는 #67, #70에서 확정했다. |
 | 후속 이슈 경계 | #66-#71의 책임을 분리하고 #65가 README 번역, locale pack, workflow 구현을 대체하지 않는다. | 각 이슈의 수행계획서에서 이 문서를 선행 기준으로 참조한다. |
 
 Stage 3에서 #65-#71 이슈 본문과 M050 milestone 설명을 확인한 결과, 후속 이슈의 목표와 수용 기준은 위 정책과 충돌하지 않는다. #66은 사용자 진입 문서, #67은 구조와 manifest, #68-#69는 locale pack 본문, #70은 적용/update 선택 절차, #71은 smoke와 migration으로 분리되어 있다.
 
-#69 Stage 4에서 `templates/manifest.json`, adoption/update lifecycle 문서, 이 정책 문서의 정합성을 확인한 결과, 초기 locale은 `en`, `ko`, `zh-CN`으로 일치한다. 세 locale source는 manifest의 localized entry 15개에 모두 존재한다. manifest의 locale pack `availability.status`는 `complete`이며, #70에서 선택 locale 저장 계약을 `.hyper-waterfall/version.json`의 `locale` 필드로 확정한다. smoke 검증과 migration guide는 #71에서 이어진다.
+#69 Stage 4에서 `templates/manifest.json`, adoption/update lifecycle 문서, 이 정책 문서의 정합성을 확인한 결과, 초기 locale은 `en`, `ko`, `zh-CN`으로 일치한다. 세 locale source는 manifest의 localized entry 15개에 모두 존재한다. manifest의 locale pack `availability.status`는 `complete`이며, #70에서 선택 locale 저장 계약을 `.hyper-waterfall/version.json`의 `locale` 필드로 확정했다. smoke 검증과 migration guide는 #71에서 이어진다.
