@@ -22,8 +22,8 @@
     "missingLocalePolicy": "report-and-fallback-candidate",
     "preserveSelectedLocaleOnUpdate": true,
     "availability": {
-      "status": "planned",
-      "note": "Locale pack content exists for en and ko as of #68. zh-CN remains planned for #69; missing locale sources must be reported until all declared packs are added."
+      "status": "complete",
+      "note": "Locale pack source exists for en, ko, and zh-CN as of #69. Locale workflow connection and smoke/migration coverage remain follow-up work in #70 and #71."
     }
   },
   "forbiddenTargetsOnAdoption": [

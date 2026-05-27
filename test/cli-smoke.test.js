@@ -39,11 +39,12 @@ test("manifest locale sources match current M050 pack status", () => {
     return file.localization && file.localization.enabled === true;
   });
 
-  assert.equal(manifest.localization.availability.status, "planned");
-  assert.match(manifest.localization.availability.note, /en and ko/);
+  assert.equal(manifest.localization.availability.status, "complete");
+  assert.match(manifest.localization.availability.note, /en, ko, and zh-CN/);
   assert.match(manifest.localization.availability.note, /zh-CN/);
+  assert.match(manifest.localization.availability.note, /#70 and #71/);
 
-  for (const locale of ["en", "ko"]) {
+  for (const locale of manifest.localization.supportedLocales) {
     const missing = localizedFiles.filter((file) => {
       const source = file.localization.sourcePattern.replace("{locale}", locale);
       return !fs.existsSync(path.join(root, source));
@@ -51,13 +52,6 @@ test("manifest locale sources match current M050 pack status", () => {
 
     assert.deepEqual(missing, [], `${locale} locale sources should exist`);
   }
-
-  const zhCnMissing = localizedFiles.filter((file) => {
-    const source = file.localization.sourcePattern.replace("{locale}", "zh-CN");
-    return !fs.existsSync(path.join(root, source));
-  });
-
-  assert.equal(zhCnMissing.length, localizedFiles.length);
 });
 
 test("command help is available", () => {

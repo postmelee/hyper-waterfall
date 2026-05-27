@@ -1,0 +1,113 @@
+name: Hyper-Waterfall Task
+description: 创建一个可跟踪的 task，可作为下一次 AI 工作提示使用。
+title: "任务: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        使用此模板创建 Hyper-Waterfall task Issue。
+        Issue 正文会成为下一次 AI 工作会话的第一个提示，因此请清楚写明意图和约束。
+
+  - type: textarea
+    id: background
+    attributes:
+      label: 背景
+      description: 说明为什么需要这项工作、当前状态有什么问题，以及触发它的上下文。
+      placeholder: |
+        示例：
+        - 当前结构限制
+        - 这项工作来自前一个 PR、Issue 或文档的原因
+        - 用户请求或外部要求
+    validations:
+      required: true
+
+  - type: textarea
+    id: goals
+    attributes:
+      label: 目标
+      description: 列出这项工作完成后必须成立的结果。
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: included_scope
+    attributes:
+      label: 范围 - 包含
+      description: 列出此 task 必须覆盖的文件、功能、文档和验证范围。
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: excluded_scope
+    attributes:
+      label: 范围 - 不包含
+      description: 列出此 task 明确不覆盖的项目。
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: 验收标准
+      description: 写出可观察的标准，用来判断此 task 是否完成。
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: 验证标准
+      description: 列出必须执行的测试、grep 检查、手动检查或 review 标准。
+      placeholder: |
+        - `git diff --check`
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 参考资料
+      description: 列出相关 Issue、PR、文档、官方指南或外部资源。
+      placeholder: |
+        - #...
+        - https://...
+    validations:
+      required: false
+
+  - type: textarea
+    id: metadata
+    attributes:
+      label: Milestone 和 Label 候选
+      description: 列出 milestone 和 label 候选，并说明为什么适合。最终选择以 task-register 的实时查询结果为准。
+      placeholder: |
+        - Milestone candidate:
+        - Label candidates:
+        - Selection reason:
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: 确认事项
+      description: 确认这些项目以减少重复工作和范围冲突。
+      options:
+        - label: 我已确认此 task 不会重复现有 open Issue。
+          required: true
+        - label: 我已明确列出此 task 排除的内容。
+          required: true
+        - label: 我理解在工作开始前必须完成任务计划书审批流程。
+          required: true
