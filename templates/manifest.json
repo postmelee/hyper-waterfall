@@ -23,7 +23,7 @@
     "preserveSelectedLocaleOnUpdate": true,
     "availability": {
       "status": "planned",
-      "note": "Locale pack content is planned for follow-up M050 tasks; missing locale sources must be reported until packs are added."
+      "note": "Locale pack content exists for en and ko as of #68. zh-CN remains planned for #69; missing locale sources must be reported until all declared packs are added."
     }
   },
   "forbiddenTargetsOnAdoption": [

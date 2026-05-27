@@ -34,6 +34,32 @@ test("version prints package version", () => {
   assert.equal(result.stdout.trim(), packageJson.version);
 });
 
+test("manifest locale sources match current M050 pack status", () => {
+  const localizedFiles = manifest.files.filter((file) => {
+    return file.localization && file.localization.enabled === true;
+  });
+
+  assert.equal(manifest.localization.availability.status, "planned");
+  assert.match(manifest.localization.availability.note, /en and ko/);
+  assert.match(manifest.localization.availability.note, /zh-CN/);
+
+  for (const locale of ["en", "ko"]) {
+    const missing = localizedFiles.filter((file) => {
+      const source = file.localization.sourcePattern.replace("{locale}", locale);
+      return !fs.existsSync(path.join(root, source));
+    });
+
+    assert.deepEqual(missing, [], `${locale} locale sources should exist`);
+  }
+
+  const zhCnMissing = localizedFiles.filter((file) => {
+    const source = file.localization.sourcePattern.replace("{locale}", "zh-CN");
+    return !fs.existsSync(path.join(root, source));
+  });
+
+  assert.equal(zhCnMissing.length, localizedFiles.length);
+});
+
 test("command help is available", () => {
   for (const command of ["init", "update", "doctor"]) {
     const result = runCli([command, "--help"]);
