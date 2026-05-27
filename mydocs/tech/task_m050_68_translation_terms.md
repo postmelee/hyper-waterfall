@@ -198,6 +198,12 @@ manual과 Skill은 Stage 1 판단대로 전체 directory를 포함한다. 번역
 - 기존 운영 맥락, 승인 조건, branch/commit 규칙, Skill 호출 조건은 유지한다.
 - 영어 pack과 같은 구조적 계약을 요구하는지 주요 template별로 대조한다.
 
+### Stage 3 실행 메모
+
+Stage 3에서는 기존 `templates/` 한국어 원문을 `templates/locales/ko` 아래에 43개 source 파일로 보존한다. `templates/locales/ko`는 root 한국어 원문의 보존 pack이므로 본문 구조, 절차 순서, 명령, placeholder, branch/file pattern을 유지한다.
+
+단, `작성 언어: 한국어`, `모든 문서는 한국어 작성`, `모든 문서는 한국어로 작성한다.` 같은 고정 언어 정책은 M050 정책에 맞춰 "이 저장소에 선택된 Hyper-Waterfall locale"을 따르는 표현으로 정렬한다.
+
 ## 후속 Stage 체크리스트
 
 | Stage | 확인 항목 |
