@@ -168,3 +168,20 @@ Stage 2에서 핵심 적용 template과 산출물 template 24개를 `templates/l
 - `{...}` 안의 template placeholder 문구는 번역하지 않고 `en` pack과 같은 token 집합을 유지한다.
 - `Issue`, `PR`, `Stage`, `Skill`, `Task plan`, `Implementation plan`, `Final report`처럼 GitHub/문서 workflow 식별자로 쓰이는 표현은 필요한 곳에서 원문을 유지한다.
 - Issue Form YAML은 중국어 간체 label/description을 사용하되 `id`, `type`, `validations.required` 같은 GitHub form 구조는 유지한다.
+
+## Stage 3 적용 결과
+
+Stage 3에서 `requiresSemanticReview: true` 대상인 manual과 Skill 19개를 `templates/locales/zh-CN/**` 아래에 작성했다.
+
+| 구분 | 파일 수 | 비고 |
+|---|---:|---|
+| manual | 11 | 운영 규칙, 문서 구조, Git/PR/lifecycle 절차 |
+| Skill | 8 | `README.md` 1개와 Skill 본문 7개 |
+| 합계 | 19 | Stage 3 계획과 일치 |
+
+Semantic review 확인 항목:
+
+- `document_structure_guide.md`: official documentation root와 `mydocs/` 경계, strict manifest mode, GitHub platform template 경계를 보존했다.
+- `task_workflow_guide.md`: Issue 기반 task 흐름, Stage 승인 게이트, Stage source/report 묶음 commit, final report/PR 순서를 보존했다.
+- `git_workflow_guide.md`: `local/task{N}` -> `publish/task{N}` -> `{BASE_BRANCH}` 흐름, squash merge 기본 금지, merge 후 cleanup 조건을 보존했다.
+- Skill 본문: `name` 값과 Skill directory identifier를 원문 그대로 유지했고, 승인 전 금지 사항과 `Never Do` 조건을 약화하지 않았다.
