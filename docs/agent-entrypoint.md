@@ -25,6 +25,12 @@
 | lifecycle 판단을 일반 task 흐름으로 전환 | [`templates/mydocs/manual/framework_lifecycle_guide.md`](../templates/mydocs/manual/framework_lifecycle_guide.md) |
 | release/tag와 update protocol 확인 | [`templates/mydocs/manual/release_update_protocol.md`](../templates/mydocs/manual/release_update_protocol.md) |
 
+## 언어와 locale 참고
+
+- 사용자-facing README 진입 문서는 `README.md`(en), `README.ko.md`(ko), `README.zh-CN.md`(zh-CN)를 기준으로 한다.
+- 다국어 적용 정책은 [`docs/localization.md`](localization.md)를 따른다.
+- 이 진입점은 locale 선택 저장 위치나 update 시 기존 locale 보존 절차를 정의하지 않는다. 해당 workflow 구현은 후속 #70 범위다.
+
 ## 공통 진행 순서
 
 1. 신규 적용인지 기존 업데이트인지 판단한다.
