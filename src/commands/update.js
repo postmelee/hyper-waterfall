@@ -2,9 +2,12 @@ const path = require("node:path");
 const {
   classifyUpdateCandidates,
   describeCounts,
+  formatLocaleSourceItems,
   formatPathItems,
+  getManifestSourceRoot,
   getTargetRelease,
   loadManifest,
+  summarizeLocalization,
   summarizeManifest
 } = require("../lib/manifest");
 const { parseOptions, renderCommandHelp, renderLifecycleReport } = require("../lib/output");
@@ -65,6 +68,26 @@ function getMigrationGuide(repoPath, fromTag, toTag) {
   };
 }
 
+function getStoredLocale(versionState) {
+  if (!versionState.exists || versionState.error || !versionState.data) {
+    return {
+      reason: "version state has no readable locale field",
+      value: "unknown"
+    };
+  }
+
+  const data = versionState.data;
+  const value = data.locale
+    || data.selectedLocale
+    || (data.localization && (data.localization.locale || data.localization.selectedLocale))
+    || "unknown";
+
+  return {
+    reason: value === "unknown" ? "locale field is not recorded yet (#70)" : "read from version state",
+    value
+  };
+}
+
 function run(args, io) {
   const parsed = parseOptions(args, options);
 
@@ -87,6 +110,12 @@ function run(args, io) {
     const versionState = readVersionState(
       loaded.repoPath,
       loaded.manifest.versionState.targetPath
+    );
+    const storedLocale = getStoredLocale(versionState);
+    const localization = summarizeLocalization(
+      getManifestSourceRoot(loaded.manifestPath),
+      loaded.manifest,
+      storedLocale.value === "unknown" ? undefined : storedLocale.value
     );
     const fromVersion = parsed.values["--from"]
       || (versionState.data && (versionState.data.releaseTag || versionState.data.frameworkVersion))
@@ -116,11 +145,31 @@ function run(args, io) {
           ]
         },
         {
+          title: "현재 locale",
+          entries: [
+            ["locale", storedLocale.value],
+            ["reason", storedLocale.reason],
+            ["storage", "locale 선택 저장 위치는 #70 범위"]
+          ]
+        },
+        {
           title: "목표 release/tag",
           entries: [
             ["to", targetRelease],
             ["frameworkVersion", loaded.manifest.frameworkVersion]
           ]
+        },
+        {
+          title: "목표 release locale 지원",
+          entries: localization.exists
+            ? [
+                ["supportedLocales", localization.supportedLocales.join(", ") || "none"],
+                ["defaultLocale", localization.defaultLocale],
+                ["fallbackLocale", localization.fallbackLocale],
+                ["availability", localization.availabilityStatus],
+                ["preserveSelectedLocaleOnUpdate", localization.preserveSelectedLocaleOnUpdate ? "true" : "false"]
+              ]
+            : [["status", "manifest localization contract not found"]]
         },
         {
           title: "migration guide",
@@ -137,6 +186,32 @@ function run(args, io) {
             ["updatePolicy", describeCounts(summaryResult.byPolicy)],
             ["targetStatus", describeCounts(summaryResult.targetStatuses)]
           ]
+        },
+        {
+          title: "locale manifest diff",
+          entries: localization.exists
+            ? [
+                ["selectedLocale", localization.selectedLocale],
+                ["selectedSupported", localization.selectedSupported ? "yes" : "no"],
+                ["selectedSourceStatus", describeCounts(localization.selectedSourceStatuses)],
+                ["fallbackSourceStatus", describeCounts(localization.fallbackSourceStatuses)]
+              ]
+            : [["status", "manifest localization contract not found"]],
+          items: localization.exists
+            ? formatLocaleSourceItems(localization.items.filter((item) => item.selectedStatus !== "exists"))
+            : ["없음"]
+        },
+        {
+          title: "locale 보존/전환 판단",
+          items: localization.exists
+            ? [
+                localization.preserveSelectedLocaleOnUpdate
+                  ? "기존 locale 기록이 있으면 보존을 기본값으로 판단한다."
+                  : "manifest가 기존 locale 보존 기본값을 선언하지 않는다.",
+                "locale 전환 요청은 update 부수 효과가 아니라 별도 승인 항목으로 분리한다.",
+                "실제 locale 선택 저장 위치와 전환 workflow 실행은 #70 범위다."
+              ]
+            : ["manifest localization contract not found"]
         },
         {
           title: "자동 적용 가능",
@@ -160,6 +235,7 @@ function run(args, io) {
         {
           title: "승인 요청",
           items: [
+            "현재 locale, 목표 release locale 지원, locale source 누락과 fallback 후보를 검토한다.",
             "Hyper-Waterfall 버전 업데이트 PR 후보를 만들지 검토한다.",
             "자동 적용 가능 항목도 checksum 확정 전에는 적용하지 않는다.",
             "수동 확인 필요와 conflict 항목은 일반 task workflow에서 리뷰한다."

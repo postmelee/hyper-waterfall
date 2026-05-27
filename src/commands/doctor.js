@@ -2,7 +2,9 @@ const fs = require("node:fs");
 const path = require("node:path");
 const {
   describeCounts,
+  getManifestSourceRoot,
   loadManifest,
+  summarizeLocalization,
   summarizeManifest
 } = require("../lib/manifest");
 const { parseOptions, renderCommandHelp, renderDiagnosticReport } = require("../lib/output");
@@ -187,6 +189,36 @@ function buildPlaceholderDiagnostics(diagnostics, repoPath) {
   }
 }
 
+function buildLocalizationDiagnostics(diagnostics, localization) {
+  if (!localization.exists) {
+    addDiagnostic(diagnostics, "INFO", "localization", "manifest has no localization contract");
+    return;
+  }
+
+  addDiagnostic(
+    diagnostics,
+    "OK",
+    "localization",
+    `default=${localization.defaultLocale}; supported=${localization.supportedLocales.join(", ") || "none"}; fallback=${localization.fallbackLocale}; availability=${localization.availabilityStatus}`
+  );
+
+  if (localization.missingFallbackItems.length > 0) {
+    addDiagnostic(
+      diagnostics,
+      "WARN",
+      "locale-source",
+      `${localization.missingFallbackItems.length}/${localization.enabledCount} fallback locale sources are missing; policy=${localization.missingLocalePolicy}`
+    );
+  } else {
+    addDiagnostic(
+      diagnostics,
+      "OK",
+      "locale-source",
+      `fallback locale sources exist for ${localization.enabledCount} localized entries`
+    );
+  }
+}
+
 function run(args, io) {
   const parsed = parseOptions(args, options);
 
@@ -205,6 +237,10 @@ function run(args, io) {
     const manifestPath = parsed.values["--manifest"];
     const loaded = loadManifest({ repoPath, manifestPath });
     const summary = summarizeManifest(loaded.repoPath, loaded.manifest);
+    const localization = summarizeLocalization(
+      getManifestSourceRoot(loaded.manifestPath),
+      loaded.manifest
+    );
     const versionState = readVersionState(
       loaded.repoPath,
       loaded.manifest.versionState.targetPath
@@ -219,6 +255,7 @@ function run(args, io) {
     );
     buildVersionDiagnostics(diagnostics, loaded.manifest, versionState);
     buildManifestPathDiagnostics(diagnostics, summary);
+    buildLocalizationDiagnostics(diagnostics, localization);
     buildSymlinkDiagnostics(diagnostics, summary);
     buildPlaceholderDiagnostics(diagnostics, loaded.repoPath);
     addDiagnostic(
@@ -236,7 +273,9 @@ function run(args, io) {
         ["frameworkVersion", loaded.manifest.frameworkVersion],
         ["files", summary.total],
         ["sourceStatus", describeCounts(summary.sourceStatuses)],
-        ["targetStatus", describeCounts(summary.targetStatuses)]
+        ["targetStatus", describeCounts(summary.targetStatuses)],
+        ["localization", localization.exists ? `enabled=${localization.enabledCount}, disabled=${localization.disabledCount}` : "none"],
+        ["localeAvailability", localization.exists ? localization.availabilityStatus : "none"]
       ],
       diagnostics
     })}\n`);

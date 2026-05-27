@@ -8,8 +8,12 @@
 
 - 현재 version
 - 목표 release/tag
+- 현재 locale
+- 목표 release locale 지원
 - migration guide
 - manifest diff
+- locale manifest diff
+- locale 보존/전환 판단
 - 자동 적용 가능 항목
 - 수동 확인 필요 항목
 - conflict 항목
@@ -34,21 +38,23 @@ Hyper-Waterfall 버전 업데이트 PR 본문은 기존 `.github/pull_request_te
 
 | PR 본문 섹션 | 포함해야 할 내용 |
 |---|---|
-| `요약` | 현재 version, 목표 release/tag, migration guide, 리뷰 포인트 |
-| `변경 내역` | manifest diff 요약과 변경 묶음. 추가, 수정, 삭제, symlink, preserve 항목을 구분 |
+| `요약` | 현재 version, 현재 locale, 목표 release/tag, 목표 release locale 지원, migration guide, 리뷰 포인트 |
+| `변경 내역` | manifest diff와 locale manifest diff 요약. 추가, 수정, 삭제, symlink, preserve, fallback 후보 항목을 구분 |
 | `영향 영역` | `AGENTS.md`, `CLAUDE.md`, `.github/`, `mydocs/manual/`, `mydocs/skills/`, `.hyper-waterfall/version.json` 등 영향을 받는 영역 |
-| `검증` | manifest 파싱, version 기록 확인, migration guide 필수 섹션 확인, 사용자 수정 충돌 확인 |
-| `검증 한계` | 자동 판별하지 못한 사용자 수정, 수동 리뷰가 필요한 파일, 원격 CI 미수행 사유 |
-| `남은 리스크` | conflict, 보류 항목, 적용 저장소 maintainer가 직접 결정해야 하는 항목 |
+| `검증` | manifest 파싱, version 기록 확인, 목표 release locale 지원 확인, migration guide 필수 섹션 확인, 사용자 수정 충돌 확인 |
+| `검증 한계` | 자동 판별하지 못한 사용자 수정, 수동 리뷰가 필요한 파일, locale 선택 저장 위치 미확정, 원격 CI 미수행 사유 |
+| `남은 리스크` | conflict, fallback 후보, 보류 항목, 적용 저장소 maintainer가 직접 결정해야 하는 항목 |
 
 ## 변경 분류 기준
 
-- 자동 적용 가능: 이전 manifest checksum과 대상 파일이 일치하고 update policy상 자동 반영이 허용되는 항목
-- 수동 확인 필요: update policy가 `merge`, `manual`, `preserve`이거나 프로젝트별 운영 규칙이 섞일 수 있는 항목
-- conflict: 대상 저장소 수정과 목표 release 변경이 같은 파일 또는 같은 링크 경로에서 충돌할 가능성이 있는 항목
+- 자동 적용 가능: 이전 manifest checksum과 대상 파일이 일치하고 update policy상 자동 반영이 허용되며, 기존 선택 locale source가 목표 release에 존재하고 fallback이 필요 없는 항목
+- 수동 확인 필요: update policy가 `merge`, `manual`, `preserve`이거나 프로젝트별 운영 규칙이 섞일 수 있는 항목, 선택 locale source 누락으로 fallback 후보를 제시해야 하는 항목, locale 전환 요청이 있는 항목
+- conflict: 대상 저장소 수정과 목표 release 변경이 같은 파일 또는 같은 링크 경로에서 충돌할 가능성이 있는 항목, 선택 locale과 fallback locale source가 섞여 의미 drift 위험이 있는 항목
 - 보류: 이번 PR에서 다루지 않고 별도 이슈, 별도 PR, 또는 maintainer 수동 작업으로 넘기는 항목
 
 사용자 수정 파일은 자동 적용 가능 항목에 넣지 않는다. PR 본문에는 해당 파일을 수동 확인 필요 또는 conflict로 남기고, 검증 한계와 남은 리스크에 판단 근거를 적는다.
+
+`localization.preserveSelectedLocaleOnUpdate`가 `true`이면 PR은 기존 locale 보존을 기본값으로 설명한다. locale 전환은 update 부수 효과가 아니라 작업지시자의 명시 승인 항목으로 분리해 적는다.
 
 ## 관련 문서
 

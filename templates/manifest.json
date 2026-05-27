@@ -9,6 +9,23 @@
   },
   "applicationMode": "adoption-only",
   "strictManifest": true,
+  "localization": {
+    "defaultLocale": "en",
+    "supportedLocales": [
+      "en",
+      "ko",
+      "zh-CN"
+    ],
+    "fallbackLocale": "en",
+    "localePackRoot": "templates/locales",
+    "sourcePatternToken": "{locale}",
+    "missingLocalePolicy": "report-and-fallback-candidate",
+    "preserveSelectedLocaleOnUpdate": true,
+    "availability": {
+      "status": "planned",
+      "note": "Locale pack content is planned for follow-up M050 tasks; missing locale sources must be reported until packs are added."
+    }
+  },
   "forbiddenTargetsOnAdoption": [
     "docs/**",
     "src/**",
@@ -64,6 +81,11 @@
       "kind": "file",
       "role": "agent-runtime-rules",
       "updatePolicy": "merge",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/AGENTS.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -76,6 +98,11 @@
       "kind": "file",
       "role": "claude-entrypoint",
       "updatePolicy": "merge",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/CLAUDE.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -88,6 +115,11 @@
       "kind": "file",
       "role": "github-issue-form",
       "updatePolicy": "merge",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/.github/ISSUE_TEMPLATE/task.yml",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -100,6 +132,11 @@
       "kind": "file",
       "role": "github-pr-template",
       "updatePolicy": "merge",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/.github/pull_request_template.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -112,6 +149,11 @@
       "kind": "directory",
       "role": "document-output-templates",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/_templates",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "pending-release",
@@ -124,6 +166,12 @@
       "kind": "directory",
       "role": "manuals",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/manual",
+        "fallbackLocale": "en",
+        "requiresSemanticReview": true
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "pending-release",
@@ -136,6 +184,12 @@
       "kind": "directory",
       "role": "agent-skills",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/skills",
+        "fallbackLocale": "en",
+        "requiresSemanticReview": true
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "pending-release",
@@ -148,6 +202,9 @@
       "kind": "file",
       "role": "artifact-folder-placeholder",
       "updatePolicy": "preserve",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -160,6 +217,9 @@
       "kind": "file",
       "role": "artifact-folder-placeholder",
       "updatePolicy": "preserve",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -172,6 +232,9 @@
       "kind": "file",
       "role": "artifact-folder-placeholder",
       "updatePolicy": "preserve",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -184,6 +247,9 @@
       "kind": "file",
       "role": "artifact-folder-placeholder",
       "updatePolicy": "preserve",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -196,6 +262,9 @@
       "kind": "file",
       "role": "artifact-folder-placeholder",
       "updatePolicy": "preserve",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -208,6 +277,9 @@
       "kind": "file",
       "role": "artifact-folder-placeholder",
       "updatePolicy": "preserve",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -220,6 +292,9 @@
       "kind": "file",
       "role": "artifact-folder-placeholder",
       "updatePolicy": "preserve",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -232,6 +307,9 @@
       "kind": "file",
       "role": "artifact-folder-placeholder",
       "updatePolicy": "preserve",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -244,6 +322,11 @@
       "kind": "file",
       "role": "artifact-folder-guide",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/orders/README.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -256,6 +339,11 @@
       "kind": "file",
       "role": "artifact-folder-guide",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/plans/README.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -268,6 +356,11 @@
       "kind": "file",
       "role": "artifact-folder-guide",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/working/README.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -280,6 +373,11 @@
       "kind": "file",
       "role": "artifact-folder-guide",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/report/README.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -292,6 +390,11 @@
       "kind": "file",
       "role": "artifact-folder-guide",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/feedback/README.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -304,6 +407,11 @@
       "kind": "file",
       "role": "artifact-folder-guide",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/tech/README.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -316,6 +424,11 @@
       "kind": "file",
       "role": "artifact-folder-guide",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/troubleshootings/README.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -328,6 +441,11 @@
       "kind": "file",
       "role": "artifact-folder-guide",
       "updatePolicy": "overwrite",
+      "localization": {
+        "enabled": true,
+        "sourcePattern": "templates/locales/{locale}/mydocs/pr/README.md",
+        "fallbackLocale": "en"
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "ready",
@@ -340,6 +458,9 @@
       "kind": "symlink",
       "role": "codex-skill-discovery",
       "updatePolicy": "symlink",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "not-applicable",
@@ -352,6 +473,9 @@
       "kind": "symlink",
       "role": "claude-skill-discovery",
       "updatePolicy": "symlink",
+      "localization": {
+        "enabled": false
+      },
       "checksum": {
         "algorithm": "sha256",
         "status": "not-applicable",
