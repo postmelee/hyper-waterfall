@@ -18,6 +18,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1.7 | 한국어 README 상단 후킹 관점 보정 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_7.md` | 상단 후킹을 사용자 적용 관점으로 보정, 구현 확장 제목 변경 확인 |
 | 1.8 | 한국어 README 적용 적합성·표 구조 보강 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_8.md` | When to Use 복원, 문서 구조/적용 후 구조 표 전환, 모델 중립 표현 확인 |
 | 1.9 | 업스트림 README 상단 후킹·요약 표 반영 | `README.md`, `mydocs/working/task_m050_66_stage1_9.md` | 최신 `origin/main` 기준 상단 블록만 변경, `## 바로 설치` 이하 유지 확인 |
+| 1.10 | 업스트림 README 핵심 섹션 순서 조정 | `README.md`, `mydocs/working/task_m050_66_stage1_10.md` | 최신 `origin/main` 기준 제목/본문 유지, `Hyper-Waterfall의 강점` 위치만 이동 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -490,6 +491,48 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.9]: 업스트림 README 상단 후킹 요약 보강
+```
+
+## Stage 1.10 — 업스트림 README 핵심 섹션 순서 조정
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_10.md`
+
+수정:
+
+- `README.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- `README.md`를 최신 `origin/main` 기준으로 맞춘다.
+- `Hyper-Waterfall의 강점` 제목과 본문은 변경하지 않는다.
+- `Hyper-Waterfall의 강점` 섹션을 `적용하면 바로 달라지는 것` 뒤, `도입 후 작업 흐름` 앞으로 이동한다.
+- `언제 쓰면 좋은가`, `기존 AI 코딩 방식과 비교`, `적용하면 바로 달라지는 것` 섹션의 제목과 본문은 변경하지 않는다.
+
+### 검증
+
+```bash
+rg -n "^## (Hyper-Waterfall의 강점|언제 쓰면 좋은가|기존 AI 코딩 방식과 비교|적용하면 바로 달라지는 것|도입 후 작업 흐름)" README.md
+git diff --stat origin/main -- README.md
+git diff origin/main -- README.md
+git diff --check
+```
+
+수동 확인:
+
+- `README.md`의 관련 섹션 순서가 `언제 쓰면 좋은가 -> 기존 AI 코딩 방식과 비교 -> 적용하면 바로 달라지는 것 -> Hyper-Waterfall의 강점 -> 도입 후 작업 흐름`인지 확인한다.
+- `Hyper-Waterfall의 강점` 제목과 본문이 변경 없이 이동만 됐는지 확인한다.
+- 최신 업스트림 기준에서 다른 섹션 내용이 변경되지 않았는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.10]: 업스트림 README 핵심 섹션 순서 조정
 ```
 
 ## Stage 2 — 영어 기본 README 전환
