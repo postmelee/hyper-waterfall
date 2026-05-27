@@ -13,7 +13,7 @@
 - 신규 적용의 기본 locale은 `templates/manifest.json`의 `localization.defaultLocale`을 따른다.
 - 작업지시자가 언어 또는 locale을 명시하면 `localization.supportedLocales`와 각 entry의 `files[].localization.sourcePattern` 존재 여부를 파일 변경 전에 확인한다.
 - 선택 locale source가 누락되면 조용히 성공 처리하지 않고, manifest의 `localization.missingLocalePolicy`와 entry별 `fallbackLocale` 기준으로 fallback 후보와 누락 항목을 보고한다.
-- 실제 locale 선택 저장 위치와 적용 workflow 실행 구현은 후속 #70 범위다.
+- 승인된 선택 locale은 `.hyper-waterfall/version.json`의 top-level `locale` 필드에 기록한다.
 
 ## 신규 적용 절차
 
@@ -29,7 +29,7 @@
 10. 승인된 source 기준으로 `templates/mydocs/` 또는 locale pack의 대응 directory 복사
 11. `.agents/skills -> ../mydocs/skills` 심볼릭 링크 생성
 12. `.claude/skills -> ../mydocs/skills` 심볼릭 링크 생성
-13. `.hyper-waterfall/version.json` 생성
+13. `.hyper-waterfall/version.json` 생성. `frameworkVersion`, `releaseTag`, `locale`, `installedAt`, `updatedAt`을 기록한다.
 14. placeholder 치환
 15. 대상 프로젝트 고유 규칙은 `AGENTS.md`의 지정 섹션에만 추가
 16. `git diff`로 변경 확인 후 작업지시자에게 보고
@@ -68,8 +68,8 @@
 - manifest 외 보류 후보: 신규 적용 중 만들지 않을 대상 프로젝트 고유 산출물과 별도 task 분리 필요성
 - 공식 문서 루트 보류: `docs/`, `specs/`, `site/`, `website/`, `adr/` 등 후보를 확정하지 않고 별도 task에서 문서 위치 판단이 필요하다는 점
 - 기존 파일 충돌 가능성: 대상 저장소에 이미 존재하는 파일, 사용자 수정 가능 파일, 덮어쓰기 금지 항목
-- `.hyper-waterfall/version.json` 생성 계획: 기록할 version, release, appliedAt, source 정보
-- locale 저장 보류: 실제 locale 선택 저장 위치와 workflow 실행 연결은 #70 범위이며, 이번 판단 결과에서는 선택/누락/fallback 후보만 보고한다는 점
+- `.hyper-waterfall/version.json` 생성 계획: 기록할 version, release, selected locale, source, installedAt, updatedAt 정보
+- locale 저장 계획: 승인된 선택 locale을 `.hyper-waterfall/version.json`의 top-level `locale` 필드에 기록한다는 점
 - placeholder 체크리스트: `{REPO_SLUG}`, `{REPO_NAME}`, `{BASE_BRANCH}`, `{RELEASE_BRANCH}`, `{PR_TEMPLATE_PATH}` 등 치환 대상과 보류 대상
 - 작업지시자 승인 요청: 즉시 적용할 항목, 보류할 항목, 별도 이슈로 분리할 항목
 

@@ -23,7 +23,7 @@
     "preserveSelectedLocaleOnUpdate": true,
     "availability": {
       "status": "complete",
-      "note": "Locale pack source exists for en, ko, and zh-CN as of #69. Locale workflow connection and smoke/migration coverage remain follow-up work in #70 and #71."
+      "note": "Locale pack source exists for en, ko, and zh-CN as of #69. Selected locale is recorded in .hyper-waterfall/version.json locale; #70 and #71 cover workflow connection and smoke/migration coverage respectively."
     }
   },
   "forbiddenTargetsOnAdoption": [
@@ -42,6 +42,7 @@
       "frameworkVersion": "0.2.0",
       "source": "github-release",
       "releaseTag": "v0.2.0",
+      "locale": "selected Hyper-Waterfall locale, for example en",
       "installedAt": "ISO-8601 timestamp",
       "updatedAt": "ISO-8601 timestamp"
     },
