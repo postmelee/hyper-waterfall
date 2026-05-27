@@ -15,6 +15,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1.4 | 한국어 README upstream 하네스 설명 원문 보존 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_4.md` | 부록 유지, upstream `이 저장소가 한 일` 내용 상단 보존, 중복 Quick Start 제거 확인 |
 | 1.5 | 한국어 README 문서 구조 정책 복원 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_5.md` | 폴더별 규칙, 공식 문서 루트, manual/tech/_templates, GitHub 플랫폼 경계 복원 확인 |
 | 1.6 | 한국어 README draft 기반 전체 재작성 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_6.md` | 바로 설치 상단 배치, 후킹 요약에 공식 프롬프팅 가이드 정합 추가, 부록 구조 유지 확인 |
+| 1.7 | 한국어 README 상단 후킹 관점 보정 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_7.md` | 상단 후킹을 사용자 적용 관점으로 보정, 구현 확장 제목 변경 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -37,11 +38,11 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 
 1. 언어 링크
 2. What: Hyper-Waterfall이 무엇인지 짧은 설명
-3. Hook Summary: 한 줄 적용, 작업 산출물 구조화, 공식 프롬프팅 가이드 정합, Multi-agent 운영
+3. Hook Summary: 한 줄 적용, 승인 게이트, 작업 기억 외부화, 공식 프롬프팅 가이드 정합, Multi-agent 운영
 4. Quick Install: 적용 프롬프트 1개와 AI가 먼저 보고할 항목 3개
 5. What Changes: 기존 AI 코딩 방식과 적용 후 변화
 6. Why This Repo: 지식 자산화, 리스크 제어, 역할 분담, 컨텍스트 경량화
-7. What This Repo Did: 모듈화, 프롬프팅 가이드 정합, Multi-agent 호환
+7. Implementation Extension: 방법론을 하네스로 만든 방식, 모듈화, 프롬프팅 가이드 정합, Multi-agent 호환
 8. Workflow: 타스크 진행 절차, 핵심 SKILL 상세, 타스크 사이클, 문서 구조
 9. Generated Structure: 적용 후 대상 저장소에 생기는 핵심 파일 tree
 10. Maintainer Details: lifecycle, update, CLI, Homebrew, plugin 관련 상세 링크와 접힘 섹션
@@ -355,6 +356,48 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.6]: 한국어 README draft 기반 전체 재작성
+```
+
+## Stage 1.7 — 한국어 README 상단 후킹 관점 보정
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_7.md`
+
+수정:
+
+- `README.ko.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- 상단 후킹에서 `이 저장소가 한 일` 관점을 제거하고, 사용자가 자신의 저장소에 적용했을 때 설치되는 `운영 레일` 관점으로 바꾼다.
+- 후킹 표에는 한 줄 적용, 승인 게이트, 작업 기억 외부화, 공식 프롬프팅 가이드 정합, Multi-agent 운영을 둔다.
+- 기존 `이 저장소가 한 일` heading은 `구현 확장: 방법론을 하네스로 만든 방식`으로 변경한다.
+- 상세 본문은 방법론을 하네스로 패키징한 구현 설명으로 유지하고, 상단에서는 rhwp 비교처럼 보이지 않게 한다.
+
+### 검증
+
+```bash
+rg -n "이 하네스를 적용하면|제공되는 것|승인 게이트|작업 기억 외부화|공식 프롬프팅 가이드 정합|Multi-agent 운영" README.ko.md
+rg -n "구현 확장: 방법론을 하네스로 만든 방식" README.ko.md
+rg -n "^## 이 저장소가 한 일|#이-저장소가-한-일|\\[이 저장소가 한 일\\]" README.ko.md
+git diff --check
+```
+
+수동 확인:
+
+- 상단 후킹이 프로젝트 역사 설명이 아니라 적용자가 얻는 운영 능력으로 읽히는지 확인한다.
+- 구현 상세 heading이 요청한 문구로 변경됐는지 확인한다.
+- 기존 상세 본문이 삭제되지 않았는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.7]: 한국어 README 상단 후킹 관점 보정
 ```
 
 ## Stage 2 — 영어 기본 README 전환
