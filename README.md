@@ -1,348 +1,361 @@
 # Hyper-Waterfall
 
-[English](README.md) | 한국어 | [简体中文](README.zh-CN.md)
+English | [한국어](README.ko.md) | [简体中文](README.zh-CN.md)
 
 ![Hyper-Waterfall overview](docs/assets/hyper-waterfall.png)
 
-## AI 페어 프로그래밍을 추적 가능하고 승인 가능한 개발 프로세스로 바꾸는 방법론
+## A Methodology for Turning AI Pair Programming into a Traceable, Approvable Development Process
 
-Hyper-Waterfall은 AI에게 “그냥 만들어줘”라고 맡기는 방식이 아닙니다. AI의 실행 속도를 사람의 계획·승인·검증·보고 규율 안에 넣어, 빠른 구현과 추적 가능한 개발 프로세스를 동시에 얻는 방법론입니다.
+Hyper-Waterfall is not a way to tell AI, "just build it." It puts AI's execution speed inside human planning, approval, verification, and reporting discipline so you get both fast implementation and a traceable development process.
 
-핵심은 단순합니다. **AI는 실행하고, 사람은 방향을 결정합니다.** 작업은 Issue, branch, 계획서, Stage 보고서, 최종 보고서, PR로 이어지고, 각 단계의 경계에는 승인 게이트가 있습니다.
+The core is simple: **AI executes, humans decide the direction.** Work flows through Issue, branch, plan, Stage report, final report, and PR, with approval gates at the boundaries between steps.
 
-| Hyper-Waterfall의 핵심 | 의미 |
+| Hyper-Waterfall Core | Meaning |
 |---|---|
-| 사람의 결정권 유지 | 방향, 범위, 품질, 아키텍처 결정은 사람이 끝까지 가집니다. |
-| 승인 게이트 | 소스 수정, 단계 전환, 최종 보고, PR 생성 전에 사람이 확인합니다. |
-| 작업 기억 외부화 | 채팅이 아니라 Issue, 계획서, 보고서, PR, commit log에 맥락을 남깁니다. |
-| 단계적 실행 | 큰 작업을 Stage 단위로 나누고, 각 단계마다 검증과 보고를 거칩니다. |
-| 재개 가능한 프로세스 | 새 AI 세션이나 새 기여자가 저장소 문서만 읽고 이어받을 수 있습니다. |
+| Human decision ownership | Direction, scope, quality, and architecture decisions stay with the human. |
+| Approval gates | A human checks before source edits, stage transitions, final reporting, and PR creation. |
+| Externalized work memory | Context is left in Issues, plans, reports, PRs, and commit logs instead of only in chat. |
+| Staged execution | Large work is split into Stages, and every Stage includes verification and reporting. |
+| Resumable process | A new AI session or contributor can read repository documents and continue from the same context. |
 
 > [!IMPORTANT]
-> **AI에게 실행은 맡기되, 결정권은 넘기지 않습니다.**
+> **Delegate execution to AI, but do not delegate decision ownership.**
 >
-> Hyper-Waterfall은 AI가 마법처럼 못 하던 일을 하게 해주는 도구가 아니라, AI가 빠르게 일하더라도 사람이 방향을 잃지 않게 만드는 작업 레일입니다.
+> Hyper-Waterfall is not a tool that makes AI magically capable of anything. It is a set of rails that lets AI move quickly without making humans lose direction.
 
-## 왜 Hyper-waterfall인가
+## Why Hyper-Waterfall?
 
-AI의 약점은 실행력이 부족한 것이 아니라, 맥락을 잃거나 잘못된 방향으로 빠르게 달릴 수 있다는 점입니다. Hyper-Waterfall은 이 약점을 작업 제약으로 바꾸고, AI의 속도를 사람이 검토 가능한 개발 프로세스 안에 넣습니다.
+AI's weakness is not a lack of execution power. Its weakness is that it can lose context or run quickly in the wrong direction. Hyper-Waterfall turns that weakness into workflow constraints and places AI's speed inside a development process humans can review.
 
-| 강점 | 의미 |
+| Strength | Meaning |
 |---|---|
-| 지식 자산화 | 작업 의도, 계획, 검증 결과, 의사결정 근거가 `mydocs/`, Issue, PR, commit log에 남아 다음 작업의 입력이 됩니다. |
-| 리스크 조기 발견 | 수행계획서, 구현계획서, Stage 완료보고서마다 사람이 방향을 확인하므로 큰 구현이 끝난 뒤 방향 오류를 발견하는 일을 줄입니다. |
-| 자동화된 역할 분담 | 사람은 방향·우선순위·품질·아키텍처를 결정하고, AI는 탐색·구현·검증·문서화 같은 반복 작업을 맡습니다. |
-| 컨텍스트 경량화 | `1 Issue = 1 Task = 1 Branch = 1 Session`으로 세션을 작게 유지하고, 기억은 저장소 문서에 남깁니다. |
-| 프롬프트 가이드 정합 | 명확한 목표, 충분한 맥락, 출력 형식, 검증 기준, 멈춤 조건을 저장소 구조와 템플릿으로 고정합니다. |
+| Knowledge captured as assets | Intent, plans, verification results, and decision rationale remain in `mydocs/`, Issues, PRs, and commit logs, becoming input for the next task. |
+| Early risk detection | Humans check direction at the task plan, implementation plan, and Stage report boundaries, reducing late discovery of wrong direction after a large implementation. |
+| Automated role split | Humans decide direction, priority, quality, and architecture; AI handles repeated work such as exploration, implementation, verification, and documentation. |
+| Lightweight context | `1 Issue = 1 Task = 1 Branch = 1 Session` keeps sessions small while repository documents retain memory. |
+| Prompt guide alignment | Clear goals, sufficient context, output formats, verification criteria, and stop conditions are fixed by repository structure and templates. |
 
-Hyper-Waterfall은 AI 코딩을 Issue, branch, 계획서, Stage 보고서, 최종 보고서, PR로 묶어 추적 가능하고 승인 가능한 개발 프로세스로 만드는 방법론 하네스입니다.
+Hyper-Waterfall is a methodology harness that turns AI coding into a traceable and approvable development process by binding it to Issue, branch, plan, Stage report, final report, and PR.
 
-AI가 바로 파일을 고치게 두지 않고, 작업 목적과 범위, 검증 기준을 먼저 문서화합니다. 소스 수정, 단계 전환, 최종 보고, PR 생성 앞에는 작업지시자 승인 게이트가 있습니다.
+Instead of letting AI edit files immediately, it documents the task purpose, scope, and verification criteria first. Approval gates stand before source edits, stage transitions, final reports, and PR creation.
 
-그 결과 모든 작업은 문서화되고, 결정과 검증 결과는 저장소에 남습니다. 채팅 컨텍스트가 사라져도 작업 의도와 진행 상태를 다시 추적할 수 있고, 다른 AI 세션이나 다른 작업자가 같은 맥락에서 이어받을 수 있습니다.
+As a result, every task is documented, and decisions plus verification results remain in the repository. Even when chat context disappears, task intent and progress can be traced again, and another AI session or worker can resume from the same context.
 
-## 바로 설치
+## Quick Start
 
-AI 코딩 도구에 다음 한 줄을 보내세요.
+Send this one line to your AI coding tool.
 
 ```text
-https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘.
+Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository.
 ```
 
-AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용 절차를 따릅니다. 소스 변경 전 반드시 작업지시자 승인을 받게 되어 있습니다.
+The AI starts from [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md) and follows the adoption procedure. It must ask for approval before changing source files.
 
-| AI가 먼저 보고할 것 | 내용 |
+| What the AI reports first | Content |
 |---|---|
-| 적용 모드 | 신규 적용인지, 기존 Hyper-Waterfall 업데이트인지 |
-| 변경 후보 | 어떤 파일을 만들거나 바꿀지, placeholder 치환이 필요한지 |
-| 승인 요청 | 실제 파일 변경 전에 작업지시자가 승인해야 할 범위 |
+| Adoption mode | Whether this is a new adoption or an update to an existing Hyper-Waterfall installation. |
+| Change candidates | Which files it would create or modify, and whether placeholder substitution is needed. |
+| Approval request | The scope the task requester must approve before actual file changes. |
 
-도입 후에는 AI가 Hyper-Waterfall 방식을 지키며 작업을 진행합니다. 처음 시작하는 사용자는 AI에게 `"이거 구현해줘"`와 같은 자연어 명령을 내리면 됩니다.
+After adoption, the AI proceeds according to the Hyper-Waterfall process. New users can simply ask the AI in natural language, such as `"Implement this."`
 
-> 누구나 GitHub 저장소에 Hyper-Waterfall을 적용하고, Codex·Claude Code 등 여러 AI 코딩 에이전트가 같은 규율 위에서 작업하게 만듭니다.
+> Hyper-Waterfall lets anyone apply the method to a GitHub repository and makes multiple AI coding agents, including Codex and Claude Code, work under the same discipline.
 
-## Hyper-Waterfall 자세히 알아보기
+## Learn More About Hyper-Waterfall
 
-[언제 쓰면 좋은가](#언제-쓰면-좋은가) ·
-[기존 AI 코딩 방식과 비교](#기존-ai-코딩-방식과-비교) ·
-[적용하면 바로 달라지는 것](#적용하면-바로-달라지는-것) ·
-[Hyper-Waterfall의 강점](#hyper-waterfall의-강점) ·
-[도입 후 작업 흐름](#도입-후-작업-흐름) ·
-[적용 후 대상 저장소 구조](#적용-후-대상-저장소-구조)
+[When to Use](#when-to-use) ·
+[Compared with Conventional AI Coding](#compared-with-conventional-ai-coding) ·
+[What Changes Immediately](#what-changes-immediately) ·
+[Strengths of Hyper-Waterfall](#strengths-of-hyper-waterfall) ·
+[Workflow After Adoption](#workflow-after-adoption) ·
+[Target Repository Structure After Adoption](#target-repository-structure-after-adoption)
 
-## 언제 쓰면 좋은가
+## When to Use
 
-Hyper-Waterfall은 AI가 빠르게 코드를 바꾸는 상황에서 사람이 통제권과 추적 가능성을 잃지 않게 만드는 데 초점이 있습니다.
+Hyper-Waterfall focuses on keeping human control and traceability when AI is changing code quickly.
 
-| 잘 맞는 경우 | 어울리지 않는 경우 |
+| Good Fit | Poor Fit |
 |---|---|
-| AI 코딩 도구에 실제 소스 수정을 맡기지만, 변경 범위와 품질 기준은 사람이 승인하고 싶을 때 | 한두 줄 수정처럼 계획서와 보고서 비용이 변경 자체보다 큰 작업 |
-| 여러 날, 여러 세션, 여러 에이전트에 걸쳐 작업을 이어가야 할 때 | 버리는 프로토타입처럼 추적 가능성보다 즉시 실험이 중요한 작업 |
-| PR 리뷰에서 무엇을 왜 바꿨고 어떻게 검증했는지가 바로 보여야 할 때 | GitHub Issue, branch, PR 흐름을 쓰지 않는 저장소 |
-| 큰 작업을 Issue, branch, Stage 단위로 나눠 방향 오류를 일찍 잡고 싶을 때 | 사람이 결과를 검토하지 않고 AI 출력만 그대로 수락하려는 작업 |
-| 새 기여자나 새 AI 세션이 저장소 문서만 읽고 같은 맥락에서 다시 시작해야 할 때 | 개인 실험처럼 인수인계나 재개 가능성이 중요하지 않은 작업 |
+| You let an AI coding tool modify real source code, but want humans to approve scope and quality standards. | A one- or two-line change where plan and report overhead is larger than the change itself. |
+| Work must continue across multiple days, sessions, or agents. | Disposable prototypes where immediate experimentation matters more than traceability. |
+| PR reviewers need to see what changed, why it changed, and how it was verified. | Repositories that do not use GitHub Issue, branch, and PR workflows. |
+| You want to split large work by Issue, branch, and Stage so wrong direction is caught early. | Work where humans intend to accept AI output without review. |
+| New contributors or new AI sessions need to restart from repository documents alone. | Personal experiments where handoff or resumability does not matter. |
 
-> AI에게 실제 소스 수정을 맡기되, 사람이 방향과 품질을 계속 통제해야 하는 작업에 가장 잘 맞습니다. 반대로 추적 가능성보다 즉시 실험이 중요한 작업에는 과할 수 있습니다.
+> It is best suited for work where AI performs real source edits while humans must keep control over direction and quality. It can be too heavy when immediate experimentation matters more than traceability.
 
-## 기존 AI 코딩 방식과 비교
-핵심은 AI에게 결정권을 넘기는 것이 아니라, AI의 실행 속도를 사람의 승인·검토·문서화 규율 안에 넣는 것입니다. 사람은 방향과 품질을 결정하고, AI는 분석·구현·검증·문서화를 빠르게 수행합니다.
-> 차이는 AI를 쓰느냐가 아니라, AI가 어떤 경계 안에서 일하느냐에 있습니다. 일반적인 AI 코딩은 대화 흐름에 의존하지만, Hyper-Waterfall은 작업 단위, 승인 지점, 산출물 형식을 저장소 안에 고정합니다.
+## Compared with Conventional AI Coding
 
-| 기존 AI 코딩 방식 | Hyper-Waterfall 적용 후 |
+The core is not giving decision ownership to AI. It is putting AI's execution speed inside human approval, review, and documentation discipline. Humans decide direction and quality, while AI performs analysis, implementation, verification, and documentation quickly.
+
+> The difference is not whether you use AI, but which boundaries AI works inside. Conventional AI coding depends on the conversation flow; Hyper-Waterfall fixes task units, approval points, and artifact formats inside the repository.
+
+| Conventional AI Coding | After Applying Hyper-Waterfall |
 |---|---|
-| "이거 만들어줘"라고 시키고 AI가 바로 파일을 고침 | 먼저 Issue와 수행계획서로 작업 목적, 범위, 검증 기준을 정리 |
-| 작업 범위가 대화 중 계속 흔들림 | 구현계획서에서 Stage 단위로 쪼개고 승인된 범위 안에서만 진행 |
-| AI가 어느 파일을 왜 고쳤는지 나중에 추적하기 어려움 | 단계별 완료보고서와 커밋으로 변경 이유, 산출물, 검증 결과를 기록 |
-| 채팅이 길어지면 맥락이 흐려짐 | `mydocs/`, Issue, PR, commit log에 작업 기억을 외부화 |
-| 큰 구현이 끝난 뒤에야 방향 오류를 발견 | 수행계획서, 구현계획서, Stage 완료 시점마다 작업지시자가 승인 또는 수정 지시 |
-| PR 리뷰 때 채팅 로그를 다시 뒤져야 함 | PR과 보고서만 봐도 무엇을 왜 바꿨고 어떻게 검증했는지 확인 가능 |
+| You say "build this" and AI edits files immediately. | Issue and task plan first define purpose, scope, and verification criteria. |
+| Scope keeps shifting during conversation. | The implementation plan splits work into Stages and execution stays inside the approved scope. |
+| It is hard to trace later which files AI changed and why. | Stage reports and commits record the reason, artifact, and verification result for each change. |
+| Context gets blurry as chat grows. | Work memory is externalized into `mydocs/`, Issues, PRs, and commit logs. |
+| Wrong direction is discovered only after a large implementation. | The task requester approves or redirects at the task plan, implementation plan, and Stage boundaries. |
+| PR reviewers need to search through chat logs again. | The PR and reports show what changed, why it changed, and how it was verified. |
 
-사람 작업지시자가 방향, 품질, 아키텍처 결정의 완전한 소유권을 유지하고, AI는 혼자서는 불가능한 속도와 규모로 구현을 수행합니다. 
+The human task requester keeps full ownership of direction, quality, and architecture decisions, while AI performs implementation at a speed and scale humans cannot reach alone.
 
 > [!IMPORTANT]
-> **핵심 차이: 사람은 절대 생각을 멈추지 않습니다.**
+> **Key difference: humans never stop thinking.**
 
-## 적용하면 바로 달라지는 것
+## What Changes Immediately
 
-1. **AI가 마음대로 코드를 고치지 않습니다.**  
-  소스 수정 전 계획서와 승인 게이트를 거치므로, 작업지시자가 방향을 끝까지 통제합니다.
+1. **AI does not modify code arbitrarily.**
+   Source changes pass through a plan and approval gate first, so the task requester keeps control over direction.
 
-2. **사람이 통제권을 잃지 않습니다.**  
-  소스 수정, 단계 전환, 최종 보고, PR 생성 앞에는 승인 게이트가 있습니다. AI는 실행하지만, 방향과 품질 결정은 사람이 가집니다.
-  
-3. **“어디까지 했지?”를 채팅 기록에서 찾지 않아도 됩니다.**  
-  이슈, 오늘할일, 수행계획서, 단계 보고서, 최종 보고서, PR이 작업 타임라인을 자동으로 구성합니다.
+2. **Humans do not lose control.**
+   Approval gates stand before source edits, stage transitions, final reports, and PR creation. AI executes, but humans own direction and quality decisions.
 
-4. **채팅이 사라져도 작업 기억은 남습니다.**  
-  의도, 결정, 검증 결과가 `mydocs/`, Issue, PR, commit log에 남습니다. 새 세션·새 에이전트·새 기여자가 와도 같은 맥락에서 다시 시작할 수 있습니다.
-  
-5. **타스크 별 작업으로 컨텍스트가 작고 선명하게 유지됩니다.**  
-  권장 운용은 `1 Issue = 1 Task = 1 Branch = 1 Session`입니다. 타스크가 끝나면 세션도 닫고, 다음 이슈는 깨끗한 새 세션에서 시작합니다.
+3. **You no longer need to search chat history for "where did we stop?"**
+   Issue, today's todo, task plan, Stage reports, final report, and PR automatically form the task timeline.
 
-6. **여러 AI 세션을 병렬로 돌릴 수 있습니다.**  
-  독립적인 Issue는 각각 `local/task{N}` 브랜치나 분리 worktree에서 진행할 수 있습니다. 컨텍스트와 변경 범위가 섞이지 않습니다.
+4. **Work memory remains even when chat disappears.**
+   Intent, decisions, and verification results remain in `mydocs/`, Issues, PRs, and commit logs. New sessions, new agents, and new contributors can restart from the same context.
 
-7. **PR 리뷰가 쉬워집니다.**  
-  PR에는 무엇을 왜 바꿨는지, 어떤 Stage를 거쳤는지, 어떤 검증을 했는지가 정리됩니다. 리뷰어는 채팅 로그가 아니라 저장소 산출물을 보면 됩니다.
-  
-8. **큰 구현이 끝난 뒤 방향 오류를 발견하는 일이 줄어듭니다.**  
-  수행계획서, 구현계획서, Stage 완료보고서마다 사람이 검토하는 품질 게이트가 생깁니다.
+5. **Task-level work keeps context small and clear.**
+   The recommended operation is `1 Issue = 1 Task = 1 Branch = 1 Session`. When a task ends, the session closes; the next issue starts in a clean new session.
 
-9. **바이브 코딩의 속도는 살리고, 엔지니어링 규율은 되찾습니다.**  
-  빠르게 만들되, 무엇을 만들었는지 설명할 수 있고, 어디서 잘못됐는지 추적할 수 있고, 언제든 이어받을 수 있습니다.
-  
-10. **AI 코딩이 “바이브”가 아니라 추적 가능한 개발 프로세스가 됩니다.**  
-  모든 작업은 Issue, branch, 문서, commit, PR로 연결되어 나중에 검토하고 인수인계할 수 있습니다.
+6. **You can run multiple AI sessions in parallel.**
+   Independent Issues can run in separate `local/task{N}` branches or separate worktrees. Context and change scope do not mix.
 
-## Hyper-Waterfall의 강점
+7. **PR review becomes easier.**
+   The PR explains what changed, why it changed, which Stages were completed, and which verification ran. Reviewers read repository artifacts, not chat logs.
 
-AI는 두 가지 구조적 약점을 가집니다.
+8. **You reduce late discovery of wrong direction after a large implementation.**
+   Task plans, implementation plans, and Stage completion reports become quality gates reviewed by humans.
 
-- 세션이 길어지거나 도구가 바뀌면 맥락을 잃습니다.
-- 방향이 틀렸는데도 자신 있게 계속 실행할 수 있습니다.
+9. **You keep the speed of vibe coding while recovering engineering discipline.**
+   You can build quickly while still explaining what was built, tracing where it went wrong, and handing it off at any point.
 
-본 저장소는 이 약점을 작업 제약으로 바꾸고, 다음 네 축에서 사용자가 즉시 체감할 수 있는 이점을 만들어냅니다.
+10. **AI coding becomes a traceable development process instead of a "vibe."**
+    Every task connects through Issue, branch, document, commit, and PR so it can be reviewed and handed off later.
 
-### 1. 모든 작업이 문서가 되고, 문서가 다음 작업의 프롬프트가 된다 — 지식 자산화
+## Strengths of Hyper-Waterfall
 
-- 작업의 의도, 계획, 단계별 검증 결과, 의사결정 근거가 모두 `mydocs/` 안의 markdown 파일로 쌓입니다. 단순 기록이 아니라 **다음 작업의 input**입니다. 모델이 새 task를 시작할 때 같은 저장소에 있는 과거 계획서·보고서·결정 기록을 읽고 그 위에서 작업합니다.
-- 작업을 이어갈 때도 채팅 히스토리에 의존하지 않고 저장소 산출물만으로 맥락을 복원할 수 있습니다. 새 기여자나 새 AI 세션이 합류해도 같은 출발점에서 시작할 수 있습니다.
+AI has two structural weaknesses.
 
-> 이는 옵시디언 vault를 LLM에 연결해 개인 지식 저장소를 컨텍스트로 쓰는 흐름과 같은 구조입니다. 차이는 vault의 성격에 있습니다. 옵시디언이 일반 지식·아이디어를 모은다면, `mydocs/`는 **작업 이력에 특화된 vault**로서 의도·계획·검증·산출물·트러블슈팅을 작업 단위로 자동 누적합니다. 절차가 강제하기 때문에 누락이 없고 일관됩니다.
+- It loses context when sessions grow long or tools change.
+- It can keep executing confidently even when the direction is wrong.
 
-### 2. 큰 사고 전, 게이트에서 방향 오류를 발견한다 — 리스크
+This repository turns those weaknesses into work constraints and creates immediately visible benefits along four axes.
 
-- 작업은 `이슈 -> 브랜치 -> 수행계획서 -> 구현계획서 -> Stage 단위 구현·검증·보고 -> 최종 보고서 -> Open PR` 순서를 따르며, 각 게이트에서 작업지시자 승인을 받습니다.
-- 큰 구현이 끝난 뒤에 "방향이 틀렸음"을 깨닫는 대신, **수행계획서·구현계획서·각 Stage 경계에서 일찍 잡히므로 매몰 비용이 작습니다.**
-- 단계 검증이 실패하면 그 단계 안에서 회복하고, scope가 바뀌면 계획서를 갱신해 재승인을 받습니다.
+### 1. Every Task Becomes Documentation, and Documentation Becomes the Next Prompt — Knowledge Captured as Assets
 
-### 3. "AI한테 잘 부탁한다"가 아니라 "AI가 잘할 수밖에 없게 만든다" — 자동화된 역할 분담
+- Task intent, plans, stage-by-stage verification results, and decision rationale all accumulate as markdown files inside `mydocs/`. They are not just records; they are **input for the next task**. When a model starts a new task, it reads past plans, reports, and decision records from the same repository and builds on them.
+- When continuing work, you can restore context from repository artifacts instead of relying on chat history. A new contributor or new AI session can start from the same baseline.
 
-- 작업지시자는 **방향, 우선순위, 아키텍처, 품질 결정의 책임을 끝까지 가지고**, AI는 탐색·초안 작성·구현·테스트·보고서 작성·PR 본문 작성 같은 고반복 작업을 맡습니다. 모든 단계 전환은 작업지시자의 명시 승인이 필요합니다.
-- 본 저장소는 이 분담을 **운영 차원에서 자동화**합니다. task 관리 규칙을 SKILL로 분리해 AI가 단계별로 무엇을 해야 하는지·어떤 산출물을 남겨야 하는지·언제 멈추고 사람에게 넘겨야 하는지를 자연스럽게 준수합니다.
-- 작업 문서 포맷 자체가 OpenAI·Anthropic 공식 프롬프팅 가이드 핵심을 자연스럽게 만족합니다. 사용자가 프롬프트 엔지니어링을 따로 공부하지 않아도, AI는 일관된 중앙 템플릿·명확한 맥락·단계별 사고·정해진 출력 형식 안에서 작업합니다.
+> This has the same structure as connecting an Obsidian vault to an LLM and using a personal knowledge store as context. The difference is the nature of the vault. Obsidian stores general knowledge and ideas; `mydocs/` is a **vault specialized for work history**, accumulating intent, plans, verification, artifacts, and troubleshooting by task. The process enforces it, so it stays complete and consistent.
 
-### 4. 세션을 타스크 단위로 열고 닫는다 — 컨텍스트 경량화
+### 2. Direction Errors Are Caught at Gates Before Large Failures — Risk
 
-- Hyper-Waterfall은 하나의 AI 세션에 모든 작업 맥락을 계속 누적하는 방식이 아닙니다. 권장 운용은 **`1 Issue = 1 Task = 1 Branch = 1 Session`** 입니다. 하나의 세션은 하나의 Issue를 맡고, 해당 타스크가 끝나면 세션도 닫습니다.
-- 각 세션은 현재 Issue, 수행계획서, 구현계획서, 단계 보고서, 관련 코드만 읽고 작업합니다. 오래된 대화 기록이나 다른 타스크의 결정이 현재 판단을 오염시키지 않으므로 **컨텍스트가 작고 선명하게 유지됩니다.**
-- 타스크가 끝나면 결과는 채팅이 아니라 `mydocs/`, Issue, PR, commit log에 남습니다. 다음 타스크는 새 세션에서 시작해도 저장소에 남은 문서를 읽고 같은 맥락 위에서 다시 출발할 수 있습니다.
-- 서로 독립적인 Issue는 별도 `local/task{N}` 브랜치나 분리 worktree에서 여러 AI 세션으로 병렬 진행할 수 있습니다. 단, 같은 파일이나 같은 아키텍처 결정을 건드리는 작업은 먼저 순서를 정합니다.
+- Work follows `Issue -> branch -> task plan -> implementation plan -> Stage implementation, verification, and report -> final report -> Open PR`, and each gate requires task requester approval.
+- Instead of discovering "the direction was wrong" after a large implementation, it is caught early at the **task plan, implementation plan, and each Stage boundary, so sunk cost stays low.**
+- If Stage verification fails, recovery happens inside that Stage. If scope changes, the plan is updated and re-approved.
 
-> AI 세션은 길수록 똑똑해지는 것이 아니라, 종종 흐려집니다. Hyper-Waterfall은 세션을 짧게 유지하고 기억은 저장소에 남깁니다.
+### 3. Not "Ask AI Nicely," but "Make It Structurally Likely That AI Works Well" — Automated Role Split
 
-### 5. 결과
+- The task requester keeps responsibility for **direction, priority, architecture, and quality decisions**, while AI handles high-repetition work such as exploration, drafting, implementation, tests, reports, and PR body drafting. Every stage transition requires explicit approval from the task requester.
+- This repository **automates that split operationally**. Task management rules are separated into SKILLs so AI naturally follows what to do at each step, what artifacts to leave, and when to stop and hand control back to the human.
+- The work document formats naturally satisfy the core of official OpenAI and Anthropic prompting guides. Users do not need to study prompt engineering separately; AI works inside consistent central templates, clear context, staged thinking, and fixed output formats.
 
-위 네 가지는 따로 떨어진 기능이 아니라 하나의 작업 루프입니다. 작업은 문서로 남고, 방향 오류는 게이트에서 걸러지고, 사람과 AI의 역할은 분리되며, 세션은 타스크 단위로 작게 유지됩니다.
+### 4. Open and Close Sessions by Task — Lightweight Context
 
-그 결과 AI 코딩은 긴 채팅이 아니라, 저장소 안에서 추적·검토·재개 가능한 개발 프로세스가 됩니다.
+- Hyper-Waterfall does not keep accumulating every work context in one AI session. The recommended operation is **`1 Issue = 1 Task = 1 Branch = 1 Session`**. One session owns one Issue, and when that task ends, the session ends too.
+- Each session reads only the current Issue, task plan, implementation plan, Stage reports, and related code. Old conversations and decisions from other tasks do not pollute current judgment, so **context stays small and clear.**
+- When a task ends, the result remains in `mydocs/`, Issues, PRs, and commit logs instead of chat. The next task can start from a new session and still rebuild the same context from repository documents.
+- Independent Issues can run in parallel across multiple AI sessions using separate `local/task{N}` branches or separate worktrees. Tasks that touch the same file or architecture decision should be ordered first.
+
+> AI sessions do not necessarily get smarter as they get longer. They often get blurrier. Hyper-Waterfall keeps sessions short and leaves memory in the repository.
+
+### 5. Result
+
+These four parts are not separate features; they form one work loop. Work becomes documentation, wrong direction is filtered at gates, human and AI roles are split, and sessions stay small by task.
+
+As a result, AI coding becomes a traceable, reviewable, and resumable development process inside the repository instead of a long chat.
 
 > [!NOTE]
-> 이 구조는 [OpenAI GPT-5.5](https://developers.openai.com/api/docs/guides/prompt-guidance)와 [Claude Opus 4.7](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices) 공식 프롬프팅 가이드가 강조하는 명확한 지시, 충분한 맥락, 출력 형식 제약, 검증 기준, 장기 작업 기억, agentic workflow 제어 원칙과 정합됩니다. 상세 매핑은 아래 [프롬프트 가이드 준수](#프롬프트-가이드-준수) 섹션에서 확인할 수 있습니다.
+> This structure aligns with the official OpenAI and Anthropic prompting guides: clear instructions, sufficient context, output format constraints, verification criteria, long-term work memory, and agentic workflow control. See [Prompt Guide Alignment](#prompt-guide-alignment) for the detailed mapping.
 
-## 도입 후 작업 흐름
+## Workflow After Adoption
 
-Hyper-Waterfall은 **타스크** 단위로 작업을 진행합니다.
+Hyper-Waterfall works in **task** units.
 
+### Task Procedure
 
-### 타스크 진행 절차
+Every task follows this procedure **strictly**.
 
-모든 타스크는 아래 절차를 **엄격하게** 따릅니다.
-
+```text
+1. Confirm or register a GitHub Issue
+2. Record today's todo (orders/)
+3. Create task branch (local/task{number})
+4. Write task plan -> [task requester approval]
+5. Write implementation plan -> [task requester approval]
+6. Implement by Stage
+7. Write Stage completion report -> [task requester approval]
+8. Repeat next Stage
+9. Write final result report -> [task requester approval]
+10. Update today's todo status
 ```
-1. GitHub Issue 확인 또는 등록
-2. 오늘할일(orders/) 기록
-3. 타스크 브랜치 생성 (local/task{번호})
-4. 수행계획서 작성 → [작업지시자 승인]
-5. 구현계획서 작성 → [작업지시자 승인]
-6. 단계별 구현
-7. 단계별 완료보고서 → [작업지시자 승인]
-8. (다음 단계 반복)
-9. 최종 결과보고서 → [작업지시자 승인]
-10. 오늘할일 상태 갱신
-```
 
-> 각 `[승인]` 지점이 품질 게이트입니다. 코드 리뷰만으로는 잡을 수 없는 **방향성 오류**를 문서 리뷰에서 잡는다.
+> Each `[approval]` point is a quality gate. Direction errors that code review alone cannot catch are caught during document review.
 
-세부 절차는 [타스크 진행 절차 매뉴얼](templates/mydocs/manual/task_workflow_guide.md#타스크-진행-절차)을 기준으로 합니다. 브랜치와 PR 게시 흐름은 [Git 워크플로우 매뉴얼](templates/mydocs/manual/git_workflow_guide.md#브랜치-관리)에서 확인할 수 있습니다.
+Detailed procedure follows the [task workflow manual](templates/mydocs/manual/task_workflow_guide.md#타스크-진행-절차). Branch and PR publication flow is described in the [Git workflow manual](templates/mydocs/manual/git_workflow_guide.md#브랜치-관리).
 
-### 핵심 SKILL 상세
+### Core SKILL Details
 
-| SKILL | 사용하는 시점 | 주요 산출물 |
+| SKILL | When to Use | Main Artifacts |
 |---|---|---|
-| `task-register` | 신규 작업이라 GitHub Issue를 먼저 만들어야 할 때 | `task.yml` Issue Form 구조를 따르는 GitHub Issue, milestone·label 후보와 선택 이유 |
-| `task-start` | 승인된 이슈 작업을 시작할 때 | `local/task{N}` 브랜치, 오늘할일 행, `task_plan.md` 기반 수행계획서 |
-| `task-stage-report` | 한 Stage 구현이 끝나고 다음 단계로 넘어가기 직전 | `stage_report.md` 기반 단계 보고서, 단계 묶음 커밋, 단계 검증 결과 |
-| `task-final-report` | 모든 Stage가 끝나고 PR을 게시하기 직전 | `final_report.md` 기반 최종 보고서, 오늘할일 완료 처리, Open PR |
-| `pr-merge-cleanup` | PR이 실제로 merge된 직후 | 이슈 close, `publish/task{N}` 원격 삭제, 로컬 브랜치/worktree 정리 |
-| `external-pr-review` | 외부 기여자 PR을 검토할 때 | `external_pr_*` 템플릿 기반 `mydocs/pr/` 검토 문서, 검증 결과, 권고(merge/수정/닫기) |
-| `todo` | 오늘할일 보드를 새로 만들거나 갱신할 때 | `orders.md` 기반 `mydocs/orders/yyyymmdd.md` 표 형식 갱신 |
+| `task-register` | When a new task needs a GitHub Issue first | A GitHub Issue following the `task.yml` Issue Form structure, milestone and label candidates, and selection rationale |
+| `task-start` | When starting work on an approved issue | `local/task{N}` branch, today's todo row, task plan based on `task_plan.md` |
+| `task-stage-report` | After one Stage is implemented and before moving to the next Stage | Stage report based on `stage_report.md`, Stage bundle commit, Stage verification result |
+| `task-final-report` | After all Stages are complete and just before publishing the PR | Final report based on `final_report.md`, today's todo completion update, Open PR |
+| `pr-merge-cleanup` | Immediately after a PR is actually merged | Issue close, `publish/task{N}` remote deletion, local branch/worktree cleanup |
+| `external-pr-review` | When reviewing an external contributor PR | `mydocs/pr/` review documents based on `external_pr_*` templates, verification result, recommendation (merge/request changes/close) |
+| `todo` | When creating or updating the today's todo board | `mydocs/orders/yyyymmdd.md` table update based on `orders.md` |
 
-각 SKILL을 언제 사용자에게 표시하는지는 [SKILL 호출 표시 안내](templates/mydocs/manual/task_workflow_guide.md#skill-호출-표시-안내)를 따릅니다. PR 본문 작성과 검증 구조는 [내부 task PR 작성 가이드](templates/mydocs/manual/internal_pr_guide.md)를 기준으로 하고, PR 생성 명령과 문서 링크 형식은 [PR 생성 명령과 링크 가이드](templates/mydocs/manual/pr_command_guide.md)를 따릅니다.
+When each SKILL should be displayed to the user follows the [SKILL call display guide](templates/mydocs/manual/task_workflow_guide.md#skill-호출-표시-안내). PR body structure and verification follow the [internal task PR guide](templates/mydocs/manual/internal_pr_guide.md), and PR creation commands plus document link formats follow the [PR command and link guide](templates/mydocs/manual/pr_command_guide.md).
 
-문서 구조와 manual 문서 중립성 기준은 별도 SKILL이 아니라 [문서 구조 매뉴얼](templates/mydocs/manual/document_structure_guide.md)을 기준으로 확인합니다.
+Document structure and manual-document neutrality are checked in the [document structure manual](templates/mydocs/manual/document_structure_guide.md), not through a separate SKILL.
 
-### 타스크 사이클
+### Task Cycle
 
-이슈가 이미 있으면 `task-register`를 건너뛰고 바로 `task-start`로 수행계획서 작성에 들어갑니다. 예를 들어 작업지시자가 `"issue #17 작업을 진행해줘"`라고 지시하면 AI는 #17의 milestone과 본문을 확인한 뒤 `local/task17`, 오늘할일, 수행계획서를 만듭니다. 아직 이슈가 없을 때만 `task-register`가 중복 이슈·milestone·label을 확인하고 생성 전 승인을 받은 뒤 GitHub Issue를 만듭니다.
+If an Issue already exists, skip `task-register` and go directly to `task-start` to write the task plan. For example, when the task requester says `"work on issue #17"`, AI checks milestone and issue body for #17, then creates `local/task17`, today's todo, and the task plan. Only when no Issue exists does `task-register` check duplicate Issues, milestone, and labels, ask for approval before creation, then create the GitHub Issue.
 
-각 단계 전환에는 작업지시자의 명시 승인이 필요합니다.
+Every stage transition requires explicit approval from the task requester.
+
+```text
+0. Task registration -> `task-register`
+   └─ AI: check duplicate issues, milestone, and label candidates
+   └─ task requester: approve Issue creation
+   └─ AI: create GitHub Issue and request approval to enter `task-start`
+
+1. Task plan -> `task-start`
+   └─ task requester: specify an existing Issue such as "work on issue #N", or approve starting from the newly created Issue
+   └─ AI: write plan (minimum 3 stages, maximum 6 stages)
+   └─ task requester: review -> approve or request edits
+
+2. Stage implementation -> `task-stage-report` (repeat for each Stage)
+   └─ AI: write code + run tests
+   └─ AI: write Stage completion report
+   └─ task requester: verify -> approve or give feedback
+
+3. Feedback application -> (manual)
+   └─ task requester: write feedback document (mydocs/feedback/), then AI applies it. If scope changes, update the plan and receive re-approval
+   └─ AI: apply feedback and revise
+
+4. Final report + Open PR -> `task-final-report`
+   └─ AI: write final result report and create an Open PR with structured verification evidence
+   └─ task requester: verify -> approve or give feedback
+
+5. PR review + merge + cleanup -> `pr-merge-cleanup`
+   └─ task requester: review PR -> approve or give feedback
+   └─ AI: after review and merge, close Issue and clean branches/today's todo
 ```
-0. 타스크 등록 → `task-register`
-   └─ AI: 중복 이슈, milestone, label 후보 확인
-   └─ 작업지시자: 이슈 생성 승인
-   └─ AI: GitHub Issue 생성 후 `task-start` 진입 승인 요청
 
-1. 수행 계획서 → `task-start`
-   └─ 작업지시자: "issue #N 작업을 진행해줘"처럼 기존 이슈를 지정하거나, 방금 생성한 이슈로 시작 승인
-   └─ AI: 계획서 작성 (최소 3단계, 최대 6단계)
-   └─ 작업지시자: 검토 → 승인 또는 수정 요청
+`todo` is called whenever the today's todo board is updated in the above flow. `external-pr-review` is a separate flow for reviewing external contributor PRs.
 
-2. 단계별 구현 → `task-stage-report`(단계 수만큼 반복)
-   └─ AI: 코드 작성 + 테스트
-   └─ AI: 단계 완료 보고서 작성
-   └─ 작업지시자: 검증 → 승인 또는 피드백
+### Document Structure
 
-3. 피드백 반영 → (수동)
-   └─ 작업지시자: 피드백 문서 작성 (mydocs/feedback/), AI가 반영. scope가 바뀌면 계획서를 갱신해 재승인
-   └─ AI: 피드백 반영, 수정
+Documents used or produced by tasks:
 
-4. 최종 보고 + Open PR → `task-final-report`
-   └─ AI: 최종 결과 보고서 작성, 검증 결과·근거를 구조화한 Open PR 생성
-   └─ 작업지시자: 검증 → 승인 또는 피드백
-
-5. PR 리뷰 + merge + 정리 → `pr-merge-cleanup`
-   └─ 작업지시자: PR 검토 → 승인 또는 피드백
-   └─ AI: 리뷰·merge 후 이슈 close, 브랜치/오늘할일 정리
-```
-`todo`는 위 흐름 어느 단계에서든 오늘할일 보드를 갱신할 때 호출합니다. `external-pr-review`는 외부 기여자 PR 검토용 별도 흐름입니다.
-
-### 문서 구조
-
-타스크가 사용하거나 만들어내는 문서 구조:
-
-```
+```text
 mydocs/
-├── _templates/                         ← 산출물별 출력 형식
-├── orders/yyyymmdd.md                  ← 오늘 할일 (타스크 목록 + 상태)
-├── plans/task_{milestone}_{N}.md       ← 수행 계획서
-├── plans/task_{milestone}_{N}_impl.md  ← 구현 계획서
+├── _templates/                         <- output formats by artifact type
+├── orders/yyyymmdd.md                  <- today's todo (task list + status)
+├── plans/task_{milestone}_{N}.md       <- task plan
+├── plans/task_{milestone}_{N}_impl.md  <- implementation plan
 ├── working/task_{milestone}_{N}_stage{S}.md
-│                                        ← 단계별 완료 보고서
+│                                        <- Stage completion report
 ├── report/task_{milestone}_{N}_report.md
-│                                        ← 최종 결과 보고서
-├── feedback/                           ← 피드백·리뷰 의견
-├── tech/                               ← 기술 조사·공식화 전 초안
-├── manual/                             ← 운영 매뉴얼·반복 작업 기준
-├── troubleshootings/                   ← 트러블슈팅
-└── pr/                                 ← 외부 PR 검토 기록
+│                                        <- final result report
+├── feedback/                           <- feedback and review notes
+├── tech/                               <- technical research and pre-official drafts
+├── manual/                             <- operating manuals and repeated work standards
+├── troubleshootings/                   <- troubleshooting
+└── pr/                                 <- external PR review records
 ```
 
-폴더별 역할은 [문서 구조 매뉴얼의 폴더 역할](templates/mydocs/manual/document_structure_guide.md#폴더-역할-엄격-준수)에서 확인하고, 각 폴더의 상세 작성 규칙은 해당 폴더의 `README.md`를 기준으로 확인합니다. 문서 파일명은 [문서 파일명 규칙](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙)을 따릅니다. 산출물 출력 형식은 [중앙 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책)에 정리되어 있습니다.
+Folder roles are defined in the [folder role section of the document structure manual](templates/mydocs/manual/document_structure_guide.md#폴더-역할-엄격-준수), and each folder's detailed writing rules are checked from that folder's `README.md`. Document filenames follow the [document filename rules](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙). Artifact output formats are summarized in the [central template policy](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책).
 
-`mydocs/`는 작업 기억, 운영 매뉴얼, 조사 근거를 보관하는 구조이며 대상 프로젝트의 공식 제품 문서 루트가 아닙니다. 공식 문서 루트 이름은 Hyper-Waterfall이 고정하지 않습니다. 대상 프로젝트가 `docs/`, `specs/`, `site/`, `website/`, `adr/`, GitHub Wiki 등을 선택할 수 있지만, 제품/사용자/기여자/API/아키텍처/로드맵 문서를 생성·이동·수정하는 task는 수행계획서의 문서 위치 판단에서 대상 독자, 공식화 수준, 선택 경로, 대안 경로, 선택 이유를 먼저 승인받습니다.
+| Area | Policy |
+|---|---|
+| `mydocs/` | Stores work memory, operating manuals, and research evidence. It is not the official product documentation root of the target project. |
+| Official product docs | Hyper-Waterfall does not fix the official documentation root name. A target project may choose `docs/`, `specs/`, `site/`, `website/`, `adr/`, GitHub Wiki, or another path. Tasks that create, move, or edit product/user/contributor/API/architecture/roadmap docs must first get approval in the task plan's document location decision, including target audience, officialization level, selected path, alternative path, and reason. |
+| `manual/` | Contains recurring operating standards and procedures. Records for a specific Issue, PR, release verification, or incident are separated into the corresponding artifact document. Details follow the [manual document neutrality policy](templates/mydocs/manual/document_structure_guide.md#manual-문서-중립성-정책). |
+| `tech/` | Contains technical research, alternative comparisons, design rationale, and drafts that are not yet official. To promote them into official contract docs for users or external integrators, open a separate task, choose the official docs root, and receive approval. |
+| `_templates/` | The source of truth for output formats, not an actual task artifact folder. Each Skill reads the corresponding template in `mydocs/_templates/` first and uses the minimal section summary inside the Skill only as fallback when the template cannot be read. |
+| GitHub Issue and Pull Request | GitHub platform artifacts. Issue bodies follow `.github/ISSUE_TEMPLATE/task.yml`, PR bodies follow `.github/pull_request_template.md`, and repository-resident work documents follow `mydocs/_templates/`. Details follow the [GitHub platform template policy](templates/mydocs/manual/document_structure_guide.md#github-플랫폼-템플릿-정책). |
 
-`manual/` 문서는 반복 적용되는 운영 기준과 절차를 담고, 특정 이슈·PR·릴리즈 검증·장애 기록은 해당 산출물 문서로 분리합니다. 세부 경계는 [manual 문서 중립성 정책](templates/mydocs/manual/document_structure_guide.md#manual-문서-중립성-정책)을 따릅니다.
+## Target Repository Structure After Adoption
 
-`tech/` 문서는 기술 조사, 대안 비교, 설계 판단 근거, 아직 공식화되지 않은 초안을 담습니다. 사용자나 외부 통합자가 따라야 하는 공식 계약 문서로 승격하려면 별도 task에서 공식 문서 루트를 선택하고 승인받습니다.
-
-`_templates/`는 실제 task 산출물이 아니라 출력 형식의 진실 원천입니다. 각 Skill은 산출물을 만들 때 먼저 `mydocs/_templates/`의 해당 템플릿을 참조하고, 템플릿을 읽을 수 없는 상황에서만 Skill 안의 최소 섹션 요약을 fallback으로 사용합니다.
-
-GitHub Issue와 Pull Request는 GitHub 플랫폼 산출물입니다. 이슈 본문은 `.github/ISSUE_TEMPLATE/task.yml`, PR 본문은 `.github/pull_request_template.md`를 기준으로 구조화하고, 저장소 안에 남는 작업 문서는 `mydocs/_templates/`를 기준으로 작성합니다. 세부 경계는 [GitHub 플랫폼 템플릿 정책](templates/mydocs/manual/document_structure_guide.md#github-플랫폼-템플릿-정책)을 따릅니다.
-
-## 적용 후 대상 저장소 구조
-
-`templates/`를 복사하고 placeholder를 치환한 뒤 사용자 저장소에 만들어지는 모습입니다.
+After `templates/` is copied and placeholders are replaced, the target repository looks like this.
 
 ```text
 your-repo/
-├── AGENTS.md                       운영 규칙 단일 진실 원천
-├── CLAUDE.md                       Claude Code용 (AGENTS.md 참조)
+├── AGENTS.md                       single source of truth for operating rules
+├── CLAUDE.md                       for Claude Code (references AGENTS.md)
 ├── .hyper-waterfall/
-│   └── version.json                 적용된 Hyper-Waterfall version 기록
+│   └── version.json                 records the applied Hyper-Waterfall version
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   │   └── task.yml
 │   └── pull_request_template.md
 ├── .agents/
-│   └── skills -> ../mydocs/skills  Codex 인식 경로 (심볼릭 링크)
+│   └── skills -> ../mydocs/skills  Codex recognition path (symlink)
 ├── .claude/
-│   └── skills -> ../mydocs/skills  Claude Code 인식 경로 (심볼릭 링크)
+│   └── skills -> ../mydocs/skills  Claude Code recognition path (symlink)
 └── mydocs/
-    ├── _templates/         산출물별 출력 형식 템플릿
-    ├── manual/             운영 매뉴얼 (문서 구조, 타스크 진행, Git, PR, lifecycle, release/update, 충돌 규칙)
-    ├── skills/             SKILL 진실 원천 (Codex/Claude Code 공용)
-    ├── orders/             오늘할일 (yyyymmdd.md)
-    ├── plans/              수행/구현 계획서
+    ├── _templates/         output format templates by artifact type
+    ├── manual/             operating manuals (document structure, task workflow, Git, PR, lifecycle, release/update, conflict rules)
+    ├── skills/             SKILL source of truth (shared by Codex/Claude Code)
+    ├── orders/             today's todo (yyyymmdd.md)
+    ├── plans/              task and implementation plans
     │   └── archives/
-    ├── working/            단계별 완료 보고서
-    ├── report/             최종 결과 보고서
-    ├── feedback/           피드백·리뷰 의견
-    ├── tech/               기술 조사·공식화 전 초안
-    ├── troubleshootings/   트러블슈팅
-    └── pr/                 외부 PR 검토 기록
+    ├── working/            Stage completion reports
+    ├── report/             final result reports
+    ├── feedback/           feedback and review notes
+    ├── tech/               technical research and pre-official drafts
+    ├── troubleshootings/   troubleshooting
+    └── pr/                 external PR review records
         └── archives/
 ```
 
-적용 저장소의 `.agents/skills`와 `.claude/skills` 심볼릭 링크 구조는 [Agent Skills 위치 정책](templates/mydocs/manual/document_structure_guide.md#agent-skills-위치-정책)을 따릅니다. `.hyper-waterfall/version.json`과 manifest 기준 업데이트 흐름은 [배포 manifest와 버전 기록 정책](templates/mydocs/manual/document_structure_guide.md#배포-manifest와-버전-기록-정책), [`docs/lifecycle/update.md`](docs/lifecycle/update.md), [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md)에 정리되어 있습니다.
+| Area | What It Provides |
+|---|---|
+| `AGENTS.md`, `CLAUDE.md` | Loads common operating rules into AI coding agents. `AGENTS.md` is the source of truth, and `CLAUDE.md` delegates to it. |
+| `.hyper-waterfall/version.json` | Records the applied framework version and supports update judgment. |
+| `.github/` | Fixes the GitHub Issue Form and Pull Request body structure. |
+| `.agents/skills`, `.claude/skills` | Lets Codex and Claude Code read the same SKILL text through symlinks. |
+| `mydocs/_templates/` | Fixes output formats for plans, reports, feedback, technical research, troubleshooting, and external PR reviews. |
+| `mydocs/manual/` | Contains repeated operating policies and procedures. |
+| `mydocs/orders/`, `plans/`, `working/`, `report/` | Stores daily task state, plans, Stage reports, and final reports. |
+| `mydocs/feedback/`, `tech/`, `troubleshootings/`, `pr/` | Stores feedback, research, troubleshooting, and external PR review records. |
 
-프레임워크의 문서 템플릿, GitHub Issue Form, SKILL 진실 원천은 각각 `templates/mydocs/_templates/`, `templates/.github/ISSUE_TEMPLATE/task.yml`, `templates/mydocs/skills/`입니다. 적용 저장소에서는 `.agents/skills`와 `.claude/skills` 심볼릭 링크가 같은 `mydocs/skills` 본문을 가리킵니다.
+The symlink structure for `.agents/skills` and `.claude/skills` in the adopted repository follows the [Agent Skills location policy](templates/mydocs/manual/document_structure_guide.md#agent-skills-위치-정책). `.hyper-waterfall/version.json` and manifest-based update flow are documented in the [distribution manifest and version record policy](templates/mydocs/manual/document_structure_guide.md#배포-manifest와-버전-기록-정책), [`docs/lifecycle/update.md`](docs/lifecycle/update.md), and [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md).
 
-## 유지보수자 세부 정보
+The framework's document templates, GitHub Issue Form, and SKILL source of truth are `templates/mydocs/_templates/`, `templates/.github/ISSUE_TEMPLATE/task.yml`, and `templates/mydocs/skills/`. In an adopted repository, `.agents/skills` and `.claude/skills` symlinks point to the same `mydocs/skills` text.
+
+## Maintainer Details
 
 <details>
-<summary><strong>기존 적용 저장소 업데이트</strong></summary>
+<summary><strong>Updating Existing Adopted Repositories</strong></summary>
 
-기존 적용 저장소 업데이트는 GitHub Release/tag와 manifest를 기준으로 수행합니다. AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)를 진입점으로 삼고, [`docs/lifecycle/update.md`](docs/lifecycle/update.md)의 기존 업데이트 판단 결과 형식에 따라 현재 version, 목표 release/tag, migration guide, manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 보고합니다.
+Existing adopted repositories are updated based on GitHub Releases/tags and the manifest. AI uses [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md) as the entry point and follows the existing-update judgment format in [`docs/lifecycle/update.md`](docs/lifecycle/update.md), first reporting current version, target release/tag, migration guide, manifest diff, and Hyper-Waterfall version update PR candidates.
 
-승인된 업데이트 후보를 PR로 전환할 때는 [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md)를 따릅니다. npm CLI는 같은 판단을 실행하기 쉽게 하는 편의 실행 채널이며, canonical 기준인 GitHub Release/tag, `templates/manifest.json`, migration guide를 대체하지 않습니다. CLI 출력만으로 파일을 자동 적용하지 않고, 승인된 범위만 일반 task 흐름으로 전환합니다.
+When converting approved update candidates into a PR, follow [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md). The npm CLI is a convenience execution channel for the same judgment and does not replace the canonical basis: GitHub Release/tag, `templates/manifest.json`, and migration guide. CLI output alone does not automatically apply files; only approved scope is converted into the normal task flow.
 
 </details>
 
 <details>
-<summary><strong>CLI와 배포 채널</strong></summary>
+<summary><strong>CLI and Distribution Channels</strong></summary>
 
-`hyper-waterfall` CLI는 npm registry에 publish되어 있으며, 아래 `npx` 명령으로 lifecycle 판단을 실행할 수 있습니다. publish 전후 검증 결과는 [`docs/releases/v0.2.0-npm-publish.md`](docs/releases/v0.2.0-npm-publish.md)에서 관리합니다.
+The `hyper-waterfall` CLI is published to the npm registry and can run lifecycle judgment through the following `npx` commands. Publish and post-publish verification results are tracked in [`docs/releases/v0.2.0-npm-publish.md`](docs/releases/v0.2.0-npm-publish.md).
 
 ```bash
 npx hyper-waterfall init --repo . --dry-run
@@ -350,7 +363,7 @@ npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --dry-run
 npx hyper-waterfall doctor --repo .
 ```
 
-macOS에서는 Homebrew public tap으로 CLI를 설치할 수 있습니다.
+On macOS, you can install the CLI through the public Homebrew tap.
 
 ```bash
 brew install postmelee/tap/hyper-waterfall
@@ -358,288 +371,294 @@ hyper-waterfall --version
 hyper-waterfall doctor --repo .
 ```
 
-Homebrew, Docker, Codex plugin, Claude plugin 같은 추가 배포 채널도 canonical 기준을 대체하지 않는 프로토콜 실행 수단으로만 다룹니다. 채널별 목적, 비목표, 운영 비용, 우선순위는 [`docs/distribution-channels.md`](docs/distribution-channels.md)에 정리합니다.
+Additional distribution channels such as Homebrew, Docker, Codex plugin, and Claude plugin are treated only as protocol execution channels that do not replace the canonical basis. Channel purpose, non-goals, operating cost, and priority are summarized in [`docs/distribution-channels.md`](docs/distribution-channels.md).
 
-이 Homebrew formula는 npm CLI를 설치하는 wrapper이며, canonical 기준인 GitHub Release/tag, `templates/manifest.json`, migration guide를 대체하지 않습니다. Homebrew는 Node runtime을 의존성으로 설치할 수 있습니다. 아무 tap도 지정하지 않는 `brew install hyper-waterfall` 경로는 Homebrew core 등재가 필요하지만, [#46](https://github.com/postmelee/hyper-waterfall/issues/46) 검토 기준 현재는 제출을 보류하고 public tap 경로를 유지합니다.
+This Homebrew formula is a wrapper that installs the npm CLI and does not replace the canonical basis: GitHub Release/tag, `templates/manifest.json`, and migration guide. Homebrew may install the Node runtime as a dependency. The path `brew install hyper-waterfall` without specifying a tap requires inclusion in Homebrew core, but as of the review criteria in [#46](https://github.com/postmelee/hyper-waterfall/issues/46), this repository keeps the public tap path and does not submit to core.
 
 </details>
 
 ---
 
-## 부록
+## Appendix
 
-**Part 1. 최초의 Hyper-Waterfall** ([rhwp](https://github.com/edwardkim/rhwp))
+**Part 1. The Original Hyper-Waterfall** ([rhwp](https://github.com/edwardkim/rhwp))
 
-1. [Hyper-Waterfall이란?](#hyper-waterfall이란)
-2. [핵심 구조](#핵심-구조)
-3. [핵심 원칙](#핵심-원칙)
-4. [역할 분담](#역할-분담)
-5. [바이브 코딩 vs Hyper-Waterfall](#바이브-코딩-vs-hyper-waterfall)
-6. [왜 강력한가 — AI 없이는 닿을 수 없는 지점](#왜-강력한가--ai-없이는-닿을-수-없는-지점)
+1. [What Is Hyper-Waterfall?](#what-is-hyper-waterfall)
+2. [Core Structure](#core-structure)
+3. [Core Principles](#core-principles)
+4. [Role Split](#role-split)
+5. [Vibe Coding vs Hyper-Waterfall](#vibe-coding-vs-hyper-waterfall)
+6. [Why It Is Powerful — The Point AI Makes Reachable](#why-it-is-powerful--the-point-ai-makes-reachable)
 
 **Part 2. postmelee/hyper-waterfall**
-1. [`postmelee/hyper-waterfall`: 방법론을 하네스로](#postmeleehyper-waterfall-방법론을-하네스로)
-2. [살아있는 예시 — 직접 따라가보기](#살아있는-예시--직접-따라가보기)
-3. [설계 원칙](#설계-원칙)
-4. [프롬프트 가이드 준수](#프롬프트-가이드-준수)
-5. [라이선스](#라이선스)
+
+1. [postmelee/hyper-waterfall: Turning the Methodology into a Harness](#postmeleehyper-waterfall-turning-the-methodology-into-a-harness)
+2. [Live Example — Follow It Yourself](#live-example--follow-it-yourself)
+3. [Design Principles](#design-principles)
+4. [Prompt Guide Alignment](#prompt-guide-alignment)
+5. [License](#license)
+
 ---
 
-## Hyper-Waterfall이란?
-### 거시적 워터폴 + 미시적 애자일, AI가 이 둘을 동시에 가능하게 한다.
-AI가 없던 시대에는 불가능했던 방법론. 워터폴의 규율과 애자일의 속도를 동시에.
+## What Is Hyper-Waterfall?
 
-> 이 방법론은 [`edwardkim/rhwp`](https://github.com/edwardkim/rhwp)와 [`postmelee/alhangeul-macos`](https://github.com/postmelee/alhangeul-macos) 같은 실제 프로젝트 경험을 바탕으로 정제되었습니다. 
-> 본 방법론의 핵심 철학은 [edwardkim/rhwp · hyper_waterfall.md](https://github.com/edwardkim/rhwp/blob/main/mydocs/manual/hyper_waterfall.md)에 가장 완성된 형태로 정리되어 있습니다. 본 저장소는 그 방법론을 다른 저장소에 손쉽게 적용할 수 있게 모듈화한 프레임워크입니다.
+### Macro Waterfall + Micro Agile: AI Makes Both Possible at the Same Time
 
-방법론을 먼저 이해하려면 아래 [핵심 구조](#핵심-구조)부터, 우리 저장소의 차별점만 보려면 [이 저장소가 한 일](#이-저장소가-한-일)로 점프하세요.
+A methodology that was impossible before AI: waterfall's discipline and agile's speed at once.
 
-## 핵심 구조
+> This methodology was refined from real project experience such as [`edwardkim/rhwp`](https://github.com/edwardkim/rhwp) and [`postmelee/alhangeul-macos`](https://github.com/postmelee/alhangeul-macos).
+> Its core philosophy is captured most completely in [edwardkim/rhwp · hyper_waterfall.md](https://github.com/edwardkim/rhwp/blob/main/mydocs/manual/hyper_waterfall.md). This repository modularizes that methodology so it can be applied easily to other repositories.
 
-### 거시적 워터폴 + 미시적 애자일
+To understand the methodology first, start with [Core Structure](#core-structure). To see what this repository adds, jump to [postmelee/hyper-waterfall: Turning the Methodology into a Harness](#postmeleehyper-waterfall-turning-the-methodology-into-a-harness).
 
+## Core Structure
+
+### Macro Waterfall + Micro Agile
+
+```text
+Macro (project level) — waterfall discipline:
+  Plan ──→ Design ──→ Implement ──→ Verify ──→ Release
+   │        │          │             │          │
+   ▼        ▼          ▼             ▼          ▼
+  Docs     Docs       Docs          Docs       Docs
+
+Micro (task level, hours) — agile speed:
+  Implement ──→ Test ──→ Feedback ──→ Revise ──→ Test → ... (fast iteration)
+      │          │          │           │          │
+      AI      automation  human judgment AI      automation
 ```
-거시 (프로젝트 수준) — 워터폴의 규율:
-  계획 ──→ 설계 ──→ 구현 ──→ 검증 ──→ 배포
-   │       │       │       │       │
-   ▼       ▼       ▼       ▼       ▼
-  문서화   문서화    문서화   문서화    문서화
 
-미시 (타스크 수준, 수 시간) — 애자일의 속도:
-  구현 ──→ 테스트 ──→ 피드백 ──→ 수정 ──→ 테스트 → ... (빠른 반복)
-   │       │        │        │        │
-  AI      자동화    사람 판단    AI     자동화
-```
+- Macro direction is controlled by **waterfall discipline**: plans, approvals, staged reporting, and final verification.
+- Micro execution uses **agile fast iteration**: AI and immediate feedback loops, with the full cycle completing within **hours**.
 
-- 거시적 방향: **워터폴의 규율**로 통제한다 — 계획서, 승인, 단계별 보고, 최종 검증.
-- 미시적 실행: **애자일의 빠른 반복**으로 수행한다 — AI와 즉각적인 피드백 루프를 돌린다 (전체 사이클이 **몇 시간** 안에 완료).
+Every task is documented, and every decision is recorded. This is what makes Hyper-Waterfall possible.
 
-이 과정에서 모든 작업이 문서화되고, 모든 결정이 기록됩니다. → 이것이 Hyper-Waterfall을 가능하게 합니다.
+## Core Principles
 
-## 핵심 원칙
+> **Humans never stop thinking.**
 
-> **사람은 절대 생각을 멈추지 않는다.**
+No matter how capable AI becomes, humans decide the direction and judge quality. The moment you accept AI output without reading it, Hyper-Waterfall collapses into vibe coding. Operationally, this principle becomes three rules.
 
-AI가 아무리 뛰어나도 방향을 결정하고 품질을 판단하는 것은 사람입니다. AI의 출력을 읽지 않고 수락하는 순간 Hyper-Waterfall은 바이브 코딩으로 전락합니다. 이 원칙을 운영 차원에서 풀어내면 다음 세 가지가 됩니다.
+### 1. Humans Keep Direction Until the End
 
-### 1. 사람이 방향을 끝까지 가진다
+Stage transitions, plan changes, and source edits require explicit approval from the task requester. AI is a tool for decisions, not the decision maker. Once gates are skipped even once, the methodology breaks down quickly.
 
-단계 전환, 계획 변경, 소스 수정에는 작업지시자의 명시 승인이 필요합니다. AI는 결정의 도구이지 결정자가 아닙니다. 게이트를 한 번이라도 건너뛰기 시작하면 방법론이 빠르게 무너집니다.
+### 2. Always Give AI Enough Context
 
-### 2. AI에게 항상 충분한 맥락을 준다
+Intent and plans are embedded in `mydocs/` so the task's intent, scope, and approval criteria do not need to be explained from scratch in every prompt. Models read the same repository and work on the same context. If work starts with scattered context, AI fills the gaps by guessing.
 
-작업의 의도·범위·승인 기준을 매번 프롬프트에 처음부터 설명하지 않도록, 의도와 계획을 `mydocs/`에 박아둡니다. 모델은 같은 저장소를 읽으며 같은 컨텍스트 위에서 작업합니다. 맥락이 흩어진 상태로 작업을 시작하면 AI는 추측으로 빈 자리를 메우게 됩니다.
+### 3. Periodically Externalize AI Work Memory
 
-### 3. AI의 작업 기억을 주기적으로 외부화한다
+Stage reports, final reports, and PR bodies distill and record intent, decisions, and verification evidence. Chat context disappears, but repository markdown remains. New sessions and new contributors can start from the same baseline.
 
-단계 보고서·최종 보고서·PR 본문에 의도·결정·검증 근거를 증류해 기록합니다. 채팅 컨텍스트는 사라지지만 저장소의 markdown은 남고, 새 세션·새 기여자가 합류해도 같은 출발점에서 시작할 수 있습니다.
+## Role Split
 
-## 역할 분담
+### Task Requester (Human)
 
-### 작업지시자 (사람)
+The human focuses on **thinking**:
 
-사람은 **생각하는 역할**에 집중한다:
+- Direction: "What should we do next?"
+- Priority: "What matters more?"
+- Quality judgment: "Is this good enough?"
+- Architecture decision: "Is this structure correct?"
+- Domain knowledge: "How should this behave in this domain?"
+- Feedback: "This part is wrong, because..."
 
-- 방향 설정: "다음에 뭘 해야 하는가?"
-- 우선순위: "무엇이 더 중요한가?"
-- 품질 판단: "이것이 충분히 좋은가?"
-- 아키텍처 결정: "이 구조가 올바른가?"
-- 도메인 지식: "한컴은 이 경우 어떻게 동작하는가?"
-- 피드백: "이 부분이 잘못되었다, 왜냐하면..."
+### AI Pair Programmer
 
-### AI 페어 프로그래머
+AI focuses on **execution**:
 
-AI는 **실행하는 역할**에 집중한다:
+- Analysis: codebase exploration, root-cause tracing
+- Planning: implementation plan drafting
+- Implementation: code writing, test generation
+- Documentation: reports, technical docs, commit messages
+- Debugging: log analysis, fix proposals
+- Iteration: applying feedback and retrying
 
-- 분석: 코드베이스 탐색, 원인 추적
-- 계획: 구현 계획서 작성
-- 구현: 코드 작성, 테스트 생성
-- 문서: 보고서, 기술 문서, 커밋 메시지
-- 디버깅: 로그 분석, 수정안 제시
-- 반복: 피드백 반영, 재시도
+## Vibe Coding vs Hyper-Waterfall
 
-## 바이브 코딩 vs Hyper-Waterfall
-
-> 바이브 코딩 — `AI 출력을 읽지 않고 수락하고, AI에게 아키텍처 결정을 맡기고, 이해하지 못하는 코드를 배포하는 것` — 은 함정입니다. 겉보기에는 동작하지만, 이해하지 못했기 때문에 문제가 생겨도 진단할 수 없는 코드가 만들어집니다.
+> Vibe coding — `accepting AI output without reading it, letting AI make architecture decisions, and shipping code you do not understand` — is a trap. It may appear to work, but because you do not understand the result, you cannot diagnose problems when they happen.
 >
-> 이 프로젝트는 정반대의 접근을 취합니다. 사람 작업지시자가 방향, 품질, 아키텍처 결정의 완전한 소유권을 유지하고, AI는 혼자서는 불가능한 속도와 규모로 구현을 수행합니다. 핵심 차이: **사람은 절대 생각을 멈추지 않습니다.**
+> This project takes the opposite approach. The human task requester keeps complete ownership of direction, quality, and architecture decisions, while AI performs implementation at a speed and scale humans cannot reach alone. Key difference: **humans never stop thinking.**
 >
-> — [edwardkim/rhwp · 바이브 코딩 vs AI 주도 개발](https://github.com/edwardkim/rhwp#%EB%B0%94%EC%9D%B4%EB%B8%8C-%EC%BD%94%EB%94%A9-vs-ai-%EC%A3%BC%EB%8F%84-%EA%B0%9C%EB%B0%9C)
+> — [edwardkim/rhwp · Vibe Coding vs AI-Driven Development](https://github.com/edwardkim/rhwp#%EB%B0%94%EC%9D%B4%EB%B8%8C-%EC%BD%94%EB%94%A9-vs-ai-%EC%A3%BC%EB%8F%84-%EA%B0%9C%EB%B0%9C)
 
-| | 바이브 코딩 | Hyper-Waterfall |
+| | Vibe Coding | Hyper-Waterfall |
 |---|---|---|
-| **사람의 역할** | AI 출력 수락 | 지시, 검토, 결정 |
-| **계획** | 없음 — "그냥 만들어" | 수행계획서 → 승인 → 구현계획서 → Stage 단위 실행 |
-| **품질 관문** | 동작하길 바람 | 단계마다 검증 + 승인 게이트 + Open PR 리뷰 |
-| **디버깅** | AI에게 AI 버그 수정 요청 | 사람이 진단, AI가 구현 |
-| **아키텍처** | 우연히 형성 | 작업지시자가 의도적으로 설계 |
-| **문서** | 없음 | `mydocs/`(계획서·단계 보고서·최종 보고서) + Issue/PR 본문 |
-| 재현 가능성 | 불가능 | 전 과정 타임라인 추적 가능 |
-| **결과물** | 취약, 유지보수 어려움 | 추적 가능, 인수인계 가능, 어디서든 재개 가능 |
+| **Human role** | Accept AI output | Direct, review, decide |
+| **Plan** | None — "just build it" | Task plan -> approval -> implementation plan -> Stage execution |
+| **Quality gates** | Hope it works | Verification at every Stage + approval gates + Open PR review |
+| **Debugging** | Ask AI to fix AI's bug | Human diagnoses, AI implements |
+| **Architecture** | Accidentally formed | Intentionally designed by the task requester |
+| **Docs** | None | `mydocs/` (plans, Stage reports, final report) + Issue/PR body |
+| Reproducibility | Impossible | Full process timeline is traceable |
+| **Result** | Fragile and hard to maintain | Traceable, handoff-ready, resumable anywhere |
 
-## 왜 강력한가 — AI 없이는 닿을 수 없는 지점
+## Why It Is Powerful — The Point AI Makes Reachable
 
-거시적 워터폴과 미시적 애자일은 오랫동안 trade-off였습니다. 규율을 챙기면 느려졌고, 속도를 챙기면 규율이 빠졌습니다. AI 페어 프로그래머가 등장하면서 이 trade-off가 처음으로 깨졌습니다.
+Macro waterfall and micro agile were long treated as a trade-off. Discipline made things slow; speed removed discipline. AI pair programmers break this trade-off for the first time.
 
-### 1. 속도는 잃지 않으면서 규율을 회복한다
+### 1. Recover Discipline Without Losing Speed
 
-워터폴이 무거워진 큰 이유 중 하나는 **사람이 모든 문서·계획·검증을 짊어졌기 때문**입니다. AI가 이 초안을 빠르게 만들어주면서 워터폴이 잃어버린 속도와 애자일이 잃어버린 규율을 동시에 살릴 수 있게 되었습니다. **같은 규율, 100배 빠른 속도** — 이것이 AI 없이는 닿을 수 없던 지점입니다.
+One major reason waterfall became heavy was that **humans had to carry all documents, plans, and verification themselves**. AI can draft these quickly, letting us recover the speed waterfall lost and the discipline agile lost. **The same discipline, 100x faster** — this is the point that was unreachable without AI.
 
-### 2. 지식이 머릿속이 아니라 저장소에 외부화된다
+### 2. Knowledge Is Externalized into the Repository, Not Kept in Heads
 
-결정·근거·검증 결과가 모두 `mydocs/`와 PR/Issue에 남습니다. 한 명에게 몰린 컨텍스트가 사라져도 다음 사람·다음 AI 세션이 **같은 출발점에서 시작**합니다. 애자일의 약점인 bus-factor 문제가 구조적으로 해소됩니다.
+Decisions, rationale, and verification results remain in `mydocs/`, PRs, and Issues. Even if context concentrated in one person disappears, the next person or next AI session starts from **the same baseline**. Agile's bus-factor problem is structurally reduced.
 
-### 3. 사람은 결정에, AI는 실행에 집중한다
+### 3. Humans Focus on Decisions, AI on Execution
 
-사람이 방향·우선순위·아키텍처·품질을 끝까지 책임지고, AI는 탐색·구현·테스트·문서·반복을 맡습니다. 한 사람의 집중력으로는 닿을 수 없는 작업량이 한 사이클 안에 들어옵니다. **AI는 배율기**입니다 — 좋은 프로세스 위에 올리면 비범한 결과물이 됩니다.
+Humans remain responsible for direction, priority, architecture, and quality, while AI handles exploration, implementation, tests, documents, and repetition. A workload that one person's attention could not reach fits into one cycle. **AI is a multiplier**. Put it on top of a good process, and it produces exceptional results.
 
-### 4. 여러 곳에서 이동하며 작업이 가능하다.
+### 4. Work Can Move Across Places
 
-[rhwp](https://github.com/edwardkim/rhwp)의 메인테이너는 사무실, 집, 이동 중 — 3곳에서 각각 다른 클로드 세션으로 작업한다. 매번 새 세션은 이전의 기억이 없다.
+The maintainer of [rhwp](https://github.com/edwardkim/rhwp) works from the office, home, and while moving, using different Claude sessions in each place. Each new session has no memory of the previous one.
 
-하지만 문서가 있으면:
+But documents answer the context questions:
 
-| "지금 뭘 해야 하지?" | → `orders/20260409.md` |
+| Question | Answer |
 |---|---|
-| "어디까지 했지?" | → `working/task_m100_86_stage1.md` |
-| "어떻게 하기로 했지?" | → `plans/task_m100_86_impl.md` |
-| "왜 이 방식으로 하지?" | → `feedback/` + `tech/` |
-| "이 함정은 뭐지?" | → `troubleshootings/` |
+| "What should I do now?" | `orders/20260409.md` |
+| "Where did we stop?" | `working/task_m100_86_stage1.md` |
+| "What did we decide to do?" | `plans/task_m100_86_impl.md` |
+| "Why this approach?" | `feedback/` + `tech/` |
+| "What is the trap here?" | `troubleshootings/` |
 
-**작업지시자가 컨텍스트 전달에 소비하는 시간이 거의 0**이다. 이것이 3곳을 이동하며 연속 작업이 가능한 이유이고, 컨트리뷰터가 합류했을 때도 동일하게 작동하는 이유이다.
+**The task requester spends almost zero time transferring context.** This is why continuous work is possible across three places, and why the same structure works when contributors join.
 
 ---
 
-## `postmelee/hyper-waterfall`: 방법론을 하네스로
-> 이 저장소는 [rhwp](https://github.com/edwardkim/rhwp)에서 처음 도입된 '하이퍼-워터폴' 방법론을 참고하여 다음과 같이 확장했습니다.
+## postmelee/hyper-waterfall: Turning the Methodology into a Harness
 
-### 1. 프롬프트 한 줄로 어떤 저장소에든 적용 — 모듈화 + placeholder 치환
+> This repository references the Hyper-Waterfall methodology first introduced in [rhwp](https://github.com/edwardkim/rhwp) and extends it as follows.
 
-원본 방법론(rhwp)은 그 저장소의 문서·관습과 강하게 결합되어 있어, 다른 프로젝트에 그대로 가져다 쓰기 어려웠습니다. 본 저장소는 운영 규칙·매뉴얼·SKILL을 `templates/`로 분리하고 진입 절차를 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)로 정형화했습니다. 결과적으로 **AI 코딩 도구에 한 줄 프롬프트만 보내면** 어떤 저장소에든 적용됩니다. AI가 진입 절차를 따라 `REPO_SLUG`·`BASE_BRANCH` 같은 placeholder까지 자동으로 치환합니다.
+### 1. Apply It to Any Repository with One Prompt — Modularization + Placeholder Substitution
 
-기존 적용 저장소 업데이트를 위한 lifecycle 기준도 별도 문서로 정리하고 있습니다. GitHub Release/tag, manifest, migration guide, `.hyper-waterfall/version.json`을 읽어 현재 version, 목표 release/tag, manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 판단하는 구조입니다. 세부 기준은 [`docs/lifecycle/update.md`](docs/lifecycle/update.md)와 [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md)에 둡니다. 본 저장소 자체가 자기 자신에 적용한 dogfooding 첫 사례입니다 (Issue #1, PR #2).
+The original methodology in rhwp is tightly coupled to that repository's documents and conventions, so it is hard to copy directly into other projects. This repository separates operating rules, manuals, and SKILLs into `templates/` and formalizes the entry procedure in [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md). As a result, **one prompt to an AI coding tool** can apply it to any repository. The AI follows the entry procedure and automatically substitutes placeholders such as `REPO_SLUG` and `BASE_BRANCH`.
 
-### 2. 공식 프롬프팅 가이드와의 정합
+Lifecycle criteria for updating existing adopted repositories are also documented separately. GitHub Release/tag, manifest, migration guide, and `.hyper-waterfall/version.json` are used to determine the current version, target release/tag, manifest diff, and Hyper-Waterfall version update PR candidates first. Detailed criteria live in [`docs/lifecycle/update.md`](docs/lifecycle/update.md) and [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md). This repository itself is the first dogfooding case applying Hyper-Waterfall to itself (Issue #1, PR #2).
 
-작업 문서 포맷이 [OpenAI](https://developers.openai.com/api/docs/guides/prompt-guidance)와 [Anthropic](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices)의 공식 프롬프팅 가이드 핵심을 자연스럽게 만족하도록 설계했습니다. 특히 GitHub Issue/PR 템플릿은 GitHub 플랫폼 산출물의 본문 구조를 잡고, `templates/mydocs/_templates/`는 계획서·보고서·피드백·외부 PR 검토 문서의 출력 형식을 명시합니다.
+### 2. Alignment with Official Prompting Guides
 
-> AI가 문서를 작성하고 다시 참조 및 레퍼런스로 사용하는 재귀적 과정에서 응답 품질 저하를 최소화할 수 있습니다.
+The work document formats are designed to naturally satisfy the core of the official prompting guides from [OpenAI](https://developers.openai.com/api/docs/guides/prompt-guidance) and [Anthropic](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices). In particular, GitHub Issue/PR templates structure GitHub platform artifacts, while `templates/mydocs/_templates/` specifies output formats for plans, reports, feedback, and external PR review documents.
 
-- 명확성(Clarity): 작업 목표가 명확하게 정의됨
-- 일관성(Consistency): 모든 작업 문서가 동일한 구조를 가짐
-- 단계적 접근(Step-by-step thinking): 작업을 작은 단계로 분할하여 진행
-- 맥락 제공(Context): 작업에 필요한 모든 정보가 문서에 포함됨
-- 출력 포맷 제약(Output format): 작업 결과물이 중앙 템플릿의 특정 포맷으로 출력됨
+> This minimizes response quality degradation in the recursive process where AI writes documents, then reads and uses them again as references.
 
-상세 매핑은 아래 [프롬프트 가이드 준수](#프롬프트-가이드-준수) 섹션에서 펼쳐 확인할 수 있습니다.
+- Clarity: task goals are clearly defined.
+- Consistency: all work documents share the same structure.
+- Step-by-step thinking: work is split into smaller stages.
+- Context: all information needed for work is included in documents.
+- Output format: task results are emitted in specific central template formats.
 
-### 3. Multi-agent 호환 + 운영 규칙·SKILL·매뉴얼 분리로 토큰·컨텍스트 효율
+See the detailed mapping in [Prompt Guide Alignment](#prompt-guide-alignment).
 
-rhwp는 `CLAUDE.md` 한 파일에 운영 규칙·문서 구조·폴더 정책·명명 규칙·PR 처리를 모두 인라인했고, `AGENTS.md`가 없어 Claude Code 전용으로 동작했습니다. 본 저장소는 두 축으로 분리·확장했습니다.
+### 3. Multi-Agent Compatibility + Token and Context Efficiency Through Separated Rules, SKILLs, and Manuals
 
-**(1) Multi-agent 호환**: `AGENTS.md`를 단일 진실 원천으로 두고 `CLAUDE.md`는 `@AGENTS.md` 한 줄로 참조합니다. SKILL은 `.agents/skills`(Codex) + `.claude/skills`(Claude Code) 심볼릭 링크로 같은 본문이 양쪽 도구에서 인식됩니다. 새로 추가되는 SKILL 인식 도구도 같은 패턴으로 확장됩니다.
+rhwp inlined operating rules, document structure, folder policy, naming rules, and PR handling into a single `CLAUDE.md` file, and did not include `AGENTS.md`, so it operated as Claude Code-specific. This repository separates and expands it along two axes.
 
-**(2) 운영 규칙·SKILL·매뉴얼·템플릿 분리**: `AGENTS.md`에는 매 턴 시스템 프롬프트로 적재될 정책·제약·인덱스만 두고, 절차 상세는 [`mydocs/manual/`](templates/mydocs/manual/)의 주제별 매뉴얼(문서 구조, 타스크 진행, Git, PR, lifecycle, release/update, 충돌 규칙), 각 `mydocs/` 폴더의 `README.md`, [`.github/`](templates/.github/)의 GitHub Issue/PR 템플릿, [`mydocs/_templates/`](templates/mydocs/_templates/)의 문서 출력 형식, [`mydocs/skills/`](templates/mydocs/skills/)의 7개 SKILL로 분리했습니다.
+**(1) Multi-agent compatibility**: `AGENTS.md` is the single source of truth, while `CLAUDE.md` references it with one `@AGENTS.md` line. SKILLs are recognized by both tools through `.agents/skills` (Codex) and `.claude/skills` (Claude Code) symlinks pointing to the same text. New tools that recognize SKILLs can extend the same pattern.
 
-효과:
+**(2) Separation of operating rules, SKILLs, manuals, and templates**: `AGENTS.md` keeps only the policies, constraints, and index that must be loaded into every-turn system prompts. Procedural details are split into topic manuals under [`mydocs/manual/`](templates/mydocs/manual/) (document structure, task workflow, Git, PR, lifecycle, release/update, conflict rules), each `mydocs/` folder's `README.md`, GitHub Issue/PR templates under [`.github/`](templates/.github/), document output formats under [`mydocs/_templates/`](templates/mydocs/_templates/), and 7 SKILLs under [`mydocs/skills/`](templates/mydocs/skills/).
 
-- **토큰 효율**: 매 턴 시스템 프롬프트로 적재되는 분량을 축소. 매뉴얼·SKILL 본문은 호출 시점에만 컨텍스트로 들어옵니다.
-- **컨텍스트 효율**: 모델은 필요한 시점에 필요한 절차만 읽습니다. 무관한 절차로 컨텍스트가 오염되지 않습니다.
-- **의도 전달 명확성**: GitHub 템플릿과 중앙 템플릿이 반복 산출물의 구조를 고정하고, 단계별 SKILL이 절차의 어느 시점에 호출되는지 명시해 AI가 추론으로 절차나 출력 형식을 재구성하지 않습니다.
-- **모델 간 이식성**: SKILL은 표준 형식이라 다른 SKILL 인식 도구로 옮기기 쉽습니다.
+Effects:
 
-## 살아있는 예시 — 직접 따라가보기
+- **Token efficiency**: reduces content loaded into every-turn system prompts. Manuals and SKILL text enter context only when called.
+- **Context efficiency**: the model reads only the procedure needed at the current moment. Unrelated procedures do not pollute context.
+- **Clearer intent transfer**: GitHub templates and central templates fix the structure of repeated artifacts, and staged SKILLs state when they are called, so AI does not infer or reinvent procedure and output formats.
+- **Model portability**: SKILLs use a standard format and can be moved to other SKILL-aware tools.
 
-이 저장소 자체가 하이퍼-워터폴을 자기 자신에게 적용한 첫 사례입니다. 적용 여부를 검토하기 전에 실제 운영이 어떻게 돌아가는지 보고 싶다면 다음 순서로 둘러보세요.
+## Live Example — Follow It Yourself
 
-1. **이슈** [`#1` 하이퍼-워터폴 자기 적용 (dogfooding)](https://github.com/postmelee/hyper-waterfall/issues/1) — 라벨 3개, 마일스톤 M010, linked PR이 자동 표시되는 깔끔한 구조 (상태 알림 댓글 없음)
-2. **Pull Request** [`#2`](https://github.com/postmelee/hyper-waterfall/pull/2) — Open PR 본문 형식: 요약 4 bullet (대상 타스크/왜/무엇/리뷰 포인트), Stage 5개 timeline 이중 링크(단계 보고서 + commit URL), 영향 영역 표, 작업 문서, 검증 결과와 근거
-3. **수행계획서** [`mydocs/plans/task_m010_1.md`](mydocs/plans/task_m010_1.md) — 목적·배경·범위·설계 방향·예상 변경 파일·잠정 단계·검증 계획·리스크
-4. **구현계획서 5단계** [`mydocs/plans/task_m010_1_impl.md`](mydocs/plans/task_m010_1_impl.md) — 단계별 산출물·검증 명령·커밋 메시지를 사전에 확정
-5. **단계 보고서 5개** [`mydocs/working/`](mydocs/working/) — 각 Stage 종료 시 산출물·검증 결과·잔여 위험·다음 단계 영향
-6. **최종 보고서** [`mydocs/report/task_m010_1_report.md`](mydocs/report/task_m010_1_report.md) — 5단계 종합, 변경 전·후 정량 비교, 수용 기준 검증
-7. **오늘할일** [`mydocs/orders/`](mydocs/orders/) — 일일 보드 형식 (마일스톤별 표 + 완료 시각)
-8. **commit log** [`git log` (main)](https://github.com/postmelee/hyper-waterfall/commits/main) — `Task #1: 수행 계획서 작성`부터 `pr-merge-cleanup`까지 12개 task 커밋이 시간 순서로 보존
+This repository is the first case of Hyper-Waterfall applying itself to itself. If you want to see actual operation before deciding whether to adopt it, review these artifacts in order.
 
-이 첫 task는 scope 확장 두 번을 거치며 5단계로 진행됐습니다. 즉 README에 적힌 절차가 실제 어떻게 돌아가는지 — 승인 게이트, 단계 보고, scope 변경 처리, PR 본문 재작성, merge 후 정리까지 — 모두 살아있는 산출물로 따라갈 수 있습니다.
+1. **Issue** [`#1` Hyper-Waterfall self-adoption (dogfooding)](https://github.com/postmelee/hyper-waterfall/issues/1) — a clean structure with 3 labels, milestone M010, and automatically linked PR (no status-noise comments)
+2. **Pull Request** [`#2`](https://github.com/postmelee/hyper-waterfall/pull/2) — Open PR body format: 4 summary bullets (target task/why/what/review points), Stage timeline with dual links (Stage report + commit URL), impact table, work documents, verification results and evidence
+3. **Task plan** [`mydocs/plans/task_m010_1.md`](mydocs/plans/task_m010_1.md) — purpose, background, scope, design direction, expected changed files, tentative stages, verification plan, risks
+4. **5-stage implementation plan** [`mydocs/plans/task_m010_1_impl.md`](mydocs/plans/task_m010_1_impl.md) — stage artifacts, verification commands, and commit messages fixed in advance
+5. **5 Stage reports** [`mydocs/working/`](mydocs/working/) — artifacts, verification results, residual risks, and next-stage impact at each Stage boundary
+6. **Final report** [`mydocs/report/task_m010_1_report.md`](mydocs/report/task_m010_1_report.md) — 5-stage synthesis, before/after quantitative comparison, acceptance criteria verification
+7. **Today's todo** [`mydocs/orders/`](mydocs/orders/) — daily board format (milestone tables + completion time)
+8. **Commit log** [`git log` (main)](https://github.com/postmelee/hyper-waterfall/commits/main) — 12 task commits preserved in chronological order from `Task #1: 수행 계획서 작성` through `pr-merge-cleanup`
 
-## 설계 원칙
+This first task expanded scope twice and proceeded through 5 Stages. In other words, the README procedure is visible as live artifacts: approval gates, Stage reports, scope-change handling, PR body rewrite, and cleanup after merge.
 
-- 의미 있는 소스 변경에는 인간 승인 게이트가 필요합니다.
-- 이슈 진행 추적은 GitHub의 linked PR 자동 cross-reference와 라벨/마일스톤에 위임하고, 댓글은 토론·블로커·결정 기록 용도로만 둡니다.
-- 최신 상태는 이슈 metadata, 현재 branch 또는 PR, `mydocs/`에서 찾을 수 있어야 합니다.
-- 이 프레임워크는 다양한 프로젝트 유형에서 동작해야 합니다. 특정 언어, 빌드, 배포, 제품 규칙은 core가 아니라 대상 저장소의 템플릿과 설정에 둡니다.
-- 프로세스에는 엄격하고, 도구에는 유연해야 합니다.
+## Design Principles
 
-> Hyper-Waterfall은 새로운 마법이 아니라, 워터폴의 규율과 애자일의 속도를 AI라는 배율기 위에서 동시에 살리는 운영 방식입니다. 좋은 프로세스 위에서 AI는 비범한 결과물을 만들어냅니다.
+- Meaningful source changes require a human approval gate.
+- Issue progress tracking is delegated to GitHub linked PR auto-cross-references plus labels and milestones; comments are reserved for discussion, blockers, and decision records.
+- The latest state must be discoverable from Issue metadata, the current branch or PR, and `mydocs/`.
+- This framework must work across many project types. Project-specific language, build, deployment, and product rules belong in the target repository's templates and settings, not in core.
+- Be strict about process and flexible about tools.
 
-## 프롬프트 가이드 준수
+> Hyper-Waterfall is not new magic. It is an operating method that restores waterfall discipline and agile speed at the same time on top of AI as a multiplier. On top of a good process, AI can produce exceptional results.
 
-Hyper-Waterfall은 OpenAI와 Anthropic의 공식 프롬프팅 가이드의 핵심을 개발 프로세스 차원에서 구현합니다. "프롬프트를 잘 쓰는 법"이 아니라 **프롬프트가 잘 써질 수밖에 없는 저장소 구조**를 만드는 접근입니다.
+## Prompt Guide Alignment
 
-### 정합성 요약
+Hyper-Waterfall implements the core of the official OpenAI and Anthropic prompting guides at the development-process level. It is not about "writing a good prompt"; it is about building a **repository structure where prompts are structurally likely to be good**.
 
-| 원칙 | Hyper-Waterfall에서 구현되는 방식 | 효과 |
+### Alignment Summary
+
+| Principle | How Hyper-Waterfall Implements It | Effect |
 |---|---|---|
-| 명확한 목표 | GitHub Issue, 수행계획서, 구현계획서 | AI가 작업 범위와 성공 기준을 먼저 이해함 |
-| 충분한 맥락 | `mydocs/`의 계획서·보고서·피드백·기술 조사 | 새 세션도 저장소 문서로 맥락 복원 |
-| 출력 형식 제약 | `mydocs/_templates/`, Issue/PR template | 계획·보고·검증 결과가 매번 같은 구조로 남음 |
-| 단계적 진행 | Stage 단위 구현·검증·보고 | 복잡한 작업을 검토 가능한 단위로 분할 |
-| 검증 기준 | Stage 보고서, 최종 보고서, PR 본문 | 결과물을 감이 아니라 기록된 기준으로 판단 |
-| 멈춤 조건 | 승인 게이트 | AI가 임의로 다음 단계로 넘어가지 않음 |
-| 장기 작업 기억 | `mydocs/`, commit log, PR timeline | 채팅이 사라져도 작업 이력 유지 |
-| 컨텍스트 경량화 | `1 Issue = 1 Task = 1 Branch = 1 Session` | 세션이 작고 선명하게 유지됨 |
+| Clear goal | GitHub Issue, task plan, implementation plan | AI understands scope and success criteria first. |
+| Sufficient context | Plans, reports, feedback, and technical research in `mydocs/` | New sessions restore context from repository documents. |
+| Output format constraints | `mydocs/_templates/`, Issue/PR templates | Plans, reports, and verification results keep the same structure every time. |
+| Stepwise progress | Stage-level implementation, verification, and reporting | Complex work is split into reviewable units. |
+| Verification criteria | Stage reports, final report, PR body | Results are judged by recorded criteria, not feeling. |
+| Stop conditions | Approval gates | AI does not advance to the next step arbitrarily. |
+| Long-term work memory | `mydocs/`, commit log, PR timeline | Work history remains even when chat disappears. |
+| Lightweight context | `1 Issue = 1 Task = 1 Branch = 1 Session` | Sessions stay small and clear. |
 
 <details>
-<summary><strong>OpenAI GPT-5.5 프롬프팅 가이드 매핑</strong> · 출처: <a href="https://developers.openai.com/api/docs/guides/prompt-guidance">OpenAI prompt guidance</a></summary>
+<summary><strong>OpenAI prompt guidance mapping</strong> · source: <a href="https://developers.openai.com/api/docs/guides/prompt-guidance">OpenAI prompt guidance</a></summary>
 
-1. **결과물을 먼저 정한다.**
-   Hyper-Waterfall은 작업 시작부터 Issue, 수행계획서, 구현계획서, Stage 보고서, 최종 보고서, PR이라는 산출물을 명확히 둡니다. AI에게 "잘 해줘"라고 맡기는 게 아니라, 무엇을 남겨야 하는지 먼저 고정합니다.
+1. **Define the output first.**
+   Hyper-Waterfall defines artifacts from the start: Issue, task plan, implementation plan, Stage report, final report, and PR. Instead of asking AI to "do a good job," it first fixes what must be left behind.
 
-2. **좋은 답변의 기준을 적는다.**
-   각 Stage는 구현뿐 아니라 검증 기준과 리뷰 포인트를 함께 남깁니다. 그래서 AI의 결과물은 감으로 평가되지 않고, 문서화된 기준 위에서 판단됩니다.
+2. **Describe what a good answer means.**
+   Each Stage records not only implementation but also verification criteria and review points. AI output is judged against documented criteria, not intuition.
 
-3. **제약 조건을 짧게 건다.**
-   Hyper-Waterfall은 "승인 없이 다음 단계 진행 금지", "소스 수정 전 승인", "Issue 기준 추적"처럼 AI가 넘지 말아야 할 경계를 명시합니다. 자유도를 없애는 게 아니라, 폭주하지 않게 레일을 까는 방식입니다.
+3. **Set short constraints.**
+   Hyper-Waterfall makes boundaries explicit: "do not proceed to the next Stage without approval," "ask before source edits," and "track by Issue." This does not remove freedom; it lays rails that prevent runaway execution.
 
-4. **필요한 근거 수준을 말한다.**
-   구현 결과는 Stage 보고서, 검증 로그, PR 본문으로 증류됩니다. 단순히 코드가 바뀐 것이 아니라, 왜 바뀌었고 어떻게 확인했는지가 저장소에 남습니다.
+4. **State the level of evidence needed.**
+   Implementation results are distilled into Stage reports, verification logs, and PR bodies. The repository keeps not only what changed, but why it changed and how it was checked.
 
-5. **출력 형식을 정한다.**
-   `mydocs/_templates/`는 계획서, 구현계획서, 단계 보고서, 최종 보고서, 피드백, 기술 조사, 트러블슈팅, 외부 PR 검토 문서의 expected output shape를 파일로 고정합니다. PR 본문은 `.github/pull_request_template.md`가 리뷰 화면에 맞춰 구조화합니다. AI의 답변이 흩어지는 대신, 다음 작업자가 다시 읽을 수 있는 구조가 됩니다.
+5. **Specify the output format.**
+   `mydocs/_templates/` fixes the expected output shape for task plans, implementation plans, Stage reports, final reports, feedback, technical research, troubleshooting, and external PR review documents. `.github/pull_request_template.md` structures PR bodies for the review screen. AI answers are shaped into artifacts the next worker can read again.
 
-6. **언제 멈출지도 알려준다.**
-   Hyper-Waterfall은 Stage 경계마다 멈추고 사람의 승인을 기다립니다. AI가 끝까지 달리는 것이 아니라, 사람이 방향을 확인할 수 있는 정지선을 둡니다.
+6. **Tell the model when to stop.**
+   Hyper-Waterfall stops at every Stage boundary and waits for human approval. AI does not run to the end; it stops at lines where humans can confirm direction.
 
 </details>
 
 <details>
-<summary><strong>Anthropic Claude Opus 4.7 프롬프팅 가이드 매핑</strong> · 출처: <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">Claude prompting best practices</a></summary>
+<summary><strong>Anthropic Claude prompting best practices mapping</strong> · source: <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices">Claude prompting best practices</a></summary>
 
-1. **명확하고 직접적인 지시.**
-   작업의 의도를 Issue, 수행계획서, 구현계획서로 단계마다 명시화합니다. 모호한 의도를 모델에 던지는 대신, 무엇을 만들지·왜 만드는지·어디까지 만들지를 게이트 전에 고정합니다.
+1. **Clear and direct instructions.**
+   Task intent is made explicit at every step through the Issue, task plan, and implementation plan. Instead of giving the model ambiguous intent, the method fixes what to build, why, and how far before the gate.
 
-2. **워크플로우와 목표 맥락 제공.**
-   작업이 어떤 흐름의 일부인지, 어떤 결과물의 어디에 들어가는지를 매번 프롬프트에 적게 하지 않습니다. `mydocs/`, Issue, PR 본문에 그 맥락이 박혀 있어 모델이 자연스럽게 같은 컨텍스트를 읽습니다.
+2. **Workflow and goal context.**
+   Users do not need to include in every prompt how the work fits into the larger flow or artifact. That context is embedded in `mydocs/`, Issues, and PR bodies, so the model naturally reads the same context.
 
-3. **순차적 단계 제시.**
-   Stage 단위 진행과 단계마다의 승인 게이트가 Anthropic이 권장하는 "지시를 순차적 단계로 쪼개기"를 그대로 구현합니다.
+3. **Sequential steps.**
+   Stage-based progress and approval gates directly implement the practice of splitting instructions into sequential steps.
 
-4. **출력 형식 통제.**
-   계획서·단계 보고서·최종 보고서·피드백·기술 조사·외부 PR 검토 문서는 `mydocs/_templates/`의 desired output format을 따르고, PR 본문은 `.github/pull_request_template.md`를 따릅니다. 모델이 "어디에 무엇을 적을지"를 매 작업마다 발명하지 않게 합니다.
+4. **Output format control.**
+   Task plans, Stage reports, final reports, feedback, technical research, and external PR review documents follow the desired output format in `mydocs/_templates/`, while PR bodies follow `.github/pull_request_template.md`. The model does not invent where to write what on each task.
 
-5. **장기 작업과 외부 기억.**
-   Opus 4.7이 강한 long-horizon agentic work와 memory task에 `mydocs/`가 그대로 대응합니다. 채팅 컨텍스트가 사라져도 파일시스템에 작업 기억이 증류되어 남습니다.
+5. **Long-running work and external memory.**
+   `mydocs/` directly supports long-horizon agentic work and memory tasks. Even if chat context disappears, work memory is distilled into the filesystem.
 
-6. **Literal 지시 따름과 정합.**
-   Opus 4.7은 명시된 범위에 더 정확히 묶이는 경향이 있습니다. Hyper-Waterfall은 "소스 수정 전 승인", "승인 없이 다음 Stage 진행 금지", "Issue 기준 추적" 같은 경계를 애초에 문서화하므로 literal한 모델일수록 잘 작동합니다.
+6. **Literal instruction following and alignment.**
+   More literal models tend to bind more tightly to explicit scope. Hyper-Waterfall documents boundaries such as "ask before source edits," "do not proceed to the next Stage without approval," and "track by Issue," so literal instruction following works in favor of the process.
 
-> 단, Hyper-Waterfall은 "최대 자율성"보다 "인간 통제권과 추적 가능성"을 우선합니다. Opus 4.7 가이드가 권장하는 "interactive coding에서 첫 턴에 의도와 제약을 명확히 주고 반복 상호작용을 줄이라"는 권고와 같은 layer가 아니라, 한 단계 위 — task 전체 관점의 게이트 — 에서 작동합니다. XML 태그 구조화는 직접 채택하지 않으며, `mydocs/` 폴더 구조, 파일명 규칙, 중앙 템플릿이 같은 역할을 수행합니다.
+> Hyper-Waterfall prioritizes human control and traceability over maximum autonomy. It does not operate at the same layer as guidance for one-turn interactive coding; it adds a higher-level task gate across the whole task. XML tag structuring is not adopted directly; `mydocs/` folder structure, filename rules, and central templates perform the same role.
 
-> **한 줄 요약**: Hyper-Waterfall은 Claude Opus 4.7 프롬프팅 가이드의 핵심을 단순한 프롬프트 문장이 아니라, 개발 프로세스로 구현한 하네스입니다.
+> **One-line summary**: Hyper-Waterfall implements the core of Claude prompting best practices as a development-process harness, not as a single prompt sentence.
 
 </details>
 
-## 라이선스
+## License
 
-MIT. 자세한 내용은 [LICENSE](LICENSE)를 참고하세요.
+MIT. See [LICENSE](LICENSE) for details.

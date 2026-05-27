@@ -20,7 +20,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1.9 | 업스트림 README 상단 후킹·요약 표 반영 | `README.md`, `mydocs/working/task_m050_66_stage1_9.md` | 최신 `origin/main` 기준 상단 블록만 변경, `## 바로 설치` 이하 유지 확인 |
 | 1.10 | 업스트림 README 핵심 섹션 순서 조정 | `README.md`, `mydocs/working/task_m050_66_stage1_10.md` | 최신 `origin/main` 기준 제목/본문 유지, `Hyper-Waterfall의 강점` 위치만 이동 확인 |
 | 1.11 | 업스트림 README 최신 수정본 동기화 | `README.md`, `mydocs/working/task_m050_66_stage1_11.md` | 최신 `origin/main`의 길잡이/보강 문장 반영, 이후 Stage 기준본 확인 |
-| 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
+| 2 | 영어 기본 README 전환 | `README.md`, `README.ko.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 한국어 최신본 보존, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
 
@@ -588,11 +588,13 @@ Task #66 [Stage 1.11]: 업스트림 README 최신 수정본 동기화
 수정:
 
 - `README.md`
+- `README.ko.md`
 - `mydocs/orders/20260525.md`
 
 ### 변경 내용
 
-- `README.ko.md`의 상위 구조를 기준으로 루트 `README.md`를 영어 기본 문서로 전환한다.
+- 최신 업스트림 한국어 `README.md`를 `README.ko.md`에 먼저 동기화해 한국어 기준본을 보존한다.
+- 동기화된 `README.ko.md`의 상위 구조를 기준으로 루트 `README.md`를 영어 기본 문서로 전환한다.
 - 상단에 `English | 한국어 | 简体中文` 언어 링크를 추가한다.
 - 영어 사용자가 그대로 복사할 적용 프롬프트를 제공한다.
 - 첫 화면에서 What, Quick Start, When to Use를 빠르게 읽을 수 있게 한다.
