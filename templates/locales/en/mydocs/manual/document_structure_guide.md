@@ -11,7 +11,7 @@ This manual defines `mydocs/` folder roles, document filename rules, the central
 - **GitHub platform template**: `.github/ISSUE_TEMPLATE/` and `.github/pull_request_template.md`, which define the input/body format for GitHub Issues and Pull Requests.
 - **Official documentation root**: the target project's official documentation location for users, contributors, external integrators, or distribution channels. Examples include `docs/`, `specs/`, `site/`, `website/`, `adr/`, `book/`, and GitHub Wiki. Hyper-Waterfall does not fix this name.
 - **Release manifest**: `templates/manifest.json`, which defines release files, target paths, update policies, and checksum status.
-- **Applied version record**: `.hyper-waterfall/version.json`, which records the framework version used by a repository where Hyper-Waterfall is applied.
+- **Applied version/locale record**: `.hyper-waterfall/version.json`, which records the framework version and selected locale used by a repository where Hyper-Waterfall is applied.
 - **Actual artifact document**: a document written for a specific date, Issue, PR, or research topic, such as `orders/20260506.md` or `plans/task_m010_3.md`.
 - **Internal task**: repository-internal work tracked by a GitHub Issue and documented with a task plan, implementation plan, stage reports, and final report.
 - **External contributor PR**: review work for a Pull Request submitted by an external contributor. It uses a different folder and procedure from internal tasks.
@@ -169,7 +169,7 @@ Mandatory rules:
 The canonical distribution unit for Hyper-Waterfall is a GitHub Release/tag. Prompts are only user interfaces for starting installation or update. Actual file application is based on the release `templates/manifest.json`, version record, and migration guide.
 
 - Manifest source of truth: `templates/manifest.json`
-- Applied repository version record: `.hyper-waterfall/version.json`
+- Applied repository version/locale record: `.hyper-waterfall/version.json`
 - Migration guide location: `docs/migrations/`
 
 Lifecycle judgment details are covered by the following documents:
@@ -196,7 +196,7 @@ Update policy meanings:
 - `preserve`: create when missing, but do not change existing content without explicit approval.
 - `symlink`: verify links such as `.agents/skills -> ../mydocs/skills` and `.claude/skills -> ../mydocs/skills`.
 
-`.hyper-waterfall/version.json` is not a work artifact. Do not place it under `mydocs/`. It records which Hyper-Waterfall release the target repository installed and when it was last updated. Lifecycle judgment reads this file and compares the current version with the target release manifest and migration guide.
+`.hyper-waterfall/version.json` is not a work artifact. Do not place it under `mydocs/`. It records which Hyper-Waterfall release and locale the target repository installed and when it was last updated. Lifecycle judgment reads this file and compares the current version, current locale, target release manifest, and migration guide.
 
 New adoption uses strict manifest mode. Allowed targets are manifest `files[]` targets, `.hyper-waterfall/version.json`, and manifest-defined symlinks. Do not create or modify files outside the manifest during adoption. Target-project-specific artifacts such as product code, product docs, architecture docs, roadmap, API contracts, examples, and schemas are deferred task candidates, not adoption side effects.
 

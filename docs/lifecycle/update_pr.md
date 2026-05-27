@@ -9,6 +9,7 @@
 - 현재 version
 - 목표 release/tag
 - 현재 locale
+- 요청 locale 또는 locale 전환 요청
 - 목표 release locale 지원
 - migration guide
 - manifest diff
@@ -38,11 +39,11 @@ Hyper-Waterfall 버전 업데이트 PR 본문은 기존 `.github/pull_request_te
 
 | PR 본문 섹션 | 포함해야 할 내용 |
 |---|---|
-| `요약` | 현재 version, 현재 locale, 목표 release/tag, 목표 release locale 지원, migration guide, 리뷰 포인트 |
-| `변경 내역` | manifest diff와 locale manifest diff 요약. 추가, 수정, 삭제, symlink, preserve, fallback 후보 항목을 구분 |
+| `요약` | 현재 version, 현재 locale, 요청 locale 또는 locale 전환 요청, 목표 release/tag, 목표 release locale 지원, migration guide, 리뷰 포인트 |
+| `변경 내역` | manifest diff와 locale manifest diff 요약. 추가, 수정, 삭제, symlink, preserve, fallback 후보, locale 보존/전환 후보 항목을 구분 |
 | `영향 영역` | `AGENTS.md`, `CLAUDE.md`, `.github/`, `mydocs/manual/`, `mydocs/skills/`, `.hyper-waterfall/version.json` 등 영향을 받는 영역 |
-| `검증` | manifest 파싱, version 기록 확인, 목표 release locale 지원 확인, migration guide 필수 섹션 확인, 사용자 수정 충돌 확인 |
-| `검증 한계` | 자동 판별하지 못한 사용자 수정, 수동 리뷰가 필요한 파일, locale 선택 저장 위치 미확정, 원격 CI 미수행 사유 |
+| `검증` | manifest 파싱, version 기록과 `locale` 필드 확인, 목표 release locale 지원 확인, migration guide 필수 섹션 확인, 사용자 수정 충돌 확인 |
+| `검증 한계` | 자동 판별하지 못한 사용자 수정, 수동 리뷰가 필요한 파일, 기존 version state에 locale 기록이 없어 `unknown`으로 판단한 경우, 원격 CI 미수행 사유 |
 | `남은 리스크` | conflict, fallback 후보, 보류 항목, 적용 저장소 maintainer가 직접 결정해야 하는 항목 |
 
 ## 변경 분류 기준

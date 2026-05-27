@@ -8,7 +8,7 @@
 - 목표 GitHub Release/tag가 정해졌거나 후보가 있다.
 - 목표 release의 `templates/manifest.json`과 관련 `docs/migrations/` 문서를 확인할 수 있다.
 - 목표 release의 `templates/manifest.json`에 `localization`이 있으면 지원 locale, 기본 locale, fallback locale, 기존 locale 보존 기준을 확인할 수 있다.
-- 현재 적용 저장소의 locale 기록이 있으면 그 값을 확인한다. 실제 locale 선택 저장 위치와 workflow 연결은 후속 #70에서 확정하므로, 기록이 없으면 `unknown`으로 보고한다.
+- 현재 적용 저장소의 `.hyper-waterfall/version.json`에 top-level `locale` 기록이 있으면 그 값을 확인한다. 기존 적용 저장소 호환을 위해 `selectedLocale`, `localization.locale`, `localization.selectedLocale`도 읽기 후보로 볼 수 있다. 어떤 기록도 없으면 `unknown`으로 보고한다.
 
 ## 업데이트 진입 절차
 
@@ -37,7 +37,7 @@
 
 - 대상 저장소: 업데이트할 저장소 루트와 기준 브랜치
 - 현재 version: 대상 저장소의 `.hyper-waterfall/version.json`에 기록된 version, release, appliedAt
-- 현재 locale: 저장된 locale 값 또는 `unknown`, 확인 근거, 선택 저장 위치가 아직 #70 범위로 남아 있을 때의 한계
+- 현재 locale: `.hyper-waterfall/version.json`의 top-level `locale` 값 또는 호환 필드에서 읽은 값, 기록이 없을 때의 `unknown`, 확인 근거
 - 목표 release/tag: 적용하려는 Hyper-Waterfall GitHub Release 또는 tag
 - 목표 release locale 지원: `supportedLocales`, `defaultLocale`, `fallbackLocale`, `availability.status`, 기존 locale 보존 여부
 - migration guide: 현재 version에서 목표 version으로 이동할 때 읽어야 하는 `docs/migrations/v{from}-to-v{to}.md`
@@ -52,7 +52,7 @@
 
 ## CLI 출력 계약
 
-CLI가 `update`나 `doctor` 결과를 출력하더라도 이 결과는 파일 변경 전 판단 보고다. 출력 항목은 현재 version, 현재 locale, 목표 release/tag, 목표 release locale 지원, migration guide, manifest diff, locale manifest diff, 자동 적용 가능, 수동 확인 필요, conflict, 보류, 검증, 승인 요청을 포함해야 한다.
+CLI가 `update`나 `doctor` 결과를 출력하더라도 이 결과는 파일 변경 전 판단 보고다. 출력 항목은 현재 version, 현재 locale, 요청 locale 또는 전환 요청, 목표 release/tag, 목표 release locale 지원, migration guide, manifest diff, locale manifest diff, 자동 적용 가능, 수동 확인 필요, conflict, 보류, 검증, 승인 요청을 포함해야 한다.
 
 승인 전에는 manifest diff에 포함된 파일을 실제 대상 저장소에 적용하지 않는다.
 

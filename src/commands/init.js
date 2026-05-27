@@ -18,6 +18,7 @@ const options = [
   ["--repo <path>", "Target repository path. Defaults to the current directory."],
   ["--manifest <path>", "Framework manifest path. Defaults to repo templates/manifest.json, then bundled manifest."],
   ["--target-release <tag>", "Target Hyper-Waterfall release or tag."],
+  ["--locale <locale>", "Requested Hyper-Waterfall locale for adoption dry-run."],
   ["--dry-run", "Print the adoption plan without writing files."]
 ];
 
@@ -25,7 +26,7 @@ function help() {
   return renderCommandHelp({
     name,
     summary,
-    usage: "hyper-waterfall init [--repo <path>] [--manifest <path>] [--target-release <tag>] [--dry-run]",
+    usage: "hyper-waterfall init [--repo <path>] [--manifest <path>] [--target-release <tag>] [--locale <locale>] [--dry-run]",
     options,
     description: [
       "Prints the new-adoption checkpoint before any repository files are changed.",
@@ -50,12 +51,14 @@ function run(args, io) {
   try {
     const repoPath = parsed.values["--repo"] || ".";
     const manifestPath = parsed.values["--manifest"];
+    const requestedLocale = parsed.values["--locale"];
     const loaded = loadManifest({ repoPath, manifestPath });
     const summaryResult = summarizeManifest(loaded.repoPath, loaded.manifest);
     const candidates = classifyInitCandidates(summaryResult);
     const localization = summarizeLocalization(
       getManifestSourceRoot(loaded.manifestPath),
-      loaded.manifest
+      loaded.manifest,
+      requestedLocale
     );
     const targetRelease = getTargetRelease(loaded.manifest, parsed.values["--target-release"]);
     const versionState = readVersionState(
@@ -85,7 +88,7 @@ function run(args, io) {
           title: "선택 locale",
           entries: localization.exists
             ? [
-                ["requested", "none"],
+                ["requested", requestedLocale || "none"],
                 ["selected", localization.selectedLocale],
                 ["supported", localization.selectedSupported ? "yes" : "no"],
                 ["defaultLocale", localization.defaultLocale],
@@ -130,7 +133,8 @@ function run(args, io) {
             ["exists", versionState.exists ? "yes" : "no"],
             ["schemaVersion", loaded.manifest.versionState.format.schemaVersion],
             ["frameworkVersion", loaded.manifest.versionState.format.frameworkVersion],
-            ["releaseTag", loaded.manifest.versionState.format.releaseTag]
+            ["releaseTag", loaded.manifest.versionState.format.releaseTag],
+            ["locale", localization.exists ? localization.selectedLocale : "unknown"]
           ]
         },
         {
@@ -147,6 +151,7 @@ function run(args, io) {
           title: "승인 요청",
           items: [
             "선택 locale, 누락 locale source, fallback 후보를 먼저 검토한다.",
+            ".hyper-waterfall/version.json의 locale 기록 계획을 검토한다.",
             "즉시 적용할 copy/preserve/symlink 후보를 검토한다.",
             "기존 target이 있는 항목은 덮어쓰기 전에 별도 승인을 받는다.",
             "필요하면 일반 task workflow로 전환해 변경을 추적한다."

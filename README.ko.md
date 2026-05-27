@@ -299,7 +299,7 @@ your-repo/
 ├── AGENTS.md                       운영 규칙 단일 진실 원천
 ├── CLAUDE.md                       Claude Code용 (AGENTS.md 참조)
 ├── .hyper-waterfall/
-│   └── version.json                 적용된 Hyper-Waterfall version 기록
+│   └── version.json                 적용된 Hyper-Waterfall version과 locale 기록
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   │   └── task.yml
@@ -333,7 +333,7 @@ your-repo/
 <details>
 <summary><strong>기존 적용 저장소 업데이트</strong></summary>
 
-기존 적용 저장소 업데이트는 GitHub Release/tag와 manifest를 기준으로 수행합니다. AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)를 진입점으로 삼고, [`docs/lifecycle/update.md`](docs/lifecycle/update.md)의 기존 업데이트 판단 결과 형식에 따라 현재 version, 목표 release/tag, migration guide, manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 보고합니다.
+기존 적용 저장소 업데이트는 GitHub Release/tag와 manifest를 기준으로 수행합니다. AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)를 진입점으로 삼고, [`docs/lifecycle/update.md`](docs/lifecycle/update.md)의 기존 업데이트 판단 결과 형식에 따라 현재 version, 현재 locale, 요청 locale 또는 전환 요청, 목표 release/tag, 목표 release locale 지원, migration guide, manifest diff, locale manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 보고합니다.
 
 승인된 업데이트 후보를 PR로 전환할 때는 [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md)를 따릅니다. npm CLI는 같은 판단을 실행하기 쉽게 하는 편의 실행 채널이며, canonical 기준인 GitHub Release/tag, `templates/manifest.json`, migration guide를 대체하지 않습니다. CLI 출력만으로 파일을 자동 적용하지 않고, 승인된 범위만 일반 task 흐름으로 전환합니다.
 
@@ -517,7 +517,7 @@ AI는 **실행하는 역할**에 집중한다:
 
 원본 방법론(rhwp)은 그 저장소의 문서·관습과 강하게 결합되어 있어, 다른 프로젝트에 그대로 가져다 쓰기 어려웠습니다. 본 저장소는 운영 규칙·매뉴얼·SKILL을 `templates/`로 분리하고 진입 절차를 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)로 정형화했습니다. 결과적으로 **AI 코딩 도구에 한 줄 프롬프트만 보내면** 어떤 저장소에든 적용됩니다. AI가 진입 절차를 따라 `REPO_SLUG`·`BASE_BRANCH` 같은 placeholder까지 자동으로 치환합니다.
 
-기존 적용 저장소 업데이트를 위한 lifecycle 기준도 별도 문서로 정리하고 있습니다. GitHub Release/tag, manifest, migration guide, `.hyper-waterfall/version.json`을 읽어 현재 version, 목표 release/tag, manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 판단하는 구조입니다. 세부 기준은 [`docs/lifecycle/update.md`](docs/lifecycle/update.md)와 [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md)에 둡니다. 본 저장소 자체가 자기 자신에 적용한 dogfooding 첫 사례입니다 (Issue #1, PR #2).
+기존 적용 저장소 업데이트를 위한 lifecycle 기준도 별도 문서로 정리하고 있습니다. GitHub Release/tag, manifest, migration guide, `.hyper-waterfall/version.json`을 읽어 현재 version, 현재 locale, 요청 locale 또는 전환 요청, 목표 release/tag, 목표 release locale 지원, manifest diff, locale manifest diff, Hyper-Waterfall 버전 업데이트 PR 후보를 먼저 판단하는 구조입니다. 세부 기준은 [`docs/lifecycle/update.md`](docs/lifecycle/update.md)와 [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md)에 둡니다. 본 저장소 자체가 자기 자신에 적용한 dogfooding 첫 사례입니다 (Issue #1, PR #2).
 
 ### 2. 공식 프롬프팅 가이드와의 정합
 

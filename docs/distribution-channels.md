@@ -24,7 +24,7 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 | GitHub Release/tag | 특정 Hyper-Waterfall version을 고정하는 canonical 배포 단위 |
 | `templates/manifest.json` | 적용 대상 파일, target 경로, update policy, checksum 상태를 정의하는 기계 판독 기준 |
 | `docs/migrations/` | 기존 적용 저장소가 version을 올릴 때 읽는 수동 확인과 충돌 검토 기준 |
-| `.hyper-waterfall/version.json` | 적용 저장소가 현재 어떤 Hyper-Waterfall release를 기준으로 설치됐는지 기록하는 상태 파일 |
+| `.hyper-waterfall/version.json` | 적용 저장소가 현재 어떤 Hyper-Waterfall release와 locale을 기준으로 설치됐는지 기록하는 상태 파일 |
 | npm CLI | canonical 기준을 읽어 `init`, `update`, `doctor` 판단 결과를 출력하는 편의 실행 채널 |
 
 따라서 추가 채널은 release asset, manifest, migration guide, npm CLI 중 무엇을 어떻게 실행할지 결정하는 얇은 계층이어야 한다. 채널별 package나 image 자체가 새 canonical 원천이 되면 안 된다.
@@ -90,7 +90,9 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 목적:
 
 - `npx hyper-waterfall init --repo . --dry-run`
+- `npx hyper-waterfall init --repo . --locale ko --dry-run`
 - `npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --dry-run`
+- `npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --locale zh-CN --dry-run`
 - `npx hyper-waterfall doctor --repo .`
 
 위 명령으로 신규 적용, 기존 업데이트, 상태 진단의 판단 결과를 재현 가능하게 출력한다.
@@ -270,7 +272,7 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 | canonical 기준 혼선 | 채널마다 다른 manifest나 migration 기준을 쓰면 적용 저장소 업데이트가 재현 불가능해진다. | GitHub Release/tag + manifest + migration guide만 기준으로 둔다. |
 | checksum 미확정 상태 배포 | root/directory `pending-release` 상태를 전체 checksum 확정처럼 보이게 할 수 있다. | release/tag 공개 후에도 file checksum `ready`와 root/directory `pending-release`를 구분한다. |
 | 사용자 파일 자동 덮어쓰기 | Hyper-Waterfall 승인 게이트를 우회한다. | 모든 채널은 판단 결과와 승인 요청만 출력한다. |
-| channel drift | npm, Homebrew, Docker, plugin 설명과 동작이 서로 달라진다. | npm CLI 출력 계약과 agent entrypoint 판단 결과 형식을 공통 기준으로 둔다. |
+| channel drift | npm, Homebrew, Docker, plugin 설명과 동작이 서로 달라진다. | npm CLI 출력 계약과 agent entrypoint 판단 결과 형식을 공통 기준으로 둔다. locale은 `.hyper-waterfall/version.json`의 `locale` 기록과 `init/update --locale` dry-run 판단을 기준으로 맞춘다. |
 | tool-specific lock-in | Codex/Claude plugin이 특정 도구에만 맞는 절차를 만들 수 있다. | `AGENTS.md`, `CLAUDE.md`, `mydocs/skills` canonical 구조를 유지하고 plugin은 발견/실행 계층으로 제한한다. |
 
 ## 검증 기준

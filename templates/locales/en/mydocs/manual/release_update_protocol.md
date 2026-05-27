@@ -15,7 +15,7 @@ Before release, confirm:
 - `frameworkVersion`, `plannedTag`, and `baselineTag` in `templates/manifest.json` match release intent.
 - checksums can be finalized from `pending-release` during release packaging.
 - `docs/migrations/v{from}-to-v{to}.md` includes added files, modified files, manual review, conflict risk, and verification criteria.
-- `.hyper-waterfall/version.json` in adopted repositories can be updated to the target version.
+- `.hyper-waterfall/version.json` in adopted repositories can record or preserve the target version and selected locale.
 
 ## PR Type Separation
 
@@ -56,7 +56,7 @@ Existing adopted repository updates compare these inputs:
 - `templates/manifest.json` from the target GitHub Release/tag
 - `docs/migrations/v{from}-to-v{to}.md` from current version to target version
 - user modification diff in the target repository
-- if the manifest provides `localization`, current locale record, target release locale support, locale manifest diff, and locale preserve/switch judgment
+- if the manifest provides `localization`, current locale record in `.hyper-waterfall/version.json`, requested locale or switch request, target release locale support, locale manifest diff, and locale preserve/switch judgment
 
 Report the judgment first using `docs/lifecycle/update.md`. Do not apply files from the manifest diff to the target repository before approval.
 
@@ -64,7 +64,7 @@ Report the judgment first using `docs/lifecycle/update.md`. Do not apply files f
 
 Hyper-Waterfall version update PRs use the same branch flow as normal task PRs. The inputs and PR body differ.
 
-- Input: existing update judgment result, manifest diff, locale manifest diff, migration guide
+- Input: existing update judgment result, manifest diff, locale manifest diff, locale preserve/switch judgment, migration guide
 - Body: reflect `docs/lifecycle/update_pr.md` into `.github/pull_request_template.md`
 - Tracking: GitHub Issue, task plan, implementation plan, stage reports, final report
 
