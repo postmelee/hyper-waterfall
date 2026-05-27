@@ -66,7 +66,7 @@ top-level `localization` 계약:
 | `sourcePatternToken` | entry별 `sourcePattern`에서 locale code로 치환할 token. 초기값은 `{locale}` |
 | `missingLocalePolicy` | 선택 locale source가 없을 때 조용히 성공 처리하지 않고 보고하는 정책 |
 | `preserveSelectedLocaleOnUpdate` | 기존 적용 저장소 update 시 기존 선택 locale을 보존하는 기본 정책 |
-| `availability.status` | 실제 locale pack 본문 준비 상태. 전체 초기 지원 locale이 완료될 때까지 `planned`로 유지하며, #68에서 `en`/`ko`, #69에서 `zh-CN`을 채운다. |
+| `availability.status` | 실제 locale pack 본문 준비 상태. 전체 초기 지원 locale source가 존재하면 `complete`로 표시한다. #68에서 `en`/`ko`, #69에서 `zh-CN`을 채웠다. |
 
 entry-level `localization` 계약:
 
@@ -82,7 +82,7 @@ entry-level `localization` 계약:
 
 `templates/mydocs/manual`과 `templates/mydocs/skills`는 locale 대상이지만 절차 의미가 바뀌면 안 되므로 `requiresSemanticReview: true`를 둔다. 번역본 작성과 의미 보존 검증은 #68, #69, #71에서 확인한다.
 
-현재 manifest의 locale pack availability는 부분 준비 상태다. `en`과 `ko` pack source는 #68에서 채웠고, `zh-CN` pack 본문은 #69에서 채운다. `availability.status`는 전체 초기 지원 locale이 완료될 때까지 `planned`로 유지한다.
+현재 manifest의 locale pack availability는 source 준비 완료 상태다. `en`과 `ko` pack source는 #68에서 채웠고, `zh-CN` pack 본문은 #69에서 채웠다. `availability.status`는 `complete`이며, locale 선택 workflow 연결은 #70, smoke 검증과 migration guide는 #71에서 이어진다.
 
 ## 구조적 계약
 
@@ -189,4 +189,4 @@ locale별 문서는 같은 절차 의미를 유지해야 한다.
 
 Stage 3에서 #65-#71 이슈 본문과 M050 milestone 설명을 확인한 결과, 후속 이슈의 목표와 수용 기준은 위 정책과 충돌하지 않는다. #66은 사용자 진입 문서, #67은 구조와 manifest, #68-#69는 locale pack 본문, #70은 적용/update 선택 절차, #71은 smoke와 migration으로 분리되어 있다.
 
-#68 Stage 4에서 `templates/manifest.json`, adoption/update lifecycle 문서, 이 정책 문서의 정합성을 확인한 결과, 초기 locale은 `en`, `ko`, `zh-CN`으로 일치한다. `en`과 `ko` source는 manifest의 localized entry 15개에 모두 존재한다. `zh-CN`은 #69 범위로 남아 있으므로 manifest의 locale pack `availability.status`는 `planned`로 유지하고, 누락 locale source는 성공이 아니라 보고 대상으로 남긴다.
+#69 Stage 4에서 `templates/manifest.json`, adoption/update lifecycle 문서, 이 정책 문서의 정합성을 확인한 결과, 초기 locale은 `en`, `ko`, `zh-CN`으로 일치한다. 세 locale source는 manifest의 localized entry 15개에 모두 존재한다. manifest의 locale pack `availability.status`는 `complete`이며, locale 선택 workflow 연결은 #70, smoke 검증과 migration guide는 #71에서 이어진다.

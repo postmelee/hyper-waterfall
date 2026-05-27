@@ -185,3 +185,14 @@ Semantic review 확인 항목:
 - `task_workflow_guide.md`: Issue 기반 task 흐름, Stage 승인 게이트, Stage source/report 묶음 commit, final report/PR 순서를 보존했다.
 - `git_workflow_guide.md`: `local/task{N}` -> `publish/task{N}` -> `{BASE_BRANCH}` 흐름, squash merge 기본 금지, merge 후 cleanup 조건을 보존했다.
 - Skill 본문: `name` 값과 Skill directory identifier를 원문 그대로 유지했고, 승인 전 금지 사항과 `Never Do` 조건을 약화하지 않았다.
+
+## Stage 4 적용 결과
+
+Stage 4에서 `zh-CN` pack source가 manifest localized entry 15개에 모두 존재하는 상태로 정렬했다.
+
+| 항목 | 결과 | 비고 |
+|---|---|---|
+| `templates/manifest.json` availability | `complete` | `en`, `ko`, `zh-CN` source가 모두 존재한다. #70 workflow 연결과 #71 smoke/migration은 note에 후속으로 남겼다. |
+| manifest localized entry 누락 | `en=0`, `ko=0`, `zh-CN=0` | directory source인 `_templates`, `manual`, `skills` 포함 |
+| locale pack 파일 수 | `zh-CN=43` | `en`, `ko`와 동일 |
+| smoke test 기대값 | `zh-CN` source 존재 기대 | #68의 `zh-CN` 누락 기대값을 제거했다. |
