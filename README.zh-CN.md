@@ -192,7 +192,7 @@ Hyper-Waterfall 以 **task** 为单位推进工作。
 
 ```text
 1. 确认或登记 GitHub Issue
-2. 记录今日待办 (orders/)
+2. 记录今日待办 (mydocs/orders/)
 3. 创建 task branch (local/task{number})
 4. 编写 task plan -> [任务指示者批准]
 5. 编写 implementation plan -> [任务指示者批准]

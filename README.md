@@ -192,7 +192,7 @@ Every task follows this procedure **strictly**.
 
 ```text
 1. Confirm or register a GitHub Issue
-2. Record today's todo (orders/)
+2. Record today's todo (mydocs/orders/)
 3. Create task branch (local/task{number})
 4. Write task plan -> [task requester approval]
 5. Write implementation plan -> [task requester approval]
