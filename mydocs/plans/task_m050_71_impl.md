@@ -50,9 +50,9 @@ GitHub Issue: [#71](https://github.com/postmelee/hyper-waterfall/issues/71)
 ### 검증
 
 ```bash
-node bin/hyper-waterfall.js init --repo /private/tmp/hw-smoke-en --manifest templates/manifest.json --locale en --dry-run
-node bin/hyper-waterfall.js init --repo /private/tmp/hw-smoke-ko --manifest templates/manifest.json --locale ko --dry-run
-node bin/hyper-waterfall.js init --repo /private/tmp/hw-smoke-zh --manifest templates/manifest.json --locale zh-CN --dry-run
+node bin/hyper-waterfall.js init --repo /private/tmp/hw-smoke-en --manifest "$(pwd)/templates/manifest.json" --locale en --dry-run
+node bin/hyper-waterfall.js init --repo /private/tmp/hw-smoke-ko --manifest "$(pwd)/templates/manifest.json" --locale ko --dry-run
+node bin/hyper-waterfall.js init --repo /private/tmp/hw-smoke-zh --manifest "$(pwd)/templates/manifest.json" --locale zh-CN --dry-run
 rg -n "supportedLocales|availability|sourcePattern|versionState" templates/manifest.json docs/localization.md docs/localization-smoke.md
 git diff --check
 ```
@@ -87,9 +87,9 @@ Task #71 Stage 1: smoke matrix 설계와 baseline 검증
 ### 검증
 
 ```bash
-node bin/hyper-waterfall.js init --repo /private/tmp/hw-smoke-fr --manifest templates/manifest.json --locale fr --dry-run
-node bin/hyper-waterfall.js update --repo /private/tmp/hw-smoke-ko-only --manifest templates/manifest.json --from v0.2.0 --to v0.3.0 --dry-run
-node bin/hyper-waterfall.js update --repo /private/tmp/hw-smoke-ko-only --manifest templates/manifest.json --from v0.2.0 --to v0.3.0 --locale zh-CN --dry-run
+node bin/hyper-waterfall.js init --repo /private/tmp/hw-smoke-fr --manifest "$(pwd)/templates/manifest.json" --locale fr --dry-run
+node bin/hyper-waterfall.js update --repo /private/tmp/hw-smoke-ko-only --manifest "$(pwd)/templates/manifest.json" --from v0.2.0 --to v0.3.0 --dry-run
+node bin/hyper-waterfall.js update --repo /private/tmp/hw-smoke-ko-only --manifest "$(pwd)/templates/manifest.json" --from v0.2.0 --to v0.3.0 --locale zh-CN --dry-run
 rg -n "\\{REPO_SLUG\\}|\\{BASE_BRANCH\\}|승인|approval|批准|locale" templates/locales docs/localization-smoke.md
 git diff --check
 ```
