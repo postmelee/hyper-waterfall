@@ -329,6 +329,22 @@ Stage 3에서는 Stage 2의 manifest 계약을 adoption/update 판단 문서에 
 
 Stage 3에서도 실제 locale pack 본문, locale checksum 산출, `.hyper-waterfall/version.json`의 선택 저장 위치, workflow 실행 구현은 만들지 않는다. 이 범위는 #68, #69, #70, #71에 남긴다.
 
+## Stage 4 통합 정합성 검증 결과
+
+Stage 4에서는 `docs/localization.md`, `templates/manifest.json`, adoption/update lifecycle 문서가 같은 책임 경계를 공유하도록 정렬했다.
+
+| 항목 | 확인 결과 |
+|---|---|
+| 초기 locale | `templates/manifest.json`, `docs/localization.md`, lifecycle 문서가 `en`, `ko`, `zh-CN`을 기준으로 정렬됨 |
+| 기본/fallback locale | `defaultLocale: en`, `fallbackLocale: en`이 policy와 manifest에서 일치함 |
+| locale pack 상태 | manifest `availability.status: planned`이므로 실제 pack 본문은 아직 없고, 누락 source는 성공이 아니라 보고 대상임 |
+| entry 분류 | manifest 기준 `localization.enabled: true` 15개, `enabled: false` 10개로 분리됨 |
+| manual/Skill | locale 대상이지만 `requiresSemanticReview: true`로 절차 의미 보존 검증을 요구함 |
+| 구조적 계약 | placeholder, branch, filename pattern, command/code block, symlink target은 locale pack에서도 번역하지 않음 |
+| 후속 경계 | #68/#69는 locale pack 본문, #70은 선택 저장 위치와 workflow 실행, #71은 smoke/migration guide로 유지됨 |
+
+`files[].source`는 release checksum, locale 비대상 파일, locale source 누락 보고의 기준이다. `localization.enabled: true`인 entry에서 선택 locale source가 없을 때 root `source`를 조용히 대체 적용하지 않고, fallback 후보와 누락 상태를 먼저 보고한다.
+
 ## 후속 이슈 입력
 
 | 이슈 | 이 문서에서 넘기는 입력 |
