@@ -183,6 +183,12 @@ Git 추적 기준 현재 template source는 다음 자연어 파일 묶음으로
 - `AGENTS.md`의 문서 언어 규칙은 `Write all documents in the selected Hyper-Waterfall locale for this repository.` 의미를 사용한다.
 - manual/Skill은 절차 순서, 금지 사항, 승인 조건, cleanup 조건을 바꾸지 않는다.
 
+### Stage 2 실행 메모
+
+Stage 2에서는 `templates/locales/en` 아래에 43개 영어 source 파일을 작성한다. manifest의 `localization.enabled: true` 15개 entry는 모두 `en` source를 갖도록 맞춘다.
+
+manual과 Skill은 Stage 1 판단대로 전체 directory를 포함한다. 번역은 절차 의미 보존을 우선해 명령, placeholder, branch pattern, filename pattern, manifest field는 그대로 두고 자연어 설명만 영어로 작성한다.
+
 ## Stage 3 작성 기준
 
 한국어 pack은 다음 기준으로 작성한다.
