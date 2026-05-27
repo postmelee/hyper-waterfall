@@ -150,3 +150,21 @@ GitHub Issue: [#69](https://github.com/postmelee/hyper-waterfall/issues/69)
 | Stage 4 | manifest localized entry 기준 `zh-CN` source 누락이 0개다. |
 | Stage 4 | `doctor`, `init --dry-run`, `npm test`가 통과한다. |
 | Stage 4 | manifest/docs/test 기대값은 #69 완료 상태와 일치한다. |
+
+## Stage 2 적용 결과
+
+Stage 2에서 핵심 적용 template과 산출물 template 24개를 `templates/locales/zh-CN/**` 아래에 작성했다.
+
+| 구분 | 파일 수 | 비고 |
+|---|---:|---|
+| 적용 진입 문서 | 2 | `AGENTS.md`, `CLAUDE.md` |
+| GitHub template | 2 | Issue Form, PR template |
+| 중앙 산출물 template | 12 | `mydocs/_templates/**` |
+| 산출물 폴더 README | 8 | `orders`, `plans`, `working`, `report`, `feedback`, `tech`, `troubleshootings`, `pr` |
+| 합계 | 24 | Stage 2 계획과 일치 |
+
+추가 보존 기준:
+
+- `{...}` 안의 template placeholder 문구는 번역하지 않고 `en` pack과 같은 token 집합을 유지한다.
+- `Issue`, `PR`, `Stage`, `Skill`, `Task plan`, `Implementation plan`, `Final report`처럼 GitHub/문서 workflow 식별자로 쓰이는 표현은 필요한 곳에서 원문을 유지한다.
+- Issue Form YAML은 중국어 간체 label/description을 사용하되 `id`, `type`, `validations.required` 같은 GitHub form 구조는 유지한다.
