@@ -23,7 +23,7 @@ Hyper-Waterfall은 AI에게 “그냥 만들어줘”라고 맡기는 방식이 
 >
 > Hyper-Waterfall은 AI가 마법처럼 못 하던 일을 하게 해주는 도구가 아니라, AI가 빠르게 일하더라도 사람이 방향을 잃지 않게 만드는 작업 레일입니다.
 
-## Hyper-Waterfall의 강점
+## 왜 Hyper-waterfall인가
 
 AI의 약점은 실행력이 부족한 것이 아니라, 맥락을 잃거나 잘못된 방향으로 빠르게 달릴 수 있다는 점입니다. Hyper-Waterfall은 이 약점을 작업 제약으로 바꾸고, AI의 속도를 사람이 검토 가능한 개발 프로세스 안에 넣습니다.
 
@@ -61,7 +61,7 @@ AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용
 
 > 누구나 GitHub 저장소에 Hyper-Waterfall을 적용하고, Codex·Claude Code 등 여러 AI 코딩 에이전트가 같은 규율 위에서 작업하게 만듭니다.
 
-## 왜 Hyper-waterfall?
+## Hyper-Waterfall의 강점
 
 AI는 두 가지 구조적 약점을 가집니다.
 
