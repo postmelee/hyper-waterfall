@@ -263,6 +263,35 @@ directory entry는 directory mirror pattern을 사용한다.
 
 비대상 entry는 `localization.enabled: false`를 명시하거나 필드를 생략할 수 있다. Stage 2에서는 사람이 읽는 정합성을 위해 `.gitkeep`과 symlink entry에 `enabled: false`를 명시하는 편이 더 안전하다.
 
+## Stage 2 반영 결과
+
+Stage 2에서는 위 권장안을 `templates/manifest.json`에 최소 계약으로 반영했다.
+
+Top-level `localization`:
+
+| 필드 | 값 | 판단 |
+|---|---|---|
+| `defaultLocale` | `en` | 신규 적용 기본 locale |
+| `supportedLocales` | `en`, `ko`, `zh-CN` | M050 초기 지원 대상으로 선언한 locale |
+| `fallbackLocale` | `en` | 판단 기준 fallback locale |
+| `localePackRoot` | `templates/locales` | locale pack root |
+| `sourcePatternToken` | `{locale}` | 각 entry의 `sourcePattern`에서 치환할 token |
+| `missingLocalePolicy` | `report-and-fallback-candidate` | 누락 locale을 조용히 성공 처리하지 않고 보고 |
+| `preserveSelectedLocaleOnUpdate` | `true` | 기존 적용 저장소 update 시 선택 locale 보존 |
+| `availability.status` | `planned` | 실제 pack 본문은 #68/#69에서 작성 |
+
+Entry-level `localization`:
+
+| entry 분류 | 반영 |
+|---|---|
+| 사용자-facing file | `enabled: true`, `sourcePattern: templates/locales/{locale}/...`, `fallbackLocale: en` |
+| 사용자-facing directory | `enabled: true`, directory mirror `sourcePattern`, `fallbackLocale: en` |
+| manual/Skill directory | 위 항목에 더해 `requiresSemanticReview: true` |
+| `.gitkeep` placeholder | `enabled: false` |
+| Skill discovery symlink | `enabled: false` |
+
+이 단계는 source 선택 계약만 추가했다. 실제 `templates/locales/en`, `templates/locales/ko`, `templates/locales/zh-CN` 본문과 locale별 checksum은 후속 #68/#69/#71에서 작성하고 검증한다.
+
 ## fallback 판단 기준
 
 fallback은 자동 성공이 아니다.
