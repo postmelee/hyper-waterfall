@@ -17,6 +17,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1.6 | 한국어 README draft 기반 전체 재작성 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_6.md` | 바로 설치 상단 배치, 후킹 요약에 공식 프롬프팅 가이드 정합 추가, 부록 구조 유지 확인 |
 | 1.7 | 한국어 README 상단 후킹 관점 보정 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_7.md` | 상단 후킹을 사용자 적용 관점으로 보정, 구현 확장 제목 변경 확인 |
 | 1.8 | 한국어 README 적용 적합성·표 구조 보강 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_8.md` | When to Use 복원, 문서 구조/적용 후 구조 표 전환, 모델 중립 표현 확인 |
+| 1.9 | 업스트림 README 상단 후킹·요약 표 반영 | `README.md`, `mydocs/working/task_m050_66_stage1_9.md` | 최신 `origin/main` 기준 상단 블록만 변경, `## 바로 설치` 이하 유지 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -446,6 +447,49 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.8]: 한국어 README 적용 적합성·표 구조 보강
+```
+
+## Stage 1.9 — 업스트림 README 상단 후킹·요약 표 반영
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_9.md`
+
+수정:
+
+- `README.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- `README.md`를 최신 `origin/main`의 업스트림 본문 기준으로 맞춘다.
+- `## 바로 설치` 위 상단 후킹 블록만 수정한다.
+- 첫 표는 Hyper-Waterfall 자체의 핵심인 사람의 결정권 유지, 승인 게이트, 작업 기억 외부화, 단계적 실행, 재개 가능한 프로세스를 설명한다.
+- 두 번째 표는 지식 자산화, 리스크 조기 발견, 자동화된 역할 분담, 컨텍스트 경량화, 프롬프트 가이드 정합을 요약한다.
+- `## 바로 설치` 이하 기존 업스트림 README 본문은 변경하지 않는다.
+
+### 검증
+
+```bash
+git diff --stat origin/main -- README.md
+git diff origin/main -- README.md
+rg -n "AI 코딩을 추적 가능하고 승인 가능한 개발 프로세스로 바꾸는 방법론|Hyper-Waterfall의 핵심|왜 Hyper-Waterfall인가|^\\| 강점 \\| 의미 \\||^## 바로 설치|^## 왜 Hyper-waterfall\\?" README.md
+git diff --check
+```
+
+수동 확인:
+
+- `origin/main` 대비 diff가 상단 후킹 블록에만 있는지 확인한다.
+- `## 바로 설치` 아래 본문이 최신 업스트림 README와 동일하게 유지됐는지 확인한다.
+- 두 표가 설치/운영 기능이 아니라 Hyper-Waterfall 자체의 철학과 강점을 설명하는지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.9]: 업스트림 README 상단 후킹 요약 보강
 ```
 
 ## Stage 2 — 영어 기본 README 전환
