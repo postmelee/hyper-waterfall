@@ -20,6 +20,7 @@ const options = [
   ["--manifest <path>", "Target release manifest path."],
   ["--from <tag>", "Current Hyper-Waterfall release or baseline."],
   ["--to <tag>", "Target Hyper-Waterfall release or tag."],
+  ["--locale <locale>", "Requested locale switch for update dry-run."],
   ["--dry-run", "Print update candidates without writing files."]
 ];
 
@@ -27,7 +28,7 @@ function help() {
   return renderCommandHelp({
     name,
     summary,
-    usage: "hyper-waterfall update [--repo <path>] [--manifest <path>] [--from <tag>] [--to <tag>] [--dry-run]",
+    usage: "hyper-waterfall update [--repo <path>] [--manifest <path>] [--from <tag>] [--to <tag>] [--locale <locale>] [--dry-run]",
     options,
     description: [
       "Prints the update checkpoint before any repository files are changed.",
@@ -72,20 +73,102 @@ function getStoredLocale(versionState) {
   if (!versionState.exists || versionState.error || !versionState.data) {
     return {
       reason: "version state has no readable locale field",
+      source: "none",
       value: "unknown"
     };
   }
 
   const data = versionState.data;
-  const value = data.locale
-    || data.selectedLocale
-    || (data.localization && (data.localization.locale || data.localization.selectedLocale))
-    || "unknown";
+  if (data.locale) {
+    return {
+      reason: "read from version state locale",
+      source: "locale",
+      value: data.locale
+    };
+  }
+
+  if (data.selectedLocale) {
+    return {
+      reason: "read from compatibility field selectedLocale",
+      source: "selectedLocale",
+      value: data.selectedLocale
+    };
+  }
+
+  if (data.localization && data.localization.locale) {
+    return {
+      reason: "read from compatibility field localization.locale",
+      source: "localization.locale",
+      value: data.localization.locale
+    };
+  }
+
+  if (data.localization && data.localization.selectedLocale) {
+    return {
+      reason: "read from compatibility field localization.selectedLocale",
+      source: "localization.selectedLocale",
+      value: data.localization.selectedLocale
+    };
+  }
 
   return {
-    reason: value === "unknown" ? "locale field is not recorded yet (#70)" : "read from version state",
-    value
+    reason: "locale field is not recorded; current locale is unknown",
+    source: "none",
+    value: "unknown"
   };
+}
+
+function getEffectiveLocale(storedLocale, requestedLocale) {
+  if (requestedLocale) {
+    return requestedLocale;
+  }
+
+  if (storedLocale.value !== "unknown") {
+    return storedLocale.value;
+  }
+
+  return undefined;
+}
+
+function formatLocaleJudgment(localization, storedLocale, requestedLocale) {
+  if (!localization.exists) {
+    return ["manifest localization contract not found"];
+  }
+
+  const items = [];
+
+  if (requestedLocale) {
+    if (storedLocale.value !== "unknown" && requestedLocale !== storedLocale.value) {
+      items.push(`locale 전환 요청: ${storedLocale.value} -> ${requestedLocale}; 별도 승인 필요.`);
+    } else if (storedLocale.value === "unknown") {
+      items.push(`요청 locale ${requestedLocale} 기준으로 update 후보를 판단한다. 기존 locale 기록은 unknown이다.`);
+    } else {
+      items.push(`요청 locale ${requestedLocale}이 기존 locale 기록과 같으므로 보존 후보로 판단한다.`);
+    }
+  } else if (storedLocale.value !== "unknown") {
+    items.push(`기존 locale ${storedLocale.value} 보존을 기본값으로 판단한다.`);
+  } else {
+    items.push(`기존 locale 기록이 없어 defaultLocale ${localization.defaultLocale} 기준 후보를 표시하고, 실제 적용 전 보존 또는 전환 승인을 받는다.`);
+  }
+
+  items.push(
+    localization.preserveSelectedLocaleOnUpdate
+      ? "manifest가 기존 locale 보존을 기본값으로 선언한다."
+      : "manifest가 기존 locale 보존 기본값을 선언하지 않는다."
+  );
+
+  if (!localization.selectedSupported) {
+    items.push(`선택 locale ${localization.selectedLocale}은 supportedLocales에 없다.`);
+  }
+
+  const missingSelectedCount = localization.items.filter((item) => item.selectedStatus !== "exists").length;
+  if (missingSelectedCount > 0) {
+    items.push(`선택 locale source 누락 ${missingSelectedCount}/${localization.enabledCount}; fallback 후보를 보고하고 승인받아야 한다.`);
+  }
+
+  items.push("locale 전환 요청은 update 부수 효과가 아니라 별도 승인 항목으로 분리한다.");
+
+  return items;
 }
 
 function run(args, io) {
@@ -104,6 +187,7 @@ function run(args, io) {
   try {
     const repoPath = parsed.values["--repo"] || ".";
     const manifestPath = parsed.values["--manifest"];
+    const requestedLocale = parsed.values["--locale"];
     const loaded = loadManifest({ repoPath, manifestPath });
     const summaryResult = summarizeManifest(loaded.repoPath, loaded.manifest);
     const candidates = classifyUpdateCandidates(summaryResult);
@@ -112,10 +196,11 @@ function run(args, io) {
       loaded.manifest.versionState.targetPath
     );
     const storedLocale = getStoredLocale(versionState);
+    const effectiveLocale = getEffectiveLocale(storedLocale, requestedLocale);
     const localization = summarizeLocalization(
       getManifestSourceRoot(loaded.manifestPath),
       loaded.manifest,
-      storedLocale.value === "unknown" ? undefined : storedLocale.value
+      effectiveLocale
     );
     const fromVersion = parsed.values["--from"]
       || (versionState.data && (versionState.data.releaseTag || versionState.data.frameworkVersion))
@@ -149,8 +234,20 @@ function run(args, io) {
           entries: [
             ["locale", storedLocale.value],
             ["reason", storedLocale.reason],
-            ["storage", "locale 선택 저장 위치는 #70 범위"]
+            ["source", storedLocale.source],
+            ["storage", ".hyper-waterfall/version.json locale"]
           ]
+        },
+        {
+          title: "요청 locale",
+          entries: localization.exists
+            ? [
+                ["requested", requestedLocale || "none"],
+                ["selectedForDiff", localization.selectedLocale],
+                ["selectedSupported", localization.selectedSupported ? "yes" : "no"],
+                ["selectedSourceStatus", describeCounts(localization.selectedSourceStatuses)]
+              ]
+            : [["status", "manifest localization contract not found"]]
         },
         {
           title: "목표 release/tag",
@@ -203,15 +300,7 @@ function run(args, io) {
         },
         {
           title: "locale 보존/전환 판단",
-          items: localization.exists
-            ? [
-                localization.preserveSelectedLocaleOnUpdate
-                  ? "기존 locale 기록이 있으면 보존을 기본값으로 판단한다."
-                  : "manifest가 기존 locale 보존 기본값을 선언하지 않는다.",
-                "locale 전환 요청은 update 부수 효과가 아니라 별도 승인 항목으로 분리한다.",
-                "실제 locale 선택 저장 위치와 전환 workflow 실행은 #70 범위다."
-              ]
-            : ["manifest localization contract not found"]
+          items: formatLocaleJudgment(localization, storedLocale, requestedLocale)
         },
         {
           title: "자동 적용 가능",
@@ -235,7 +324,7 @@ function run(args, io) {
         {
           title: "승인 요청",
           items: [
-            "현재 locale, 목표 release locale 지원, locale source 누락과 fallback 후보를 검토한다.",
+            "현재 locale, 요청 locale 또는 전환 여부, 목표 release locale 지원, locale source 누락과 fallback 후보를 검토한다.",
             "Hyper-Waterfall 버전 업데이트 PR 후보를 만들지 검토한다.",
             "자동 적용 가능 항목도 checksum 확정 전에는 적용하지 않는다.",
             "수동 확인 필요와 conflict 항목은 일반 task workflow에서 리뷰한다."

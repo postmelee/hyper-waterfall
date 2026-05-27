@@ -92,6 +92,44 @@ test("init prints adoption checkpoint fields", () => {
   assert.match(result.stdout, /승인 요청/);
 });
 
+test("init reports explicit and unsupported locale requests", () => {
+  const zhResult = runCli([
+    "init",
+    "--repo",
+    ".",
+    "--manifest",
+    "templates/manifest.json",
+    "--locale",
+    "zh-CN",
+    "--dry-run"
+  ]);
+
+  assert.equal(zhResult.status, 0);
+  assert.match(zhResult.stdout, /requested: zh-CN/);
+  assert.match(zhResult.stdout, /selected: zh-CN/);
+  assert.match(zhResult.stdout, /supported: yes/);
+  assert.match(zhResult.stdout, /selectedSourceStatus: exists=15/);
+  assert.match(zhResult.stdout, /locale: zh-CN/);
+
+  const unsupportedResult = runCli([
+    "init",
+    "--repo",
+    ".",
+    "--manifest",
+    "templates/manifest.json",
+    "--locale",
+    "fr",
+    "--dry-run"
+  ]);
+
+  assert.equal(unsupportedResult.status, 0);
+  assert.match(unsupportedResult.stdout, /requested: fr/);
+  assert.match(unsupportedResult.stdout, /selected: fr/);
+  assert.match(unsupportedResult.stdout, /supported: no/);
+  assert.match(unsupportedResult.stdout, /selectedSourceStatus: missing=15/);
+  assert.match(unsupportedResult.stdout, /fallbackSourceStatus: exists=15/);
+});
+
 test("update prints lifecycle checkpoint fields", () => {
   const result = runCli([
     "update",
@@ -120,6 +158,57 @@ test("update prints lifecycle checkpoint fields", () => {
   assert.match(result.stdout, /conflict/);
   assert.match(result.stdout, /보류/);
   assert.match(result.stdout, /승인 요청/);
+});
+
+test("update preserves stored locale and reports switch requests", () => {
+  const tempRepo = fs.mkdtempSync(path.join(os.tmpdir(), "hyper-waterfall-locale-"));
+  const stateDir = path.join(tempRepo, ".hyper-waterfall");
+  fs.mkdirSync(stateDir, { recursive: true });
+  fs.writeFileSync(
+    path.join(stateDir, "version.json"),
+    JSON.stringify({
+      frameworkVersion: "0.1.0",
+      releaseTag: "v0.1.0",
+      locale: "ko",
+      installedAt: "2026-05-27T00:00:00.000Z",
+      updatedAt: "2026-05-27T00:00:00.000Z"
+    })
+  );
+
+  const preserveResult = runCli([
+    "update",
+    "--repo",
+    tempRepo,
+    "--from",
+    "v0.1.0",
+    "--to",
+    "v0.2.0",
+    "--dry-run"
+  ]);
+
+  assert.equal(preserveResult.status, 0);
+  assert.match(preserveResult.stdout, /locale: ko/);
+  assert.match(preserveResult.stdout, /reason: read from version state locale/);
+  assert.match(preserveResult.stdout, /selectedForDiff: ko/);
+  assert.match(preserveResult.stdout, /기존 locale ko 보존/);
+
+  const switchResult = runCli([
+    "update",
+    "--repo",
+    tempRepo,
+    "--from",
+    "v0.1.0",
+    "--to",
+    "v0.2.0",
+    "--locale",
+    "zh-CN",
+    "--dry-run"
+  ]);
+
+  assert.equal(switchResult.status, 0);
+  assert.match(switchResult.stdout, /requested: zh-CN/);
+  assert.match(switchResult.stdout, /selectedForDiff: zh-CN/);
+  assert.match(switchResult.stdout, /locale 전환 요청: ko -> zh-CN/);
 });
 
 test("doctor prints non-destructive diagnostics", () => {
