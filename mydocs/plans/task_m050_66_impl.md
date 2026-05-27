@@ -19,6 +19,7 @@ GitHub Issue: [#66](https://github.com/postmelee/hyper-waterfall/issues/66)
 | 1.8 | 한국어 README 적용 적합성·표 구조 보강 | `README.ko.md`, `mydocs/working/task_m050_66_stage1_8.md` | When to Use 복원, 문서 구조/적용 후 구조 표 전환, 모델 중립 표현 확인 |
 | 1.9 | 업스트림 README 상단 후킹·요약 표 반영 | `README.md`, `mydocs/working/task_m050_66_stage1_9.md` | 최신 `origin/main` 기준 상단 블록만 변경, `## 바로 설치` 이하 유지 확인 |
 | 1.10 | 업스트림 README 핵심 섹션 순서 조정 | `README.md`, `mydocs/working/task_m050_66_stage1_10.md` | 최신 `origin/main` 기준 제목/본문 유지, `Hyper-Waterfall의 강점` 위치만 이동 확인 |
+| 1.11 | 업스트림 README 최신 수정본 동기화 | `README.md`, `mydocs/working/task_m050_66_stage1_11.md` | 최신 `origin/main`의 길잡이/보강 문장 반영, 이후 Stage 기준본 확인 |
 | 2 | 영어 기본 README 전환 | `README.md`, `mydocs/working/task_m050_66_stage2.md` | 영어 기본 진입 문서, 언어 링크, 적용 프롬프트 확인 |
 | 3 | 중국어 간체 README 작성 | `README.zh-CN.md`, `mydocs/working/task_m050_66_stage3.md` | 중국어 간체 진입 문서, 구조적 계약 보존 확인 |
 | 4 | 링크와 진입 프롬프트 정합성 검증 | 필요 시 `docs/agent-entrypoint.md`, `mydocs/working/task_m050_66_stage4.md` | 세 README의 링크, heading, #65 locale 정책 정합성 확인 |
@@ -533,6 +534,47 @@ git diff --check
 
 ```text
 Task #66 [Stage 1.10]: 업스트림 README 핵심 섹션 순서 조정
+```
+
+## Stage 1.11 — 업스트림 README 최신 수정본 동기화
+
+### 산출물
+
+신규:
+
+- `mydocs/working/task_m050_66_stage1_11.md`
+
+수정:
+
+- `README.md`
+- `mydocs/plans/task_m050_66_impl.md`
+- `mydocs/orders/20260525.md`
+
+### 변경 내용
+
+- 사용자가 직접 수정한 최신 `origin/main:README.md`를 현재 작업 브랜치의 `README.md` 기준본으로 반영한다.
+- `Hyper-Waterfall 자세히 알아보기` 링크 줄을 포함한다.
+- `언제 쓰면 좋은가`와 `기존 AI 코딩 방식과 비교`의 보강 문장을 포함한다.
+- 이후 Stage 2 영어 기본 README 전환은 이 최신 업스트림 README를 기준으로 진행한다.
+
+### 검증
+
+```bash
+git diff --stat HEAD..origin/main -- README.md
+git diff HEAD..origin/main -- README.md
+rg -n "Hyper-Waterfall 자세히 알아보기|AI에게 실제 소스 수정을 맡기되|차이는 AI를 쓰느냐" README.md
+git diff --check
+```
+
+수동 확인:
+
+- 최신 업스트림 README의 직접 수정 사항이 현재 작업 브랜치에 반영됐는지 확인한다.
+- Stage 2 번역 기준으로 삼을 상단 흐름이 `바로 설치 -> Hyper-Waterfall 자세히 알아보기 -> 언제 쓰면 좋은가 -> 기존 AI 코딩 방식과 비교 -> 적용하면 바로 달라지는 것 -> Hyper-Waterfall의 강점`인지 확인한다.
+
+### 커밋
+
+```text
+Task #66 [Stage 1.11]: 업스트림 README 최신 수정본 동기화
 ```
 
 ## Stage 2 — 영어 기본 README 전환
