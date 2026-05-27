@@ -1,0 +1,113 @@
+name: Hyper-Waterfall Task
+description: Create a tracked task that can be used as the next AI work prompt.
+title: "Task: "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template to create a Hyper-Waterfall task Issue.
+        The Issue body becomes the first prompt for the next AI work session, so write the intent and constraints clearly.
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background
+      description: Explain why this work is needed, what is wrong with the current state, and what context started it.
+      placeholder: |
+        Examples:
+        - Current structural limitation
+        - Reason this follows from a previous PR, Issue, or document
+        - User request or external requirement
+    validations:
+      required: true
+
+  - type: textarea
+    id: goals
+    attributes:
+      label: Goals
+      description: List the results that must be true when this work is complete.
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: included_scope
+    attributes:
+      label: Scope - Included
+      description: List the files, features, documents, and verification areas that this task must cover.
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: excluded_scope
+    attributes:
+      label: Scope - Excluded
+      description: List items this task explicitly does not cover.
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Write observable criteria that determine whether the task is complete.
+      placeholder: |
+        - ...
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation
+    attributes:
+      label: Verification Criteria
+      description: List tests, grep checks, manual checks, or review criteria that must be performed.
+      placeholder: |
+        - `git diff --check`
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: List related Issues, PRs, documents, official guides, or external resources.
+      placeholder: |
+        - #...
+        - https://...
+    validations:
+      required: false
+
+  - type: textarea
+    id: metadata
+    attributes:
+      label: Milestone and Label Candidates
+      description: List milestone and label candidates and why they fit. The final selection is based on task-register live lookup results.
+      placeholder: |
+        - Milestone candidate:
+        - Label candidates:
+        - Selection reason:
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Confirmations
+      description: Confirm these items to reduce duplicate work and scope conflicts.
+      options:
+        - label: I confirmed this does not duplicate an existing open Issue.
+          required: true
+        - label: I explicitly listed what this task excludes.
+          required: true
+        - label: I understand that the task plan approval procedure is required before work starts.
+          required: true
