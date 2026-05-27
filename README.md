@@ -346,7 +346,7 @@ The framework's document templates, GitHub Issue Form, and SKILL source of truth
 <details>
 <summary><strong>Updating Existing Adopted Repositories</strong></summary>
 
-Existing adopted repositories are updated based on GitHub Releases/tags and the manifest. AI uses [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md) as the entry point and follows the existing-update judgment format in [`docs/lifecycle/update.md`](docs/lifecycle/update.md), first reporting current version, target release/tag, migration guide, manifest diff, and Hyper-Waterfall version update PR candidates.
+Existing adopted repositories are updated based on GitHub Releases/tags and the manifest. AI uses [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md) as the entry point and follows the existing-update judgment format in [`docs/lifecycle/update.md`](docs/lifecycle/update.md), first reporting current version, current locale, target release/tag, target release locale support, migration guide, manifest diff, locale manifest diff, and Hyper-Waterfall version update PR candidates.
 
 When converting approved update candidates into a PR, follow [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md). The npm CLI is a convenience execution channel for the same judgment and does not replace the canonical basis: GitHub Release/tag, `templates/manifest.json`, and migration guide. CLI output alone does not automatically apply files; only approved scope is converted into the normal task flow.
 
@@ -536,7 +536,7 @@ But documents answer the context questions:
 
 The original methodology in rhwp is tightly coupled to that repository's documents and conventions, so it is hard to copy directly into other projects. This repository separates operating rules, manuals, and SKILLs into `templates/` and formalizes the entry procedure in [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md). As a result, **one prompt to an AI coding tool** can apply it to any repository. The AI follows the entry procedure and automatically substitutes placeholders such as `REPO_SLUG` and `BASE_BRANCH`.
 
-Lifecycle criteria for updating existing adopted repositories are also documented separately. GitHub Release/tag, manifest, migration guide, and `.hyper-waterfall/version.json` are used to determine the current version, target release/tag, manifest diff, and Hyper-Waterfall version update PR candidates first. Detailed criteria live in [`docs/lifecycle/update.md`](docs/lifecycle/update.md) and [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md). This repository itself is the first dogfooding case applying Hyper-Waterfall to itself (Issue #1, PR #2).
+Lifecycle criteria for updating existing adopted repositories are also documented separately. GitHub Release/tag, manifest, migration guide, and `.hyper-waterfall/version.json` are used to determine the current version, current locale, target release/tag, target release locale support, manifest diff, locale manifest diff, and Hyper-Waterfall version update PR candidates first. Detailed criteria live in [`docs/lifecycle/update.md`](docs/lifecycle/update.md) and [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md). This repository itself is the first dogfooding case applying Hyper-Waterfall to itself (Issue #1, PR #2).
 
 ### 2. Alignment with Official Prompting Guides
 

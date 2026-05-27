@@ -1,9 +1,12 @@
 const {
   classifyInitCandidates,
   describeCounts,
+  formatLocaleSourceItems,
   formatPathItems,
+  getManifestSourceRoot,
   getTargetRelease,
   loadManifest,
+  summarizeLocalization,
   summarizeManifest
 } = require("../lib/manifest");
 const { parseOptions, renderCommandHelp, renderLifecycleReport } = require("../lib/output");
@@ -50,6 +53,10 @@ function run(args, io) {
     const loaded = loadManifest({ repoPath, manifestPath });
     const summaryResult = summarizeManifest(loaded.repoPath, loaded.manifest);
     const candidates = classifyInitCandidates(summaryResult);
+    const localization = summarizeLocalization(
+      getManifestSourceRoot(loaded.manifestPath),
+      loaded.manifest
+    );
     const targetRelease = getTargetRelease(loaded.manifest, parsed.values["--target-release"]);
     const versionState = readVersionState(
       loaded.repoPath,
@@ -73,6 +80,34 @@ function run(args, io) {
             ["frameworkVersion", loaded.manifest.frameworkVersion],
             ["canonicalSource", loaded.manifest.release.canonicalSource || "unknown"]
           ]
+        },
+        {
+          title: "선택 locale",
+          entries: localization.exists
+            ? [
+                ["requested", "none"],
+                ["selected", localization.selectedLocale],
+                ["supported", localization.selectedSupported ? "yes" : "no"],
+                ["defaultLocale", localization.defaultLocale],
+                ["fallbackLocale", localization.fallbackLocale],
+                ["missingLocalePolicy", localization.missingLocalePolicy],
+                ["availability", localization.availabilityStatus]
+              ]
+            : [["status", "manifest localization contract not found"]]
+        },
+        {
+          title: "locale source 후보",
+          entries: localization.exists
+            ? [
+                ["enabled", localization.enabledCount],
+                ["disabled", localization.disabledCount],
+                ["selectedSourceStatus", describeCounts(localization.selectedSourceStatuses)],
+                ["fallbackSourceStatus", describeCounts(localization.fallbackSourceStatuses)]
+              ]
+            : [["enabled", 0]],
+          items: localization.exists
+            ? formatLocaleSourceItems(localization.items.filter((item) => item.selectedStatus !== "exists"))
+            : ["없음"]
         },
         {
           title: "manifest 기준 적용 후보",
@@ -111,6 +146,7 @@ function run(args, io) {
         {
           title: "승인 요청",
           items: [
+            "선택 locale, 누락 locale source, fallback 후보를 먼저 검토한다.",
             "즉시 적용할 copy/preserve/symlink 후보를 검토한다.",
             "기존 target이 있는 항목은 덮어쓰기 전에 별도 승인을 받는다.",
             "필요하면 일반 task workflow로 전환해 변경을 추적한다."

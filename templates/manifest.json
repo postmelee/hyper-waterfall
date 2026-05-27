@@ -23,7 +23,7 @@
     "preserveSelectedLocaleOnUpdate": true,
     "availability": {
       "status": "planned",
-      "note": "Locale pack content is added by follow-up M050 tasks before release."
+      "note": "Locale pack content is planned for follow-up M050 tasks; missing locale sources must be reported until packs are added."
     }
   },
   "forbiddenTargetsOnAdoption": [

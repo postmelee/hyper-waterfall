@@ -19,6 +19,15 @@ GitHub Issue: [#67](https://github.com/postmelee/hyper-waterfall/issues/67)
 | `docs/agent-entrypoint.md` | locale 판단 원천을 manifest와 adoption/update lifecycle 문서로 연결 | AI coding tool의 적용/update 진입점 |
 | `docs/lifecycle/adoption.md` | 신규 적용 판단 결과에 선택 locale, 기본 locale, source 누락, fallback 후보, #70 보류 항목 추가 | 신규 적용 전 승인 보고 형식 |
 | `docs/lifecycle/update.md` | 기존 update 판단 결과에 현재 locale, 목표 release locale 지원, locale 보존/전환, locale manifest diff 추가 | 기존 적용 저장소 update 전 승인 보고 형식 |
+| `docs/lifecycle/update_pr.md` | update 판단 결과를 PR로 전환할 때 locale 지원, locale diff, 보존/전환 판단을 포함하도록 보강 | 기존 적용 저장소 update PR 본문 기준 |
+| `README.md` | 기존 적용 저장소 업데이트 설명에 현재 locale, 목표 release locale 지원, locale manifest diff를 추가 | 사용자/maintainer 진입 문서 |
+| `src/lib/manifest.js` | manifest localization 요약, locale source 상태 계산, locale source 항목 formatting helper 추가 | CLI lifecycle dry-run/doctor 출력 |
+| `src/commands/init.js` | 신규 적용 판단 결과에 선택 locale과 locale source 후보 섹션 추가 | `hyper-waterfall init --dry-run` 출력 |
+| `src/commands/update.js` | 기존 update 판단 결과에 현재 locale, 목표 release locale 지원, locale manifest diff, locale 보존/전환 판단 섹션 추가 | `hyper-waterfall update --dry-run` 출력 |
+| `src/commands/doctor.js` | doctor 진단에 localization 요약과 locale-source 누락 진단 추가 | `hyper-waterfall doctor` 출력 |
+| `test/cli-smoke.test.js` | CLI smoke test가 locale 섹션과 현재 manifest entry 수를 검증하도록 갱신 | 자동 테스트 |
+| `templates/mydocs/manual/framework_lifecycle_guide.md` | lifecycle 판단과 CLI 출력 기준에 locale 항목 추가 | 적용 저장소로 배포되는 framework lifecycle manual |
+| `templates/mydocs/manual/release_update_protocol.md` | update protocol 입력과 update PR 입력에 locale manifest diff 추가 | 적용 저장소로 배포되는 release/update manual |
 | `mydocs/tech/task_m050_67_locale_manifest_design.md` | locale 대상 inventory, 구조 후보, Stage별 manifest/lifecycle 연결 결과, 통합 검증 결과 기록 | 후속 task가 참조할 설계 근거 |
 | `mydocs/plans/task_m050_67.md` | 수행계획서 작성 | 작업 이력 |
 | `mydocs/plans/task_m050_67_impl.md` | 구현계획서와 Stage별 검증 기준 작성 | 작업 이력 |
@@ -33,6 +42,7 @@ GitHub Issue: [#67](https://github.com/postmelee/hyper-waterfall/issues/67)
 | `docs/lifecycle/adoption.md` | `docs/lifecycle/` | `docs/lifecycle/adoption.md` | OK | 수행계획서의 신규 적용 lifecycle 문서 위치와 일치 |
 | `docs/lifecycle/update.md` | `docs/lifecycle/` | `docs/lifecycle/update.md` | OK | 수행계획서의 기존 update lifecycle 문서 위치와 일치 |
 | `docs/agent-entrypoint.md` | `docs/` | `docs/agent-entrypoint.md` | OK | 수행계획서의 agent 진입 문서 위치와 일치 |
+| `docs/lifecycle/update_pr.md` | `docs/lifecycle/` | `docs/lifecycle/update_pr.md` | OK | PR 리뷰에서 기존 update 판단과 PR 전환 기준을 맞추기 위해 같은 lifecycle 위치에서 보강 |
 | `templates/manifest.json` | `templates/` | `templates/manifest.json` | OK | 수행계획서의 배포 manifest 위치와 일치 |
 | `mydocs/tech/task_m050_67_locale_manifest_design.md` | `mydocs/tech/` | `mydocs/tech/task_m050_67_locale_manifest_design.md` | OK | 수행계획서의 기술 조사/설계 근거 위치와 일치 |
 | `mydocs/*` task 산출물 | `mydocs/plans`, `mydocs/working`, `mydocs/report`, `mydocs/orders` | 계획/단계/보고/오늘할일 폴더 | OK | 작업 산출물 위치가 수행계획서와 일치 |
@@ -48,8 +58,12 @@ GitHub Issue: [#67](https://github.com/postmelee/hyper-waterfall/issues/67)
 | `files[].localization.enabled: true` | 0개 | 15개 |
 | `files[].localization.enabled: false` | 0개 | 10개 |
 | manual/Skill semantic review 표시 | 없음 | `requiresSemanticReview: true` |
+| CLI init locale 판단 섹션 | 없음 | `선택 locale`, `locale source 후보` |
+| CLI update locale 판단 섹션 | 없음 | `현재 locale`, `목표 release locale 지원`, `locale manifest diff`, `locale 보존/전환 판단` |
+| CLI doctor locale 진단 | 없음 | `localization`, `locale-source` |
+| CLI smoke test | 1개 실패 | 8개 통과 |
 | Stage 보고서 | 없음 | 4개 (`stage1`~`stage4`) |
-| 계획/Stage 커밋 | 없음 | 6개 (`main..local/task67`, 최종 보고서 작성 전 기준) |
+| 계획/Stage/리뷰 커밋 | 없음 | 8개 (`main..local/task67`, PR 리뷰 반영 커밋 포함) |
 
 ## 검증 결과
 
@@ -59,6 +73,8 @@ GitHub Issue: [#67](https://github.com/postmelee/hyper-waterfall/issues/67)
 | 신규 적용과 기존 업데이트에서 locale을 어떻게 선택하고 보존하는지 문서화되어 있다. | OK — `docs/lifecycle/adoption.md`와 `docs/lifecycle/update.md`에 선택 locale, 현재 locale, 보존/전환, fallback, 누락 보고 항목을 추가했다. |
 | placeholder와 구조적 계약 보존 규칙이 #65 정책과 충돌하지 않는다. | OK — `docs/localization.md`와 설계 기록에서 placeholder, branch, filename pattern, command/code block, symlink target을 비번역 구조 계약으로 명시했다. |
 | 후속 #68/#69가 따를 locale pack 파일 배치와 manifest 표현 기준이 명확하다. | OK — `templates/locales/{locale}/...`, `sourcePatternToken`, `sourcePattern`, `fallbackLocale`, `availability.status`를 문서화했다. |
+| CLI dry-run/doctor가 문서화된 locale 판단 항목을 보고한다. | OK — `init`, `update`, `doctor` 출력에 locale 판단 섹션과 `locale-source` 진단을 추가했고 smoke test로 확인했다. |
+| 기존 update 판단과 update PR 전환 기준이 같은 locale 항목을 사용한다. | OK — `docs/lifecycle/update_pr.md`, `framework_lifecycle_guide.md`, `release_update_protocol.md`에 현재 locale, 목표 release locale 지원, locale manifest diff, locale 보존/전환 판단을 반영했다. |
 | #70 workflow 구현 범위를 침범하지 않는다. | OK — locale 선택 저장 위치와 workflow 실행 구현은 #70 범위로 남겼다. |
 | #71 smoke/migration 범위를 침범하지 않는다. | OK — locale별 smoke 검증과 migration guide는 #71 범위로 남겼다. |
 | `git diff --check`가 경고 없이 통과한다. | OK — 통합 검증에서 통과했다. |
@@ -78,6 +94,7 @@ node -e 'const fs=require("fs"); JSON.parse(fs.readFileSync("templates/manifest.
 rg -n "#67|#68|#69|#70|#71|locale pack|manifest|fallback|placeholder" docs templates mydocs/tech/task_m050_67_locale_manifest_design.md
 rg -n "en|ko|zh-CN|templates/locales|defaultLocale|fallbackLocale" templates/manifest.json docs/localization.md docs/lifecycle/adoption.md docs/lifecycle/update.md
 git diff --check
+npm test
 git log --oneline main..local/task67
 ```
 

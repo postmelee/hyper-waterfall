@@ -4,6 +4,7 @@ const os = require("node:os");
 const { spawnSync } = require("node:child_process");
 const path = require("node:path");
 const test = require("node:test");
+const manifest = require("../templates/manifest.json");
 const packageJson = require("../package.json");
 
 const root = path.resolve(__dirname, "..");
@@ -64,6 +65,9 @@ test("init prints adoption checkpoint fields", () => {
   assert.match(result.stdout, /신규 적용 판단 결과/);
   assert.match(result.stdout, /대상 저장소/);
   assert.match(result.stdout, /목표 release\/tag/);
+  assert.match(result.stdout, /선택 locale/);
+  assert.match(result.stdout, /locale source 후보/);
+  assert.match(result.stdout, /defaultLocale/);
   assert.match(result.stdout, /manifest 기준 적용 후보/);
   assert.match(result.stdout, /승인 요청/);
 });
@@ -85,8 +89,12 @@ test("update prints lifecycle checkpoint fields", () => {
   assert.equal(result.status, 0);
   assert.match(result.stdout, /기존 업데이트 판단 결과/);
   assert.match(result.stdout, /현재 version/);
+  assert.match(result.stdout, /현재 locale/);
   assert.match(result.stdout, /목표 release\/tag/);
+  assert.match(result.stdout, /목표 release locale 지원/);
   assert.match(result.stdout, /manifest diff/);
+  assert.match(result.stdout, /locale manifest diff/);
+  assert.match(result.stdout, /locale 보존\/전환 판단/);
   assert.match(result.stdout, /자동 적용 가능/);
   assert.match(result.stdout, /수동 확인 필요/);
   assert.match(result.stdout, /conflict/);
@@ -108,6 +116,8 @@ test("doctor prints non-destructive diagnostics", () => {
   assert.match(result.stdout, /Levels: OK, WARN, ERROR, INFO/);
   assert.match(result.stdout, /version-state/);
   assert.match(result.stdout, /manifest-source/);
+  assert.match(result.stdout, /localization/);
+  assert.match(result.stdout, /locale-source/);
   assert.match(result.stdout, /manifest-target/);
   assert.match(result.stdout, /symlink/);
   assert.match(result.stdout, /placeholder/);
@@ -126,5 +136,5 @@ test("init can use the bundled manifest outside the framework repository", () =>
   assert.equal(result.status, 0);
   assert.match(result.stdout, /신규 적용 판단 결과/);
   assert.match(result.stdout, /templates\/manifest\.json/);
-  assert.match(result.stdout, /targetStatus: missing=17/);
+  assert.match(result.stdout, new RegExp(`targetStatus: missing=${manifest.files.length}`));
 });
