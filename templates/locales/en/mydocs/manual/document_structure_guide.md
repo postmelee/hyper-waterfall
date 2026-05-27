@@ -200,6 +200,17 @@ Update policy meanings:
 
 New adoption uses strict manifest mode. Allowed targets are manifest `files[]` targets, `.hyper-waterfall/version.json`, and manifest-defined symlinks. Do not create or modify files outside the manifest during adoption. Target-project-specific artifacts such as product code, product docs, architecture docs, roadmap, API contracts, examples, and schemas are deferred task candidates, not adoption side effects.
 
+Hyper-Waterfall version update PRs are also GitHub platform artifacts, so do not create a separate document template for them in `mydocs/_templates/`. Use `.github/pull_request_template.md` for the PR body, and reflect manifest diff and migration guide evidence in the `Summary`, `Changes`, `Verification`, `Verification limits`, and `Remaining risks` sections.
+
+Lifecycle judgment results are pre-application report formats, not long-term artifact templates stored under `mydocs/`. Once a judgment result is approved and actual changes begin, track the work through a GitHub Issue, task plan, implementation plan, stage reports, final report, and PR body template.
+
+Mandatory rules:
+
+- When `templates/manifest.json` changes, review README distribution/update explanations and migration guides together.
+- `.hyper-waterfall/version.json` is a state file left in an actual adopted repository; do not mix it with document artifact templates in this framework repository.
+- Do not mark highly user-customizable files as unconditional `overwrite` in the manifest.
+- When README or `docs/agent-entrypoint.md` installation/update explanations change, review the manifest, migration guides, `framework_lifecycle_guide.md`, and `release_update_protocol.md` explanations together.
+
 ## External Contributor PR Review Policy
 
 External contributor PR review uses `mydocs/pr/`, not the internal task folders.
@@ -218,6 +229,9 @@ Agent Skills are stored in `mydocs/skills/{skill-name}/SKILL.md`.
 - Source of truth: `mydocs/skills/`
 - Codex discovery path: `.agents/skills -> mydocs/skills`
 - Claude Code discovery path: `.claude/skills -> mydocs/skills`
+- Both symlinks are committed to git with mode `120000`.
+- Skill bodies should be tool-independent (`gh`, `git`, file creation), and tool-specific invocation differences should live only in the "Invocation" section at the end of `SKILL.md`.
+- When a Skill writes a plan, report, or review document, it should first consult the corresponding template under `mydocs/_templates/`.
 
 Do not edit the symlink targets casually. If a Skill is added, removed, renamed, or its call timing changes, review README's core Skill table and `task_workflow_guide.md` Skill call display guidance in the same PR.
 
