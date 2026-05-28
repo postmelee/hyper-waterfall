@@ -43,13 +43,23 @@ AI가 바로 파일을 고치게 두지 않고, 작업 목적과 범위, 검증 
 
 ## 바로 설치
 
+### 기존 저장소
+
 AI 코딩 도구에 다음 한 줄을 보내세요.
 
 ```text
 https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘.
 ```
 
-AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용 절차를 따릅니다. 소스 변경 전 반드시 작업지시자 승인을 받게 되어 있습니다.
+### 새 프로젝트
+
+먼저 빈 GitHub 저장소나 로컬 저장소를 만드세요. 제품 코드나 제품 문서를 추가하기 전에, 그 빈 저장소에서 같은 적용 프롬프트를 AI 코딩 도구에 보내세요.
+
+다른 에이전트가 만든 프로젝트 기획서나 요구사항 초안이 이미 있다면 참고 자료로만 첨부할 수 있습니다. Hyper-Waterfall 적용 단계에서 제품 계획서, 아키텍처 문서, 소스 코드 생성을 함께 요청하지 마세요.
+
+적용 후 첫 제품 작업은 별도 GitHub Issue로 등록하고 일반 Hyper-Waterfall workflow로 진행합니다.
+
+두 경로 모두 AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용 절차를 따릅니다. 소스 변경 전 반드시 작업지시자 승인을 받게 되어 있습니다.
 
 | AI가 먼저 보고할 것 | 내용 |
 |---|---|
