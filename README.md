@@ -53,11 +53,15 @@ Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-wa
 
 ### New project
 
-Create an empty GitHub or local repository first. Before adding product code or product documents, send the same adoption prompt to your AI coding tool from that empty repository.
+When your project idea is ready to become a repository, create an empty GitHub or local repository first. Then send this prompt from that empty repository.
 
-If you already have a project brief or requirements draft from another agent, attach it as reference material only. Do not ask the AI to adopt Hyper-Waterfall and create product plans, architecture documents, or source code in the same step.
+```text
+I am starting a new project in this empty repository.
 
-After adoption, register the first product task as a separate GitHub Issue and proceed through the normal Hyper-Waterfall workflow.
+Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository first.
+
+If a project brief or requirements draft is attached, use it for context only. Do not create product plans, architecture documents, or source code during adoption. After adoption, help me register the first product task as a separate GitHub Issue.
+```
 
 In both paths, the AI starts from [`docs/agent-entrypoint.en.md`](docs/agent-entrypoint.en.md) and follows the adoption procedure. It must ask for approval before changing source files.
 

@@ -53,11 +53,15 @@ Hyper-Waterfall 是一种方法论 harness，它把 AI 编码绑定到 Issue、b
 
 ### 新项目
 
-先创建一个空的 GitHub 仓库或本地仓库。在添加产品代码或产品文档之前，从这个空仓库把同一个应用 prompt 发送给你的 AI 编码工具。
+当你的项目想法准备进入仓库时，先创建一个空的 GitHub 仓库或本地仓库。然后从这个空仓库发送下面的 prompt。
 
-如果你已经有其他 agent 生成的项目简报或需求草案，可以只把它作为参考材料附上。不要要求 AI 在同一步骤中应用 Hyper-Waterfall，同时创建产品计划、架构文档或源代码。
+```text
+我想在这个空仓库中开始一个新项目。
 
-导入后，把第一个产品任务注册为单独的 GitHub Issue，然后按正常的 Hyper-Waterfall workflow 推进。
+请先将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。
+
+如果附带了项目简报或需求草案，请只把它作为上下文参考。不要在应用阶段创建产品计划、架构文档或源代码。应用完成后，请帮我把第一个产品任务注册为单独的 GitHub Issue。
+```
 
 在两种路径中，AI 都会先阅读 [`docs/agent-entrypoint.zh-CN.md`](docs/agent-entrypoint.zh-CN.md)，并按应用流程执行。在修改源码前，它必须先请求任务指示者批准。
 
