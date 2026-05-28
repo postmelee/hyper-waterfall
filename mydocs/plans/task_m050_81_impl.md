@@ -187,8 +187,12 @@ Task #81 Stage 3: v0.3.0 release와 npm publish 실행
 
 수정:
 
+- `templates/manifest.json`
+- `test/cli-smoke.test.js`
 - `docs/releases/v0.3.0.md`
 - `docs/distribution-channels.md`
+- `docs/migrations/v0.2.0-to-v0.3.0.md`
+- `docs/localization-smoke.md`
 - 필요 시 `README.md`
 - 필요 시 `README.ko.md`
 - 필요 시 `README.zh-CN.md`
@@ -199,6 +203,8 @@ Task #81 Stage 3: v0.3.0 release와 npm publish 실행
 - 빈 임시 디렉터리에서 `npx hyper-waterfall@0.3.0 --version`, `--help`, locale별 `init --dry-run`을 실행한다.
 - `docs/releases/v0.3.0.md`의 readiness/publish 후 확인 체크리스트와 실제 결과를 갱신한다.
 - `docs/distribution-channels.md`에서 npm/GitHub 상태를 `0.3.0` 기준으로 갱신하고, Homebrew tap 등 제외 채널은 후속 필요 상태로 분리한다.
+- 실제 release 완료 상태에 맞춰 `templates/manifest.json`의 `release.status`를 `released`로 전환하고 테스트 기대값을 갱신한다.
+- migration/smoke 문서에서 release 전 후보 표현을 실제 publish 완료 상태와 맞춘다.
 - README 3종에 실제 publish 상태와 충돌하는 문구가 있으면 최소 수정한다.
 
 ### 검증

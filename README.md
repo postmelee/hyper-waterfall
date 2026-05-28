@@ -367,7 +367,7 @@ When converting approved update candidates into a PR, follow [`docs/lifecycle/up
 <details>
 <summary><strong>CLI and Distribution Channels</strong></summary>
 
-The `hyper-waterfall` CLI is distributed through npm and can run lifecycle judgment through version-pinned `npx` commands. The `v0.3.0` release readiness and post-publish verification checklist are tracked in [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md).
+The `hyper-waterfall` CLI is distributed through npm and can run lifecycle judgment through version-pinned `npx` commands. The `v0.3.0` release status and post-publish verification results are tracked in [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md).
 
 ```bash
 npx hyper-waterfall@0.3.0 init --repo . --dry-run

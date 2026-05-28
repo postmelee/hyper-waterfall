@@ -354,7 +354,7 @@ your-repo/
 <details>
 <summary><strong>CLI와 배포 채널</strong></summary>
 
-`hyper-waterfall` CLI는 npm을 통해 배포되며, version을 고정한 `npx` 명령으로 lifecycle 판단을 실행할 수 있습니다. `v0.3.0` release readiness와 publish 후 검증 체크리스트는 [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md)에서 관리합니다.
+`hyper-waterfall` CLI는 npm을 통해 배포되며, version을 고정한 `npx` 명령으로 lifecycle 판단을 실행할 수 있습니다. `v0.3.0` release 상태와 publish 후 검증 결과는 [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md)에서 관리합니다.
 
 ```bash
 npx hyper-waterfall@0.3.0 init --repo . --dry-run

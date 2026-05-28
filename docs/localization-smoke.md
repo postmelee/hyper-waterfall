@@ -105,25 +105,25 @@ Stage 3 결과다. `docs/migrations/v0.2.0-to-v0.3.0.md`에 기존 한국어-onl
 | 명시 전환 | `en` 또는 `zh-CN` 전환은 별도 승인 항목으로 다룬다. | OK. migration guide가 `--locale en` 또는 `--locale zh-CN` 같은 명시 요청을 기존 locale 보존의 부수 효과가 아닌 별도 승인 항목으로 분리한다. |
 | semantic review | manual/Skill locale mirror는 절차 의미 보존을 확인한다. | OK. migration guide와 migration 작성 규칙이 `requiresSemanticReview: true` 대상인 `mydocs/manual/`, `mydocs/skills/`에서 승인 게이트, Issue 추적, Stage 보고, PR 게시 절차 의미 보존을 확인하도록 요구한다. |
 
-## v0.3.0 Release Readiness 연결
+## v0.3.0 Release 상태 연결
 
-Stage 4 결과다. 다국어 적용 smoke 기준이 README의 `npx hyper-waterfall@0.3.0` 안내, package metadata, manifest metadata와 같은 release 후보를 가리키도록 정렬했다.
+Stage 4 결과다. 다국어 적용 smoke 기준이 README의 `npx hyper-waterfall@0.3.0` 안내, package metadata, manifest metadata와 같은 release 상태를 가리키도록 정렬했다.
 
 | 항목 | 기준 | 결과 |
 |---|---|---|
 | package version | `package.json`의 `version`이 `0.3.0`이다. | OK |
-| manifest version | `templates/manifest.json`의 `frameworkVersion`이 `0.3.0`, `release.plannedTag`가 `v0.3.0`, `baselineTag`가 `v0.2.0`, `release.status`가 `planned`이다. | OK |
+| manifest version | `templates/manifest.json`의 `frameworkVersion`이 `0.3.0`, `release.plannedTag`가 `v0.3.0`, `baselineTag`가 `v0.2.0`, `release.status`가 `released`이다. | OK |
 | npm tarball 다국어 문서 | `npm pack --dry-run` 결과에 `README.ko.md`, `README.zh-CN.md`, localized entrypoint/lifecycle docs, `templates/locales/{en,ko,zh-CN}`가 포함되어야 한다. | Stage 4 검증 기준 |
-| release 실행 경계 | GitHub Release/tag 생성, npm publish, Homebrew tap 갱신은 readiness 문서만으로 실행하지 않는다. | OK. [`docs/releases/v0.3.0.md`](releases/v0.3.0.md)에 승인 게이트로 분리했다. |
+| release 실행 경계 | GitHub Release/tag 생성과 npm publish는 별도 release task 승인으로 실행됐고, Homebrew tap 갱신은 별도 task로 분리한다. | OK. [`docs/releases/v0.3.0.md`](releases/v0.3.0.md)에 승인 게이트와 실행 결과를 분리했다. |
 
 ## 검증 한계
 
 - 이 문서는 dry-run 기반 smoke 결과를 기록한다. 실제 파일 복사, symlink 생성, `.hyper-waterfall/version.json` write는 검증하지 않는다.
 - scratch path의 target status는 대상 파일이 없다는 전제에서 `missing=25`로 나온다. 실제 적용 저장소에서는 기존 파일 충돌 가능성이 달라질 수 있다.
-- GitHub Release/tag, npm publish, 배포 채널 검증은 이 smoke의 범위가 아니다.
+- GitHub Release/tag와 npm publish는 #81에서 검증했다. Homebrew tap, Docker, plugin 배포 채널 검증은 이 smoke의 범위가 아니다.
 
 ## 후속 기록
 
 - Stage 2: unsupported locale, 기존 update 보존/전환, placeholder와 승인 게이트 검증 결과를 채웠다.
 - Stage 3: migration guide 연결 결과를 채웠다.
-- Stage 4: M050 종료 판단과 잔여 위험을 최종 정리했다. 실제 write mode, release/tag 생성, npm publish, 배포 채널 검증은 별도 task 범위로 남긴다.
+- Stage 4: M050 종료 판단과 잔여 위험을 최종 정리했다. 실제 write mode와 Homebrew/Docker/plugin 배포 채널 검증은 별도 task 범위로 남긴다.
