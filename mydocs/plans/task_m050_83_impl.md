@@ -95,7 +95,8 @@ Modified:
 - Replace the long Language support prompt/CLI table with:
   - A compact supported-locale table.
   - Per-language copyable prompt blocks.
-  - Per-language copyable CLI dry-run blocks.
+  - Per-language copyable `npx` CLI dry-run blocks.
+  - A short Homebrew install path for macOS users who run the CLI often.
 - Preserve the supported locale list exactly: `en`, `ko`, `zh-CN`.
 - Keep commands structurally unchanged:
   - `npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run`
@@ -103,11 +104,12 @@ Modified:
   - `npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run`
 - Keep language-specific prompt text localized, with locale codes unchanged.
 - Preserve the statement that CLI dry-run prints lifecycle judgment only and actual file changes still require approval.
+- Present `npx` and Homebrew as lifecycle judgment execution channels, not as automatic adoption or file-application buttons.
 
 ### Validation
 
 ```bash
-rg -n "Language support|언어 지원|语言支持|Supported locale|지원 locale|支持的 locale|npx hyper-waterfall@0.3.0 init --repo \\. --locale" README.md README.ko.md README.zh-CN.md
+rg -n "Language support|언어 지원|语言支持|Supported locale|지원 locale|支持的 locale|npx hyper-waterfall@0.3.0 init --repo \\. --locale|brew install postmelee/tap/hyper-waterfall|hyper-waterfall init --repo \\. --locale" README.md README.ko.md README.zh-CN.md
 rg -n "locale en|locale은 ko|使用 zh-CN locale|--locale en|--locale ko|--locale zh-CN" README.md README.ko.md README.zh-CN.md
 git diff --check
 ```
@@ -115,7 +117,8 @@ git diff --check
 Manual validation:
 
 - Confirm each README has copyable fenced code blocks for English, Korean, and Simplified Chinese prompts.
-- Confirm each README has copyable fenced `sh` blocks for all three CLI dry-run commands.
+- Confirm each README has copyable fenced `sh` blocks for all three `npx` CLI dry-run commands.
+- Confirm each README has a Homebrew install example and an installed CLI dry-run example.
 - Confirm the summary table remains short enough to scan.
 
 ### Commit

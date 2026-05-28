@@ -73,15 +73,54 @@ Hyper-Waterfall 是一种方法论 harness，它把 AI 编码绑定到 Issue、b
 
 ### 语言支持
 
-默认 locale 是 `en`。支持的 locale pack 是 `en`、`ko`、`zh-CN`；如果所选 locale source 缺失，会先报告 fallback 候选，而不是静默替换。想用指定语言应用 Hyper-Waterfall 时，请在 prompt 或 CLI dry-run 中写明 locale。
+默认 locale 是 `en`。支持的 locale pack 是 `en`、`ko`、`zh-CN`；如果所选 locale source 缺失，会先报告 fallback 候选，而不是静默替换。
 
-| 语言 | AI 应用 prompt | CLI dry-run |
-|---|---|---|
-| English | `Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository. Use locale en.` | `npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run` |
-| 韩语 | `https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘. locale은 ko로 사용해줘.` | `npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run` |
-| 简体中文 | `将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。使用 zh-CN locale。` | `npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run` |
+| 语言 | Locale |
+|---|---|
+| English | `en` |
+| 韩语 | `ko` |
+| 简体中文 | `zh-CN` |
 
-CLI 命令只输出 lifecycle 判断。实际文件变更仍然必须经过审批 workflow。
+使用 AI 编码工具导入 Hyper-Waterfall 时，请复制 prompt。想在终端中不安装 CLI、只运行 lifecycle 判断时，请使用 `npx` dry-run。
+
+#### English
+
+```text
+Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository. Use locale en.
+```
+
+```sh
+npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run
+```
+
+#### 韩语
+
+```text
+https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘. locale은 ko로 사용해줘.
+```
+
+```sh
+npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run
+```
+
+#### 简体中文
+
+```text
+将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。使用 zh-CN locale。
+```
+
+```sh
+npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run
+```
+
+在 macOS 上，如果经常运行 CLI，可以通过 Homebrew 安装。
+
+```sh
+brew install postmelee/tap/hyper-waterfall
+hyper-waterfall init --repo . --locale zh-CN --dry-run
+```
+
+`npx` 和 Homebrew CLI 命令只输出 lifecycle 判断。实际文件变更仍然必须经过审批 workflow。
 
 导入后，AI 会按照 Hyper-Waterfall 方式推进工作。第一次使用时，你可以直接用自然语言告诉 AI，例如 `"请实现这个功能"`。
 
