@@ -81,36 +81,12 @@ The default locale is `en`. Supported locale packs are `en`, `ko`, and `zh-CN`; 
 | Korean | `ko` |
 | Simplified Chinese | `zh-CN` |
 
-Use the AI prompt when adopting Hyper-Waterfall with an AI coding tool. Use `npx` when you want to run the lifecycle judgment from a terminal without installing the CLI.
+When using an AI coding tool, ask in the language you want to use. The AI reports the selected locale before changing files.
 
-#### English
-
-```text
-Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository. Use locale en.
-```
+To check adoption from a terminal, pass the locale explicitly. Replace `en` with `ko` or `zh-CN` as needed.
 
 ```sh
 npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run
-```
-
-#### Korean
-
-```text
-https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘. locale은 ko로 사용해줘.
-```
-
-```sh
-npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run
-```
-
-#### Simplified Chinese
-
-```text
-将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。使用 zh-CN locale。
-```
-
-```sh
-npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run
 ```
 
 On macOS, install the CLI with Homebrew if you run it often.

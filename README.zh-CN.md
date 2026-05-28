@@ -81,33 +81,9 @@ Hyper-Waterfall 是一种方法论 harness，它把 AI 编码绑定到 Issue、b
 | 韩语 | `ko` |
 | 简体中文 | `zh-CN` |
 
-使用 AI 编码工具导入 Hyper-Waterfall 时，请复制 prompt。想在终端中不安装 CLI、只运行 lifecycle 判断时，请使用 `npx` dry-run。
+使用 AI 编码工具时，请用你想使用的语言提出请求。AI 会在修改文件前先报告选择的 locale。
 
-#### English
-
-```text
-Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository. Use locale en.
-```
-
-```sh
-npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run
-```
-
-#### 韩语
-
-```text
-https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘. locale은 ko로 사용해줘.
-```
-
-```sh
-npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run
-```
-
-#### 简体中文
-
-```text
-将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。使用 zh-CN locale。
-```
+要在终端中检查应用判断，请显式传入 locale。需要时可以把 `zh-CN` 替换为 `en` 或 `ko`。
 
 ```sh
 npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run
