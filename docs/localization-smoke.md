@@ -37,7 +37,7 @@ node bin/hyper-waterfall.js init --repo /private/tmp/hw-smoke-en --manifest "$(p
 
 | 항목 | 결과 |
 |---|---|
-| framework version | `0.2.0` |
+| framework version | `0.3.0` |
 | default locale | `en` |
 | supported locales | `en`, `ko`, `zh-CN` |
 | fallback locale | `en` |
@@ -104,6 +104,17 @@ Stage 3 결과다. `docs/migrations/v0.2.0-to-v0.3.0.md`에 기존 한국어-onl
 | 기존 한국어-only 저장소 | `locale` 기록이 없으면 `unknown`으로 보고하고, 한국어 문맥 보존 시 `ko` 선택을 승인받는다. | OK. migration guide가 `locale` 미기록을 자동 추론하지 않고 `unknown`으로 보고하도록 명시하고, 한국어-only 문맥 보존은 maintainer의 `ko` 선택 승인으로 처리한다. |
 | 명시 전환 | `en` 또는 `zh-CN` 전환은 별도 승인 항목으로 다룬다. | OK. migration guide가 `--locale en` 또는 `--locale zh-CN` 같은 명시 요청을 기존 locale 보존의 부수 효과가 아닌 별도 승인 항목으로 분리한다. |
 | semantic review | manual/Skill locale mirror는 절차 의미 보존을 확인한다. | OK. migration guide와 migration 작성 규칙이 `requiresSemanticReview: true` 대상인 `mydocs/manual/`, `mydocs/skills/`에서 승인 게이트, Issue 추적, Stage 보고, PR 게시 절차 의미 보존을 확인하도록 요구한다. |
+
+## v0.3.0 Release Readiness 연결
+
+Stage 4 결과다. 다국어 적용 smoke 기준이 README의 `npx hyper-waterfall@0.3.0` 안내, package metadata, manifest metadata와 같은 release 후보를 가리키도록 정렬했다.
+
+| 항목 | 기준 | 결과 |
+|---|---|---|
+| package version | `package.json`의 `version`이 `0.3.0`이다. | OK |
+| manifest version | `templates/manifest.json`의 `frameworkVersion`이 `0.3.0`, `release.plannedTag`가 `v0.3.0`, `baselineTag`가 `v0.2.0`, `release.status`가 `planned`이다. | OK |
+| npm tarball 다국어 문서 | `npm pack --dry-run` 결과에 `README.ko.md`, `README.zh-CN.md`, localized entrypoint/lifecycle docs, `templates/locales/{en,ko,zh-CN}`가 포함되어야 한다. | Stage 4 검증 기준 |
+| release 실행 경계 | GitHub Release/tag 생성, npm publish, Homebrew tap 갱신은 readiness 문서만으로 실행하지 않는다. | OK. [`docs/releases/v0.3.0.md`](releases/v0.3.0.md)에 승인 게이트로 분리했다. |
 
 ## 검증 한계
 

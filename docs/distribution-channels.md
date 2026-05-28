@@ -29,23 +29,37 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 따라서 추가 채널은 release asset, manifest, migration guide, npm CLI 중 무엇을 어떻게 실행할지 결정하는 얇은 계층이어야 한다. 채널별 package나 image 자체가 새 canonical 원천이 되면 안 된다.
 
-## 현재 채널 상태 (2026-05-19)
+## 현재 채널 상태 (2026-05-28)
 
 | 채널 | 현재 상태 | 사용자-facing 경로 | 보류 또는 후속 조건 |
 |---|---|---|---|
-| GitHub Release/tag | `v0.2.0` 공개 완료, manifest `released` | `https://github.com/postmelee/hyper-waterfall/releases/tag/v0.2.0` | root/directory checksum 산식은 별도 확정 필요 |
-| npm CLI | `hyper-waterfall@0.2.0` 공개 완료 | `npx hyper-waterfall@0.2.0 --help` | publish 자동화는 후속 후보 |
+| GitHub Release/tag | `v0.2.0` 공개 완료, `v0.3.0` release 후보 준비 중 | 현재: `https://github.com/postmelee/hyper-waterfall/releases/tag/v0.2.0` | `v0.3.0` tag/release 생성 후 `https://github.com/postmelee/hyper-waterfall/releases/tag/v0.3.0`로 전환 |
+| npm CLI | `hyper-waterfall@0.2.0` 공개 완료, `hyper-waterfall@0.3.0` package metadata 준비 중 | 현재: `npx hyper-waterfall@0.2.0 --help` | `npm publish`와 post-publish smoke 후 `npx hyper-waterfall@0.3.0 --help`로 전환 |
 | Homebrew public tap | `postmelee/tap/hyper-waterfall` 공개 완료 | `brew install postmelee/tap/hyper-waterfall` | release마다 formula 갱신 절차 필요 |
 | Homebrew core | 보류 | 없음 | #46 기준 notability, non-author usage, 플랫폼 검증, formula test 근거 필요 |
 | Docker | M040 제외 | 없음 | read-only image PoC는 후속 후보 |
 | Codex plugin | repo-local 후보와 CLI discovery 확인 | repo-local marketplace, `AGENTS.md`, core Skill, npm CLI fallback | official public publishing surface와 별도 승인 필요 |
 | Claude plugin | source-managed local/zip 후보 검증 | `--plugin-dir` directory/zip, `CLAUDE.md`, core Skill, npm CLI fallback | Official directory 제출과 release asset 게시 별도 승인 필요 |
 
+## v0.3.0 release readiness
+
+M050의 `v0.3.0` release 후보는 다국어 적용 진입점을 배포하는 단계다. 준비 상태는 [`docs/releases/v0.3.0.md`](releases/v0.3.0.md)를 기준으로 관리한다.
+
+| 항목 | readiness 기준 |
+|---|---|
+| package metadata | `package.json` version `0.3.0`, npm tarball `files`에 `README.ko.md`, `README.zh-CN.md` 포함 |
+| manifest metadata | `templates/manifest.json`의 `frameworkVersion: 0.3.0`, `release.plannedTag: v0.3.0`, `baselineTag: v0.2.0`, `release.status: planned` |
+| README | 기본 English README와 Korean/Simplified Chinese README가 `npx hyper-waterfall@0.3.0` locale dry-run을 안내 |
+| lifecycle docs | `docs/agent-entrypoint.en.md`, `docs/agent-entrypoint.zh-CN.md`, `docs/lifecycle/*.en.md`, `docs/lifecycle/*.zh-CN.md` 포함 |
+| migration guide | `docs/migrations/v0.2.0-to-v0.3.0.md`가 기존 적용 저장소의 locale 보존/전환과 semantic review 기준을 설명 |
+| release execution | GitHub Release/tag 생성, npm publish, Homebrew tap 갱신은 readiness와 분리된 승인 항목 |
+
 ## 완료와 후속 분리
 
 | 구분 | 항목 |
 |---|---|
 | M040 완료 | `v0.2.0` GitHub Release/tag, npm `hyper-waterfall@0.2.0`, Homebrew public tap, Codex repo-local 후보와 discovery, Claude local/zip 후보 |
+| M050 release readiness | `v0.3.0` package/manifest metadata, 다국어 README, localized lifecycle docs, migration guide, npm pack 구성 |
 | 이번 task에서 상태만 정리 | `templates/manifest.json` release status, migration guide 보류 항목, distribution 문서의 채널별 현재 상태 |
 | 후속 승인 필요 | Homebrew core 제출, Docker read-only image, Codex official public 배포, Claude Official directory 제출, Claude release asset 게시, release automation, root/directory checksum 산식 확정 |
 
@@ -79,25 +93,25 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 판단:
 
-- `v0.2.0` GitHub Release/tag는 공개 완료 상태다.
+- `v0.2.0` GitHub Release/tag는 공개 완료 상태이고, `v0.3.0`은 release 후보 상태다.
 - 계속 P0로 유지한다.
 - 다른 모든 채널은 GitHub Release/tag를 기준으로 동작해야 한다.
-- `templates/manifest.json`의 release status는 actual Release/tag에 맞춰 `released`로 둔다.
+- 공개 완료된 release의 manifest status는 actual Release/tag에 맞춰 `released`로 두고, release 후보 branch의 manifest status는 publish 전까지 `planned`로 둔다.
 - root/directory checksum 보류 상태는 release 완료와 별도로 정합성 감사를 계속해야 한다.
 
 ### npm CLI
 
 목적:
 
-- `npx hyper-waterfall init --repo . --dry-run`
-- `npx hyper-waterfall init --repo . --locale ko --dry-run`
-- `npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --dry-run`
-- `npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --locale zh-CN --dry-run`
-- `npx hyper-waterfall doctor --repo .`
+- `npx hyper-waterfall@0.3.0 init --repo . --dry-run`
+- `npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run`
+- `npx hyper-waterfall@0.3.0 update --repo . --from v0.2.0 --to v0.3.0 --dry-run`
+- `npx hyper-waterfall@0.3.0 update --repo . --from v0.2.0 --to v0.3.0 --locale zh-CN --dry-run`
+- `npx hyper-waterfall@0.3.0 doctor --repo .`
 
-위 명령으로 신규 적용, 기존 업데이트, 상태 진단의 판단 결과를 재현 가능하게 출력한다.
+위 명령으로 신규 적용, 기존 업데이트, 상태 진단의 판단 결과를 재현 가능하게 출력한다. `@0.3.0` version-pinned 명령은 npm publish 후 사용자-facing 안정 경로가 된다.
 
-`hyper-waterfall@0.2.0`은 npm registry에 publish되어 있으며, 위 `npx` 명령은 lifecycle 판단을 실행하는 안정 경로다. publish 전후 검증 결과는 `docs/releases/v0.2.0-npm-publish.md`를 기준으로 확인한다.
+`hyper-waterfall@0.2.0`은 npm registry에 publish되어 있으며, `hyper-waterfall@0.3.0`은 다국어 release 후보로 준비 중이다. `v0.3.0` publish 전후 검증 결과는 `docs/releases/v0.3.0.md`를 기준으로 확인한다.
 
 비목표:
 
@@ -237,7 +251,7 @@ Codex plugin과 Claude plugin은 [`docs/plugin-distribution-principles.md`](plug
 
 권장 순서:
 
-1. P0: `v0.2.0` GitHub Release/tag, manifest, migration guide, npm CLI를 안정 운영한다.
+1. P0: `v0.3.0` GitHub Release/tag, manifest, migration guide, npm CLI release 후보를 검증하고, publish 후 안정 운영한다.
 2. P1: Homebrew public tap은 `postmelee/tap/hyper-waterfall` 경로로 유지하고, core 제출은 #46 보류 판단에 따라 조건 충족 후 재검토한다.
 3. P2: Docker는 `doctor`와 `update --dry-run` read-only image부터 검증한다.
 4. P3: Codex plugin과 Claude plugin은 local/repo-local 후보를 유지하고, official public 배포와 release asset은 별도 승인 task로 분리한다.

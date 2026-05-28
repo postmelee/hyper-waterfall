@@ -34,6 +34,17 @@ test("version prints package version", () => {
   assert.equal(result.stdout.trim(), packageJson.version);
 });
 
+test("package and manifest release metadata are aligned", () => {
+  assert.equal(packageJson.version, manifest.frameworkVersion);
+  assert.equal(manifest.release.plannedTag, `v${packageJson.version}`);
+  assert.equal(manifest.release.baselineTag, "v0.2.0");
+  assert.equal(manifest.release.status, "planned");
+  assert.equal(manifest.versionState.format.frameworkVersion, packageJson.version);
+  assert.equal(manifest.versionState.format.releaseTag, `v${packageJson.version}`);
+  assert(packageJson.files.includes("README.ko.md"));
+  assert(packageJson.files.includes("README.zh-CN.md"));
+});
+
 test("manifest locale sources match current M050 pack status", () => {
   const localizedFiles = manifest.files.filter((file) => {
     return file.localization && file.localization.enabled === true;
@@ -139,9 +150,9 @@ test("update prints lifecycle checkpoint fields", () => {
     "--manifest",
     "templates/manifest.json",
     "--from",
-    "v0.1.0",
-    "--to",
     "v0.2.0",
+    "--to",
+    "v0.3.0",
     "--dry-run"
   ]);
 
@@ -168,8 +179,8 @@ test("update preserves stored locale and reports switch requests", () => {
   fs.writeFileSync(
     path.join(stateDir, "version.json"),
     JSON.stringify({
-      frameworkVersion: "0.1.0",
-      releaseTag: "v0.1.0",
+      frameworkVersion: "0.2.0",
+      releaseTag: "v0.2.0",
       locale: "ko",
       installedAt: "2026-05-27T00:00:00.000Z",
       updatedAt: "2026-05-27T00:00:00.000Z"
@@ -181,9 +192,9 @@ test("update preserves stored locale and reports switch requests", () => {
     "--repo",
     tempRepo,
     "--from",
-    "v0.1.0",
-    "--to",
     "v0.2.0",
+    "--to",
+    "v0.3.0",
     "--dry-run"
   ]);
 
@@ -198,9 +209,9 @@ test("update preserves stored locale and reports switch requests", () => {
     "--repo",
     tempRepo,
     "--from",
-    "v0.1.0",
-    "--to",
     "v0.2.0",
+    "--to",
+    "v0.3.0",
     "--locale",
     "zh-CN",
     "--dry-run"

@@ -49,13 +49,25 @@ Send this one line to your AI coding tool.
 Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository.
 ```
 
-The AI starts from [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md) and follows the adoption procedure. It must ask for approval before changing source files.
+The AI starts from [`docs/agent-entrypoint.en.md`](docs/agent-entrypoint.en.md) and follows the adoption procedure. It must ask for approval before changing source files.
 
 | What the AI reports first | Content |
 |---|---|
 | Adoption mode | Whether this is a new adoption or an update to an existing Hyper-Waterfall installation. |
 | Change candidates | Which files it would create or modify, and whether placeholder substitution is needed. |
 | Approval request | The scope the task requester must approve before actual file changes. |
+
+### Language support
+
+The default locale is `en`. Supported locale packs are `en`, `ko`, and `zh-CN`; missing locale sources are reported before fallback candidates are used. To apply Hyper-Waterfall in a specific language, include the locale in the prompt or run the CLI dry-run first.
+
+| Language | AI prompt | CLI dry-run |
+|---|---|---|
+| English | `Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository. Use locale en.` | `npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run` |
+| Korean | `https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘. locale은 ko로 사용해줘.` | `npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run` |
+| Simplified Chinese | `将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。使用 zh-CN locale。` | `npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run` |
+
+The CLI command prints a lifecycle judgment only. Actual file changes still move through the approval workflow.
 
 After adoption, the AI proceeds according to the Hyper-Waterfall process. New users can simply ask the AI in natural language, such as `"Implement this."`
 
@@ -205,7 +217,7 @@ Every task follows this procedure **strictly**.
 
 > Each `[approval]` point is a quality gate. Direction errors that code review alone cannot catch are caught during document review.
 
-Detailed procedure follows the [task workflow manual](templates/mydocs/manual/task_workflow_guide.md#타스크-진행-절차). Branch and PR publication flow is described in the [Git workflow manual](templates/mydocs/manual/git_workflow_guide.md#브랜치-관리).
+Detailed procedure follows the [task workflow manual](templates/locales/en/mydocs/manual/task_workflow_guide.md). Branch and PR publication flow is described in the [Git workflow manual](templates/locales/en/mydocs/manual/git_workflow_guide.md).
 
 ### Core SKILL Details
 
@@ -219,9 +231,9 @@ Detailed procedure follows the [task workflow manual](templates/mydocs/manual/ta
 | `external-pr-review` | When reviewing an external contributor PR | `mydocs/pr/` review documents based on `external_pr_*` templates, verification result, recommendation (merge/request changes/close) |
 | `todo` | When creating or updating the today's todo board | `mydocs/orders/yyyymmdd.md` table update based on `orders.md` |
 
-When each SKILL should be displayed to the user follows the [SKILL call display guide](templates/mydocs/manual/task_workflow_guide.md#skill-호출-표시-안내). PR body structure and verification follow the [internal task PR guide](templates/mydocs/manual/internal_pr_guide.md), and PR creation commands plus document link formats follow the [PR command and link guide](templates/mydocs/manual/pr_command_guide.md).
+When each SKILL should be displayed to the user follows the [SKILL call display guide](templates/locales/en/mydocs/manual/task_workflow_guide.md). PR body structure and verification follow the [internal task PR guide](templates/locales/en/mydocs/manual/internal_pr_guide.md), and PR creation commands plus document link formats follow the [PR command and link guide](templates/locales/en/mydocs/manual/pr_command_guide.md).
 
-Document structure and manual-document neutrality are checked in the [document structure manual](templates/mydocs/manual/document_structure_guide.md), not through a separate SKILL.
+Document structure and manual-document neutrality are checked in the [document structure manual](templates/locales/en/mydocs/manual/document_structure_guide.md), not through a separate SKILL.
 
 ### Task Cycle
 
@@ -281,16 +293,16 @@ mydocs/
 └── pr/                                 <- external PR review records
 ```
 
-Folder roles are defined in the [folder role section of the document structure manual](templates/mydocs/manual/document_structure_guide.md#폴더-역할-엄격-준수), and each folder's detailed writing rules are checked from that folder's `README.md`. Document filenames follow the [document filename rules](templates/mydocs/manual/document_structure_guide.md#문서-파일명-규칙). Artifact output formats are summarized in the [central template policy](templates/mydocs/manual/document_structure_guide.md#중앙-템플릿-정책).
+Folder roles, document filename rules, and artifact output formats are defined in the [document structure manual](templates/locales/en/mydocs/manual/document_structure_guide.md). Each folder's detailed writing rules are checked from that folder's `README.md`.
 
 | Area | Policy |
 |---|---|
 | `mydocs/` | Stores work memory, operating manuals, and research evidence. It is not the official product documentation root of the target project. |
 | Official product docs | Hyper-Waterfall does not fix the official documentation root name. A target project may choose `docs/`, `specs/`, `site/`, `website/`, `adr/`, GitHub Wiki, or another path. Tasks that create, move, or edit product/user/contributor/API/architecture/roadmap docs must first get approval in the task plan's document location decision, including target audience, officialization level, selected path, alternative path, and reason. |
-| `manual/` | Contains recurring operating standards and procedures. Records for a specific Issue, PR, release verification, or incident are separated into the corresponding artifact document. Details follow the [manual document neutrality policy](templates/mydocs/manual/document_structure_guide.md#manual-문서-중립성-정책). |
+| `manual/` | Contains recurring operating standards and procedures. Records for a specific Issue, PR, release verification, or incident are separated into the corresponding artifact document. Details follow the [manual document neutrality policy](templates/locales/en/mydocs/manual/document_structure_guide.md). |
 | `tech/` | Contains technical research, alternative comparisons, design rationale, and drafts that are not yet official. To promote them into official contract docs for users or external integrators, open a separate task, choose the official docs root, and receive approval. |
 | `_templates/` | The source of truth for output formats, not an actual task artifact folder. Each Skill reads the corresponding template in `mydocs/_templates/` first and uses the minimal section summary inside the Skill only as fallback when the template cannot be read. |
-| GitHub Issue and Pull Request | GitHub platform artifacts. Issue bodies follow `.github/ISSUE_TEMPLATE/task.yml`, PR bodies follow `.github/pull_request_template.md`, and repository-resident work documents follow `mydocs/_templates/`. Details follow the [GitHub platform template policy](templates/mydocs/manual/document_structure_guide.md#github-플랫폼-템플릿-정책). |
+| GitHub Issue and Pull Request | GitHub platform artifacts. Issue bodies follow `.github/ISSUE_TEMPLATE/task.yml`, PR bodies follow `.github/pull_request_template.md`, and repository-resident work documents follow `mydocs/_templates/`. Details follow the [GitHub platform template policy](templates/locales/en/mydocs/manual/document_structure_guide.md). |
 
 ## Target Repository Structure After Adoption
 
@@ -337,7 +349,7 @@ your-repo/
 | `mydocs/orders/`, `plans/`, `working/`, `report/` | Stores daily task state, plans, Stage reports, and final reports. |
 | `mydocs/feedback/`, `tech/`, `troubleshootings/`, `pr/` | Stores feedback, research, troubleshooting, and external PR review records. |
 
-The symlink structure for `.agents/skills` and `.claude/skills` in the adopted repository follows the [Agent Skills location policy](templates/mydocs/manual/document_structure_guide.md#agent-skills-위치-정책). `.hyper-waterfall/version.json` and manifest-based update flow are documented in the [distribution manifest and version record policy](templates/mydocs/manual/document_structure_guide.md#배포-manifest와-버전-기록-정책), [`docs/lifecycle/update.md`](docs/lifecycle/update.md), and [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md).
+The symlink structure for `.agents/skills` and `.claude/skills` in the adopted repository follows the [Agent Skills location policy](templates/locales/en/mydocs/manual/document_structure_guide.md). `.hyper-waterfall/version.json` and manifest-based update flow are documented in the [distribution manifest and version record policy](templates/locales/en/mydocs/manual/document_structure_guide.md), [`docs/lifecycle/update.en.md`](docs/lifecycle/update.en.md), and [`docs/lifecycle/update_pr.en.md`](docs/lifecycle/update_pr.en.md).
 
 The framework's document templates, GitHub Issue Form, and SKILL source of truth are `templates/mydocs/_templates/`, `templates/.github/ISSUE_TEMPLATE/task.yml`, and `templates/mydocs/skills/`. In an adopted repository, `.agents/skills` and `.claude/skills` symlinks point to the same `mydocs/skills` text.
 
@@ -346,21 +358,21 @@ The framework's document templates, GitHub Issue Form, and SKILL source of truth
 <details>
 <summary><strong>Updating Existing Adopted Repositories</strong></summary>
 
-Existing adopted repositories are updated based on GitHub Releases/tags and the manifest. AI uses [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md) as the entry point and follows the existing-update judgment format in [`docs/lifecycle/update.md`](docs/lifecycle/update.md), first reporting current version, current locale, requested locale or switch request, target release/tag, target release locale support, migration guide, manifest diff, locale manifest diff, and Hyper-Waterfall version update PR candidates.
+Existing adopted repositories are updated based on GitHub Releases/tags and the manifest. AI uses [`docs/agent-entrypoint.en.md`](docs/agent-entrypoint.en.md) as the entry point and follows the existing-update judgment format in [`docs/lifecycle/update.en.md`](docs/lifecycle/update.en.md), first reporting current version, current locale, requested locale or switch request, target release/tag, target release locale support, migration guide, manifest diff, locale manifest diff, and Hyper-Waterfall version update PR candidates.
 
-When converting approved update candidates into a PR, follow [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md). The npm CLI is a convenience execution channel for the same judgment and does not replace the canonical basis: GitHub Release/tag, `templates/manifest.json`, and migration guide. CLI output alone does not automatically apply files; only approved scope is converted into the normal task flow.
+When converting approved update candidates into a PR, follow [`docs/lifecycle/update_pr.en.md`](docs/lifecycle/update_pr.en.md). The npm CLI is a convenience execution channel for the same judgment and does not replace the canonical basis: GitHub Release/tag, `templates/manifest.json`, and migration guide. CLI output alone does not automatically apply files; only approved scope is converted into the normal task flow.
 
 </details>
 
 <details>
 <summary><strong>CLI and Distribution Channels</strong></summary>
 
-The `hyper-waterfall` CLI is published to the npm registry and can run lifecycle judgment through the following `npx` commands. Publish and post-publish verification results are tracked in [`docs/releases/v0.2.0-npm-publish.md`](docs/releases/v0.2.0-npm-publish.md).
+The `hyper-waterfall` CLI is distributed through npm and can run lifecycle judgment through version-pinned `npx` commands. The `v0.3.0` release readiness and post-publish verification checklist are tracked in [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md).
 
 ```bash
-npx hyper-waterfall init --repo . --dry-run
-npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --dry-run
-npx hyper-waterfall doctor --repo .
+npx hyper-waterfall@0.3.0 init --repo . --dry-run
+npx hyper-waterfall@0.3.0 update --repo . --from v0.2.0 --to v0.3.0 --dry-run
+npx hyper-waterfall@0.3.0 doctor --repo .
 ```
 
 On macOS, you can install the CLI through the public Homebrew tap.
@@ -534,9 +546,9 @@ But documents answer the context questions:
 
 ### 1. Apply It to Any Repository with One Prompt — Modularization + Placeholder Substitution
 
-The original methodology in rhwp is tightly coupled to that repository's documents and conventions, so it is hard to copy directly into other projects. This repository separates operating rules, manuals, and SKILLs into `templates/` and formalizes the entry procedure in [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md). As a result, **one prompt to an AI coding tool** can apply it to any repository. The AI follows the entry procedure and automatically substitutes placeholders such as `REPO_SLUG` and `BASE_BRANCH`.
+The original methodology in rhwp is tightly coupled to that repository's documents and conventions, so it is hard to copy directly into other projects. This repository separates operating rules, manuals, and SKILLs into `templates/` and formalizes the entry procedure in [`docs/agent-entrypoint.en.md`](docs/agent-entrypoint.en.md). As a result, **one prompt to an AI coding tool** can apply it to any repository. The AI follows the entry procedure and automatically substitutes placeholders such as `REPO_SLUG` and `BASE_BRANCH`.
 
-Lifecycle criteria for updating existing adopted repositories are also documented separately. GitHub Release/tag, manifest, migration guide, and `.hyper-waterfall/version.json` are used to determine the current version, current locale, requested locale or switch request, target release/tag, target release locale support, manifest diff, locale manifest diff, and Hyper-Waterfall version update PR candidates first. Detailed criteria live in [`docs/lifecycle/update.md`](docs/lifecycle/update.md) and [`docs/lifecycle/update_pr.md`](docs/lifecycle/update_pr.md). This repository itself is the first dogfooding case applying Hyper-Waterfall to itself (Issue #1, PR #2).
+Lifecycle criteria for updating existing adopted repositories are also documented separately. GitHub Release/tag, manifest, migration guide, and `.hyper-waterfall/version.json` are used to determine the current version, current locale, requested locale or switch request, target release/tag, target release locale support, manifest diff, locale manifest diff, and Hyper-Waterfall version update PR candidates first. Detailed criteria live in [`docs/lifecycle/update.en.md`](docs/lifecycle/update.en.md) and [`docs/lifecycle/update_pr.en.md`](docs/lifecycle/update_pr.en.md). This repository itself is the first dogfooding case applying Hyper-Waterfall to itself (Issue #1, PR #2).
 
 ### 2. Alignment with Official Prompting Guides
 
@@ -558,7 +570,7 @@ rhwp inlined operating rules, document structure, folder policy, naming rules, a
 
 **(1) Multi-agent compatibility**: `AGENTS.md` is the single source of truth, while `CLAUDE.md` references it with one `@AGENTS.md` line. SKILLs are recognized by both tools through `.agents/skills` (Codex) and `.claude/skills` (Claude Code) symlinks pointing to the same text. New tools that recognize SKILLs can extend the same pattern.
 
-**(2) Separation of operating rules, SKILLs, manuals, and templates**: `AGENTS.md` keeps only the policies, constraints, and index that must be loaded into every-turn system prompts. Procedural details are split into topic manuals under [`mydocs/manual/`](templates/mydocs/manual/) (document structure, task workflow, Git, PR, lifecycle, release/update, conflict rules), each `mydocs/` folder's `README.md`, GitHub Issue/PR templates under [`.github/`](templates/.github/), document output formats under [`mydocs/_templates/`](templates/mydocs/_templates/), and 7 SKILLs under [`mydocs/skills/`](templates/mydocs/skills/).
+**(2) Separation of operating rules, SKILLs, manuals, and templates**: `AGENTS.md` keeps only the policies, constraints, and index that must be loaded into every-turn system prompts. Procedural details are split into topic manuals under [`mydocs/manual/`](templates/locales/en/mydocs/manual/) (document structure, task workflow, Git, PR, lifecycle, release/update, conflict rules), each `mydocs/` folder's `README.md`, GitHub Issue/PR templates under [`.github/`](templates/locales/en/.github/), document output formats under [`mydocs/_templates/`](templates/locales/en/mydocs/_templates/), and 7 SKILLs under [`mydocs/skills/`](templates/locales/en/mydocs/skills/).
 
 Effects:
 

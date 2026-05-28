@@ -57,6 +57,18 @@ AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용
 | 변경 후보 | 어떤 파일을 만들거나 바꿀지, placeholder 치환이 필요한지 |
 | 승인 요청 | 실제 파일 변경 전에 작업지시자가 승인해야 할 범위 |
 
+### 언어 지원
+
+기본 locale은 `en`입니다. 지원 locale pack은 `en`, `ko`, `zh-CN`이며, 선택한 locale source가 없으면 fallback 후보를 사용하기 전에 먼저 보고합니다. 특정 언어로 적용하려면 프롬프트나 CLI dry-run에 locale을 명시하세요.
+
+| 언어 | AI 적용 프롬프트 | CLI dry-run |
+|---|---|---|
+| English | `Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository. Use locale en.` | `npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run` |
+| 한국어 | `https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘. locale은 ko로 사용해줘.` | `npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run` |
+| 중국어 간체 | `将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。使用 zh-CN locale。` | `npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run` |
+
+CLI 명령은 lifecycle 판단 결과만 출력합니다. 실제 파일 변경은 계속 승인 workflow를 거쳐 진행합니다.
+
 도입 후에는 AI가 Hyper-Waterfall 방식을 지키며 작업을 진행합니다. 처음 시작하는 사용자는 AI에게 `"이거 구현해줘"`와 같은 자연어 명령을 내리면 됩니다.
 
 > 누구나 GitHub 저장소에 Hyper-Waterfall을 적용하고, Codex·Claude Code 등 여러 AI 코딩 에이전트가 같은 규율 위에서 작업하게 만듭니다.
@@ -342,12 +354,12 @@ your-repo/
 <details>
 <summary><strong>CLI와 배포 채널</strong></summary>
 
-`hyper-waterfall` CLI는 npm registry에 publish되어 있으며, 아래 `npx` 명령으로 lifecycle 판단을 실행할 수 있습니다. publish 전후 검증 결과는 [`docs/releases/v0.2.0-npm-publish.md`](docs/releases/v0.2.0-npm-publish.md)에서 관리합니다.
+`hyper-waterfall` CLI는 npm을 통해 배포되며, version을 고정한 `npx` 명령으로 lifecycle 판단을 실행할 수 있습니다. `v0.3.0` release readiness와 publish 후 검증 체크리스트는 [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md)에서 관리합니다.
 
 ```bash
-npx hyper-waterfall init --repo . --dry-run
-npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --dry-run
-npx hyper-waterfall doctor --repo .
+npx hyper-waterfall@0.3.0 init --repo . --dry-run
+npx hyper-waterfall@0.3.0 update --repo . --from v0.2.0 --to v0.3.0 --dry-run
+npx hyper-waterfall@0.3.0 doctor --repo .
 ```
 
 macOS에서는 Homebrew public tap으로 CLI를 설치할 수 있습니다.
