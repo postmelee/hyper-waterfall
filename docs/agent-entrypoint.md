@@ -1,5 +1,7 @@
 # Hyper-Waterfall Agent Entrypoint
 
+[English](agent-entrypoint.en.md) | 한국어 | [简体中文](agent-entrypoint.zh-CN.md)
+
 이 문서는 AI coding tool이 대상 저장소에 Hyper-Waterfall 방법론을 적용하거나 업데이트할 때 가장 먼저 읽는 진입점이다. 세부 절차는 lifecycle 문서와 manual 문서로 분산한다.
 
 ## 원칙

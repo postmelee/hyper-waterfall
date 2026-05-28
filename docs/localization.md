@@ -153,6 +153,8 @@ locale 판단은 다음 문서가 같은 책임 경계를 공유한다.
 | `docs/agent-entrypoint.md` | 신규 적용과 기존 update가 locale 판단을 어디서 시작할지 연결한다. |
 | `docs/lifecycle/adoption.md` | 파일 변경 전 선택 locale, 기본 locale, fallback 후보, 누락 source를 판단 결과로 보고한다. |
 | `docs/lifecycle/update.md` | 현재 locale, 목표 release locale 지원, 기존 locale 보존, locale 전환 요청, locale manifest diff를 보고한다. |
+| `docs/agent-entrypoint.en.md`, `docs/agent-entrypoint.zh-CN.md` | English/Chinese README에서 같은 lifecycle 판단으로 들어가는 localized entrypoint다. 절차 의미는 한국어 원문과 동일하게 유지한다. |
+| `docs/lifecycle/*.en.md`, `docs/lifecycle/*.zh-CN.md` | English/Chinese 사용자가 신규 적용, 기존 update, update PR 판단 결과 형식을 자기 언어로 확인하기 위한 mirror 문서다. |
 | `templates/manifest.json` | 위 판단에 필요한 기계 판독 계약과 `versionState.format.locale` 저장 계약을 제공한다. |
 
 #67은 위 구조와 판단 결과 형식을 고정했다. #68은 `en`/`ko` locale pack 본문을 작성했고, #69는 `zh-CN` locale pack 본문을 작성했다. #70은 locale 선택 저장 계약과 적용/update workflow 연결을 확정했고, #71은 smoke 검증과 migration guide를 정리했다.
