@@ -38,7 +38,7 @@ test("package and manifest release metadata are aligned", () => {
   assert.equal(packageJson.version, manifest.frameworkVersion);
   assert.equal(manifest.release.plannedTag, `v${packageJson.version}`);
   assert.equal(manifest.release.baselineTag, "v0.2.0");
-  assert.equal(manifest.release.status, "planned");
+  assert.equal(manifest.release.status, "released");
   assert.equal(manifest.versionState.format.frameworkVersion, packageJson.version);
   assert.equal(manifest.versionState.format.releaseTag, `v${packageJson.version}`);
   assert(packageJson.files.includes("README.ko.md"));

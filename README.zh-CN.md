@@ -367,7 +367,7 @@ your-repo/
 <details>
 <summary><strong>CLI 与发布渠道</strong></summary>
 
-`hyper-waterfall` CLI 通过 npm 分发，可使用固定 version 的 `npx` 命令执行 lifecycle 判断。`v0.3.0` release readiness 和发布后验证 checklist 在 [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md) 中管理。
+`hyper-waterfall` CLI 通过 npm 分发，可使用固定 version 的 `npx` 命令执行 lifecycle 判断。`v0.3.0` release 状态和发布后验证结果在 [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md) 中管理。
 
 ```bash
 npx hyper-waterfall@0.3.0 init --repo . --dry-run
