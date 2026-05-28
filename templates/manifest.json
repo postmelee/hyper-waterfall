@@ -23,7 +23,7 @@
     "preserveSelectedLocaleOnUpdate": true,
     "availability": {
       "status": "complete",
-      "note": "Locale pack source exists for en, ko, and zh-CN as of #69. Selected locale is recorded in .hyper-waterfall/version.json locale; #70 and #71 cover workflow connection and smoke/migration coverage respectively."
+      "note": "Locale pack source exists for en, ko, and zh-CN as of #69. Selected locale is recorded in .hyper-waterfall/version.json locale; workflow connection is complete as of #70, and smoke/migration coverage is complete as of #71."
     }
   },
   "forbiddenTargetsOnAdoption": [

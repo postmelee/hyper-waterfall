@@ -38,6 +38,9 @@ v{from}-to-v{to}.md
 
 - `templates/manifest.json`의 `files`, `versionState`, `updatePolicies`, `checksum` 상태를 기준으로 작성한다.
 - 적용 저장소의 현재 version은 `.hyper-waterfall/version.json`에서 읽는 것을 전제로 한다.
+- manifest가 `localization`을 제공하면 현재 locale, 요청 locale 또는 전환 요청, 목표 release locale 지원, locale manifest diff, locale 보존/전환 판단을 포함한다.
+- `.hyper-waterfall/version.json`에 `locale`이 없으면 자동 추론하지 않고 `unknown`으로 보고한다. 기존 한국어-only 저장소를 보존하려면 maintainer가 `ko` 선택을 승인해야 한다.
+- `requiresSemanticReview: true`인 manual/Skill locale mirror는 문장 번역 여부보다 승인 게이트, Issue 추적, Stage 보고, PR 게시 절차의 의미 보존을 확인한다.
 - 사용자 수정 가능성이 높은 `AGENTS.md`, `CLAUDE.md`, `.github/`, `mydocs/manual/`, `mydocs/skills/` 변경은 수동 확인 또는 충돌 가능성에 반드시 언급한다.
 - `overwrite`, `merge`, `manual`, `preserve`, `symlink` update policy의 의미를 문서마다 재정의하지 않는다. 정책 정의는 `templates/mydocs/manual/document_structure_guide.md`와 manifest를 따른다.
 - 실제 GitHub Release/tag 생성, npm publish, Homebrew, Docker, plugin 배포는 migration guide만으로 수행하지 않는다. 해당 작업은 별도 이슈와 승인 절차를 따른다.

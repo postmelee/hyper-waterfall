@@ -42,7 +42,8 @@ test("manifest locale sources match current M050 pack status", () => {
   assert.equal(manifest.localization.availability.status, "complete");
   assert.match(manifest.localization.availability.note, /en, ko, and zh-CN/);
   assert.match(manifest.localization.availability.note, /zh-CN/);
-  assert.match(manifest.localization.availability.note, /#70 and #71/);
+  assert.match(manifest.localization.availability.note, /workflow connection is complete as of #70/);
+  assert.match(manifest.localization.availability.note, /smoke\/migration coverage is complete as of #71/);
 
   for (const locale of manifest.localization.supportedLocales) {
     const missing = localizedFiles.filter((file) => {
