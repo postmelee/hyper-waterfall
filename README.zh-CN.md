@@ -43,13 +43,27 @@ Hyper-Waterfall 是一种方法论 harness，它把 AI 编码绑定到 Issue、b
 
 ## 快速开始
 
+### 现有仓库
+
 把下面这一行发送给你的 AI 编码工具。
 
 ```text
 将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。
 ```
 
-AI 会先阅读 [`docs/agent-entrypoint.zh-CN.md`](docs/agent-entrypoint.zh-CN.md)，并按应用流程执行。在修改源码前，它必须先请求任务指示者批准。
+### 新项目
+
+当你的项目想法准备进入仓库时，先创建一个空的 GitHub 仓库或本地仓库。然后从这个空仓库发送下面的 prompt。
+
+```text
+我想在这个空仓库中开始一个新项目。
+
+请先将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。
+
+如果附带了项目简报或需求草案，请只把它作为上下文参考。不要在应用阶段创建产品计划、架构文档或源代码。应用完成后，请帮我把第一个产品任务注册为单独的 GitHub Issue。
+```
+
+在两种路径中，AI 都会先阅读 [`docs/agent-entrypoint.zh-CN.md`](docs/agent-entrypoint.zh-CN.md)，并按应用流程执行。在修改源码前，它必须先请求任务指示者批准。
 
 | AI 需要先报告的内容 | 内容 |
 |---|---|
@@ -59,15 +73,30 @@ AI 会先阅读 [`docs/agent-entrypoint.zh-CN.md`](docs/agent-entrypoint.zh-CN.m
 
 ### 语言支持
 
-默认 locale 是 `en`。支持的 locale pack 是 `en`、`ko`、`zh-CN`；如果所选 locale source 缺失，会先报告 fallback 候选，而不是静默替换。想用指定语言应用 Hyper-Waterfall 时，请在 prompt 或 CLI dry-run 中写明 locale。
+默认 locale 是 `en`。支持的 locale pack 是 `en`、`ko`、`zh-CN`；如果所选 locale source 缺失，会先报告 fallback 候选，而不是静默替换。
 
-| 语言 | AI 应用 prompt | CLI dry-run |
-|---|---|---|
-| English | `Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository. Use locale en.` | `npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run` |
-| 韩语 | `https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘. locale은 ko로 사용해줘.` | `npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run` |
-| 简体中文 | `将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。使用 zh-CN locale。` | `npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run` |
+| 语言 | Locale |
+|---|---|
+| English | `en` |
+| 韩语 | `ko` |
+| 简体中文 | `zh-CN` |
 
-CLI 命令只输出 lifecycle 判断。实际文件变更仍然必须经过审批 workflow。
+使用 AI 编码工具时，请用你想使用的语言提出请求。AI 会在修改文件前先报告选择的 locale。
+
+要在终端中检查应用判断，请显式传入 locale。需要时可以把 `zh-CN` 替换为 `en` 或 `ko`。
+
+```sh
+npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run
+```
+
+在 macOS 上，如果经常运行 CLI，可以通过 Homebrew 安装。
+
+```sh
+brew install postmelee/tap/hyper-waterfall
+hyper-waterfall init --repo . --locale zh-CN --dry-run
+```
+
+`npx` 和 Homebrew CLI 命令只输出 lifecycle 判断。实际文件变更仍然必须经过审批 workflow。
 
 导入后，AI 会按照 Hyper-Waterfall 方式推进工作。第一次使用时，你可以直接用自然语言告诉 AI，例如 `"请实现这个功能"`。
 

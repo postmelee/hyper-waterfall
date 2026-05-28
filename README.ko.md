@@ -43,13 +43,27 @@ AI가 바로 파일을 고치게 두지 않고, 작업 목적과 범위, 검증 
 
 ## 바로 설치
 
+### 기존 저장소
+
 AI 코딩 도구에 다음 한 줄을 보내세요.
 
 ```text
 https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘.
 ```
 
-AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용 절차를 따릅니다. 소스 변경 전 반드시 작업지시자 승인을 받게 되어 있습니다.
+### 새 프로젝트
+
+프로젝트 아이디어를 저장소로 시작할 시점이 되면 먼저 빈 GitHub 저장소나 로컬 저장소를 만드세요. 그 빈 저장소에서 다음 프롬프트를 보내면 됩니다.
+
+```text
+이 빈 저장소에서 새 프로젝트를 시작하려고 합니다.
+
+먼저 https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘.
+
+프로젝트 기획서나 요구사항 초안이 첨부되어 있다면 참고 맥락으로만 사용해줘. 적용 단계에서는 제품 계획서, 아키텍처 문서, 소스 코드를 만들지 말고, 적용 후 첫 제품 작업을 별도 GitHub Issue로 등록할 수 있게 도와줘.
+```
+
+두 경로 모두 AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용 절차를 따릅니다. 소스 변경 전 반드시 작업지시자 승인을 받게 되어 있습니다.
 
 | AI가 먼저 보고할 것 | 내용 |
 |---|---|
@@ -59,15 +73,30 @@ AI는 [`docs/agent-entrypoint.md`](docs/agent-entrypoint.md)부터 읽어 적용
 
 ### 언어 지원
 
-기본 locale은 `en`입니다. 지원 locale pack은 `en`, `ko`, `zh-CN`이며, 선택한 locale source가 없으면 fallback 후보를 사용하기 전에 먼저 보고합니다. 특정 언어로 적용하려면 프롬프트나 CLI dry-run에 locale을 명시하세요.
+기본 locale은 `en`입니다. 지원 locale pack은 `en`, `ko`, `zh-CN`이며, 선택한 locale source가 없으면 fallback 후보를 사용하기 전에 먼저 보고합니다.
 
-| 언어 | AI 적용 프롬프트 | CLI dry-run |
-|---|---|---|
-| English | `Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository. Use locale en.` | `npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run` |
-| 한국어 | `https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘. locale은 ko로 사용해줘.` | `npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run` |
-| 중국어 간체 | `将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。使用 zh-CN locale。` | `npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run` |
+| 언어 | Locale |
+|---|---|
+| English | `en` |
+| 한국어 | `ko` |
+| 중국어 간체 | `zh-CN` |
 
-CLI 명령은 lifecycle 판단 결과만 출력합니다. 실제 파일 변경은 계속 승인 workflow를 거쳐 진행합니다.
+AI 코딩 도구를 사용할 때는 원하는 언어로 지시하세요. AI는 파일 변경 전 선택 locale을 먼저 보고합니다.
+
+터미널에서 적용 판단을 확인하려면 locale을 명시해 실행하세요. 필요하면 `ko`를 `en` 또는 `zh-CN`으로 바꾸면 됩니다.
+
+```sh
+npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run
+```
+
+macOS에서 자주 실행한다면 Homebrew로 CLI를 설치할 수 있습니다.
+
+```sh
+brew install postmelee/tap/hyper-waterfall
+hyper-waterfall init --repo . --locale ko --dry-run
+```
+
+`npx`와 Homebrew CLI 명령은 lifecycle 판단 결과만 출력합니다. 실제 파일 변경은 계속 승인 workflow를 거쳐 진행합니다.
 
 도입 후에는 AI가 Hyper-Waterfall 방식을 지키며 작업을 진행합니다. 처음 시작하는 사용자는 AI에게 `"이거 구현해줘"`와 같은 자연어 명령을 내리면 됩니다.
 

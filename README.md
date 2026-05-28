@@ -43,13 +43,27 @@ As a result, every task is documented, and decisions plus verification results r
 
 ## Quick Start
 
+### Existing repository
+
 Send this one line to your AI coding tool.
 
 ```text
 Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository.
 ```
 
-The AI starts from [`docs/agent-entrypoint.en.md`](docs/agent-entrypoint.en.md) and follows the adoption procedure. It must ask for approval before changing source files.
+### New project
+
+When your project idea is ready to become a repository, create an empty GitHub or local repository first. Then send this prompt from that empty repository.
+
+```text
+I am starting a new project in this empty repository.
+
+Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository first.
+
+If a project brief or requirements draft is attached, use it for context only. Do not create product plans, architecture documents, or source code during adoption. After adoption, help me register the first product task as a separate GitHub Issue.
+```
+
+In both paths, the AI starts from [`docs/agent-entrypoint.en.md`](docs/agent-entrypoint.en.md) and follows the adoption procedure. It must ask for approval before changing source files.
 
 | What the AI reports first | Content |
 |---|---|
@@ -59,15 +73,30 @@ The AI starts from [`docs/agent-entrypoint.en.md`](docs/agent-entrypoint.en.md) 
 
 ### Language support
 
-The default locale is `en`. Supported locale packs are `en`, `ko`, and `zh-CN`; missing locale sources are reported before fallback candidates are used. To apply Hyper-Waterfall in a specific language, include the locale in the prompt or run the CLI dry-run first.
+The default locale is `en`. Supported locale packs are `en`, `ko`, and `zh-CN`; missing locale sources are reported before fallback candidates are used.
 
-| Language | AI prompt | CLI dry-run |
-|---|---|---|
-| English | `Apply the Hyper-Waterfall methodology from https://github.com/postmelee/hyper-waterfall to this repository. Use locale en.` | `npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run` |
-| Korean | `https://github.com/postmelee/hyper-waterfall 의 하이퍼-워터폴 방법론을 이 저장소에 적용해줘. locale은 ko로 사용해줘.` | `npx hyper-waterfall@0.3.0 init --repo . --locale ko --dry-run` |
-| Simplified Chinese | `将 https://github.com/postmelee/hyper-waterfall 的 Hyper-Waterfall 方法论应用到这个仓库。使用 zh-CN locale。` | `npx hyper-waterfall@0.3.0 init --repo . --locale zh-CN --dry-run` |
+| Language | Locale |
+|---|---|
+| English | `en` |
+| Korean | `ko` |
+| Simplified Chinese | `zh-CN` |
 
-The CLI command prints a lifecycle judgment only. Actual file changes still move through the approval workflow.
+When using an AI coding tool, ask in the language you want to use. The AI reports the selected locale before changing files.
+
+To check adoption from a terminal, pass the locale explicitly. Replace `en` with `ko` or `zh-CN` as needed.
+
+```sh
+npx hyper-waterfall@0.3.0 init --repo . --locale en --dry-run
+```
+
+On macOS, install the CLI with Homebrew if you run it often.
+
+```sh
+brew install postmelee/tap/hyper-waterfall
+hyper-waterfall init --repo . --locale en --dry-run
+```
+
+The `npx` and Homebrew CLI commands print lifecycle judgment only. Actual file changes still move through the approval workflow.
 
 After adoption, the AI proceeds according to the Hyper-Waterfall process. New users can simply ask the AI in natural language, such as `"Implement this."`
 
