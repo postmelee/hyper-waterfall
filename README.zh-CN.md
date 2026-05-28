@@ -367,12 +367,12 @@ your-repo/
 <details>
 <summary><strong>CLI 与发布渠道</strong></summary>
 
-`hyper-waterfall` CLI 已发布到 npm registry，可通过下面的 `npx` 命令执行 lifecycle 判断。发布前后验证结果在 [`docs/releases/v0.2.0-npm-publish.md`](docs/releases/v0.2.0-npm-publish.md) 中管理。
+`hyper-waterfall` CLI 通过 npm 分发，可使用固定 version 的 `npx` 命令执行 lifecycle 判断。`v0.3.0` release readiness 和发布后验证 checklist 在 [`docs/releases/v0.3.0.md`](docs/releases/v0.3.0.md) 中管理。
 
 ```bash
-npx hyper-waterfall init --repo . --dry-run
-npx hyper-waterfall update --repo . --from v0.1.0 --to v0.2.0 --dry-run
-npx hyper-waterfall doctor --repo .
+npx hyper-waterfall@0.3.0 init --repo . --dry-run
+npx hyper-waterfall@0.3.0 update --repo . --from v0.2.0 --to v0.3.0 --dry-run
+npx hyper-waterfall@0.3.0 doctor --repo .
 ```
 
 macOS 可以通过 Homebrew public tap 安装 CLI。

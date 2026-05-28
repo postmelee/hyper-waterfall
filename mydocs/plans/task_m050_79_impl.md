@@ -168,9 +168,9 @@ Task #79 Stage 3: localized lifecycle 진입 문서 추가
 ### 검증
 
 ```bash
-node bin/hyper-waterfall.js init --repo /private/tmp/hw-readiness-en --manifest templates/manifest.json --locale en --dry-run
-node bin/hyper-waterfall.js init --repo /private/tmp/hw-readiness-ko --manifest templates/manifest.json --locale ko --dry-run
-node bin/hyper-waterfall.js init --repo /private/tmp/hw-readiness-zh --manifest templates/manifest.json --locale zh-CN --dry-run
+node bin/hyper-waterfall.js init --repo /private/tmp/hw-readiness-en --manifest "$(pwd)/templates/manifest.json" --locale en --dry-run
+node bin/hyper-waterfall.js init --repo /private/tmp/hw-readiness-ko --manifest "$(pwd)/templates/manifest.json" --locale ko --dry-run
+node bin/hyper-waterfall.js init --repo /private/tmp/hw-readiness-zh --manifest "$(pwd)/templates/manifest.json" --locale zh-CN --dry-run
 npm_config_cache=/private/tmp/hyper-waterfall-npm-cache npm pack --dry-run
 git diff --check
 ```

@@ -1,11 +1,11 @@
 {
   "schemaVersion": "0.1.0",
-  "frameworkVersion": "0.2.0",
+  "frameworkVersion": "0.3.0",
   "release": {
     "canonicalSource": "github-release",
-    "plannedTag": "v0.2.0",
-    "baselineTag": "v0.1.0",
-    "status": "released"
+    "plannedTag": "v0.3.0",
+    "baselineTag": "v0.2.0",
+    "status": "planned"
   },
   "applicationMode": "adoption-only",
   "strictManifest": true,
@@ -39,9 +39,9 @@
     "targetPath": ".hyper-waterfall/version.json",
     "format": {
       "schemaVersion": "0.1.0",
-      "frameworkVersion": "0.2.0",
+      "frameworkVersion": "0.3.0",
       "source": "github-release",
-      "releaseTag": "v0.2.0",
+      "releaseTag": "v0.3.0",
       "locale": "selected Hyper-Waterfall locale, for example en",
       "installedAt": "ISO-8601 timestamp",
       "updatedAt": "ISO-8601 timestamp"
