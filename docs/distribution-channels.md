@@ -33,8 +33,8 @@ Hyper-Waterfall의 배포 원천은 GitHub Release/tag다. Release는 다음 기
 
 | 채널 | 현재 상태 | 사용자-facing 경로 | 보류 또는 후속 조건 |
 |---|---|---|---|
-| GitHub Release/tag | `v0.2.0` 공개 완료, `v0.3.0` release 후보 준비 중 | `https://github.com/postmelee/hyper-waterfall/releases/tag/v0.3.0` (publish 후) | `v0.3.0` tag/release 생성은 별도 release 실행 승인 필요 |
-| npm CLI | `hyper-waterfall@0.2.0` 공개 완료, `hyper-waterfall@0.3.0` package metadata 준비 중 | `npx hyper-waterfall@0.3.0 --help` (publish 후) | `npm publish`와 post-publish smoke는 별도 release 실행 승인 필요 |
+| GitHub Release/tag | `v0.2.0` 공개 완료, `v0.3.0` release 후보 준비 중 | 현재: `https://github.com/postmelee/hyper-waterfall/releases/tag/v0.2.0` | `v0.3.0` tag/release 생성 후 `https://github.com/postmelee/hyper-waterfall/releases/tag/v0.3.0`로 전환 |
+| npm CLI | `hyper-waterfall@0.2.0` 공개 완료, `hyper-waterfall@0.3.0` package metadata 준비 중 | 현재: `npx hyper-waterfall@0.2.0 --help` | `npm publish`와 post-publish smoke 후 `npx hyper-waterfall@0.3.0 --help`로 전환 |
 | Homebrew public tap | `postmelee/tap/hyper-waterfall` 공개 완료 | `brew install postmelee/tap/hyper-waterfall` | release마다 formula 갱신 절차 필요 |
 | Homebrew core | 보류 | 없음 | #46 기준 notability, non-author usage, 플랫폼 검증, formula test 근거 필요 |
 | Docker | M040 제외 | 없음 | read-only image PoC는 후속 후보 |
